@@ -71,8 +71,8 @@
     ];
 
 /**
- * PUBLIC METHODES––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * Theses methodes can be called outside this lib.
+ * PUBLIC METHODS––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ * Theses methods can be called outside this lib.
 */
 
 // NOTE: Include splitTab/Tuning and isValidTab/Tuning/Chord as public functions
