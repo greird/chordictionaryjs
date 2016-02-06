@@ -88,7 +88,7 @@
     	intFormulas = [],	// Formulas of the chord in integer notation.
     	roots = [],	// Potential roots for the chord.
     	results = { // Will contain every chord information to be returned
-    		"message": "",
+    		"error": "",
     		"name": "",
     		"tab": tab,
     		"notes": "",
@@ -99,14 +99,14 @@
     	try {
     		if (this.isValidTab(tab)) var tab = splitTab(tab);
     	} catch (e) {
-    		results.message = e;
+    		results.error = e;
     		return results;
     	}
 
     	try {
     		if(this.isValidTuning(tuning)) var tuning = splitTuning(tuning);
     	} catch (e) {
-    		results.message = e;
+    		results.error = e;
     		return results;
     	}
 
@@ -133,8 +133,7 @@
     		}
     		results.notes = notes.join("");
     	} catch (e) {
-    		console.log(e);
-    		results.message = WORDING.failedToConvertTabIntoNotes;
+    		results.error = WORDING.failedToConvertTabIntoNotes;
     		return results;
     	}
 
@@ -178,8 +177,7 @@
     			}
     		}
     	} catch (e) {
-    		console.log(e);
-    		results.message = WORDING.failedToCalculateFormula;
+    		results.error = WORDING.failedToCalculateFormula;
     	}
 
       // 3 - Remove duplicates and invalid formulas
@@ -226,8 +224,7 @@
     		}
     		else throw WORDING.noMatch;
     	} catch (e) {
-    		console.log(e);
-    		results.message = e;
+    		results.error = e;
     		return results;
     	}
 
@@ -253,7 +250,12 @@
 
     	var chordBox = 4, // Maximum distance between the lowest and highest fretted note on the fretboard
     	chordNotes = [],	// Will contain the generated chord notes, starting with the root
-    	offset = offset || 0;
+    	offset = offset || 0,
+      results = {
+    		error: "",
+    		chordList: [],
+        offset: 0
+    	};
 
     	try {
     		if (typeof(chordName) == "string") {
@@ -264,18 +266,17 @@
     		} else throw WORDING.invalidChordName;
     		if(this.isValidTuning(tuning)) var tuning = splitTuning(tuning);
     	} catch (e) {
-    		console.error(e);
-    		return;
+    		results.error = e;
+    		return results;
     	}
-    	console.log("Generating a "+rootNote+chordType+" chord in "+tuning+" tuning...");
 
       // 1 - Fetch the right chord formula from the dictionary
     	try {
     		var chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
     		var chordFormula = chordInfo.integer;
     	} catch (e) {
-    		console.error(e);
-    		return;
+        results.error = e;
+    		return results;
     	}
 
       // 2 - Identify chord's notes
@@ -355,10 +356,9 @@
     		}
     	}
 
-    	return {
-    		chordList: validChords,
-    		offset: offset
-    	};
+      results.chordList = validChords;
+      results.offset = offset;
+    	return results;
     }
 
     /** Converts a tab notation into its graphic representation
@@ -371,10 +371,7 @@
 
     	var frets,	// used guitar frets for this chord
     	chordLayout,	// will contain the chord layout in html
-    	fretsToDisplay = (typeof(fretsToDisplay) === 'int') ? fretsToDisplay : 0;	// number of guitar frets to dipslay
-
-      // Enable auto-resize of the chord layout
-      if (fretsToDisplay === 0) fretsToDisplay = highestFret - base + 2;
+    	fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay : 0;	// number of guitar frets to dipslay
 
     	try {
     		if (this.isValidTab(tab)) var frets = splitTab(tab);
@@ -382,7 +379,7 @@
         if(this.isValidTuning(tuning)) var tuning = splitTuning(tuning)
         else var tuning = ['E','A','D','G','B','E'];
     	} catch (e) {
-    		console.error(e);
+    		return false;
     	}
 
     	// exclude non-played strings from the chord notation
@@ -397,9 +394,11 @@
     	if (highestFret > fretsToDisplay) base = Math.abs(Math.min.apply(Math, notes) - 1);
     	// base can be wrong in case of open strings, we're using the highest note to fix that
     	if (base === 1 && highestFret > 5) base = highestFret - 3;
+      
+      // Enable auto-resize of the chord layout
+      if (fretsToDisplay === 0) fretsToDisplay = highestFret - base + 2;
 
     	chordLayout = '<table class="chord">';
-
     	// Generate guitar frets (rows)
     	for (var gtrFret = 0; gtrFret < fretsToDisplay; gtrFret++) {
 
@@ -472,10 +471,10 @@
      * @return {Boolean}
     */
     function isValidChord(tab, chordNotes, tuning) {
-      // NOTE: check if tab is valid
-      // NOTE: check if notes is valid (valid tuning)
-      // NOTE: make it work with tabs and notes
-      // NOTE: add param to check for triads, open strings, etc.
+      // TODO: check if tab is valid
+      // TODO: check if notes is valid (valid tuning)
+      // TODO: make it work with tabs and notes
+      // TODO: add param to check for triads, open strings, etc.
 
       var result, index, notesCount = {};
 
@@ -533,7 +532,7 @@
           } else throw WORDING.invalidTab;
         }
       } catch (e) {
-        console.error(e);
+        return false;
       }
     }
 
@@ -562,7 +561,7 @@
         }
         else throw WORDING.invalidTuning;
       } catch (e) {
-        console.error(e);
+        return false;
       }
     }
 
@@ -588,7 +587,7 @@
         }
         return result;
       } catch (e) {
-        console.error(e);
+        return false;
       }
     }
 
@@ -604,7 +603,7 @@
           return index == self.indexOf(elem);
         });
       } catch (e) {
-        console.error(e);
+        return false;
       }
     }
 
@@ -633,7 +632,7 @@
         }
         return false;
       } catch (e) {
-        console.error(e);
+        return false;
       }
     }
 
@@ -696,7 +695,7 @@
         }
 
       } catch (e) {
-        console.error(e);
+        return false;
       }
 
       return result;
@@ -732,6 +731,6 @@
 
   if (typeof(Chordictionary) === 'undefined') {
     window.Chordictionary = define();
-  } else console.log("Chordictionary is already defined.");
+  } else console.error();("Chordictionary is already defined.");
 
 })(window);

@@ -12,7 +12,7 @@ It converts common chord tab notation, such as `x32010`, into its graphical repr
 
 ### Recognize a chord and get all information about a tab
 
-`Chordictionary.getChordInfo()` will return every known information about a tab notation, including: the chord name(s), the notes composition and the chord(s) formula. Also return a friendly "message" in case of failure.
+`Chordictionary.getChordInfo()` will return every known information about a tab notation, including: the chord name(s), the notes composition and the chord(s) formula. Also return an error message in case of failure.
 
 ```javascript
 Chordictionary.getChordInfo(tab, tuning);
@@ -24,7 +24,7 @@ Chordictionary.getChordInfo("xx5545", "EADGBE");
 
 // Will return an object
 {
-	message: "",
+	error: "",
 	formula: ["1-b3-5-6", "1-b3-b5-b7"],
 	name: ["Cm6", "Am7b5"],
 	notes: "xxGCD#A",
@@ -49,7 +49,8 @@ Chordictionary.getChordsList("G", "EADGBE", 2);
 
 // Will return an object
 {
-	tab: ["320033", "355433"],
+	error: "",
+	chordList: ["320033", "355433"],
 	offset: 2
 }
 ```
@@ -62,7 +63,7 @@ Chordictionary.getChordsList("G", "EADGBE", 2);
 Chordictionary.getChordLayout(tab, tuning, size);
 // name 			A tab notation {String}
 // tuning 		The instrument tuning {String}
-// size 			The number of frets to display {Int} || Default : auto-resize
+// size 			The number of frets to display {Int} || Default : 0 = auto-resize
 
 // Example
 Chordictionary.getChordLayout("x32010", "EADGBE");
