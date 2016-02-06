@@ -68,7 +68,7 @@ Chordictionary.getChordLayout(tab, tuning, size);
 // Example
 Chordictionary.getChordLayout("x32010", "EADGBE");
 
-// Will return an object
+// Will return a string or false if cannot generate layout.
 '<table class="chord">...</table>'
 ```
 
