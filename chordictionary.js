@@ -371,10 +371,10 @@
 
     	var frets,	// used guitar frets for this chord
     	chordLayout,	// will contain the chord layout in html
-    	fretsToDisplay = (typeof(fretsToDisplay) === 'int' || fretsToDisplay === 'auto') ? fretsToDisplay : 7;	// number of guitar frets to dipslay
+    	fretsToDisplay = (typeof(fretsToDisplay) === 'int') ? fretsToDisplay : 0;	// number of guitar frets to dipslay
 
       // Enable auto-resize of the chord layout
-      if (fretsToDisplay === 'auto') fretsToDisplay = highestFret - base + 2;
+      if (fretsToDisplay === 0) fretsToDisplay = highestFret - base + 2;
 
     	try {
     		if (this.isValidTab(tab)) var frets = splitTab(tab);
