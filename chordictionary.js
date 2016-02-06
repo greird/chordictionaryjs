@@ -284,7 +284,6 @@
 
       // 2 - Identify chord's notes
     	for (var i = 1; i < chordFormula.length; i++) {
-    		// NOTE: doen't work with integer > 9 (maj7)
     		var index = parseInt(chordFormula[i]) + parseInt(MDL_A_SCALE.indexOf(rootNote));
     		if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
     		chordNotes.push(MDL_A_SCALE[index]);
@@ -300,6 +299,7 @@
     			fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(tuning[string]);
     			if (fretPosition < 0) fretPosition = MDL_A_SCALE.length + fretPosition;
     			tabPool[string].push(fretPosition);
+    			tabPool[string].push(fretPosition + 12); // Finding the octave
     		}
     	}
 
