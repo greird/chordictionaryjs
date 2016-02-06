@@ -130,7 +130,7 @@ Note that a chord can have several names. For instance, `x02210` can be called A
 
 #### Graphic Representation
 
-For the moment, the chord layout is built with <table> elements ("Tablature" is derived from the word "table" after all. :)).
+For the moment, the chord layout is built with table elements ("Tablature" is derived from the word "table" after all. :)).
 However, an SVG version of this could be more scalable. I might work on this soon.
 
 ![alt text](http://git.hubertfauconnier.com/img/chord.png "")
