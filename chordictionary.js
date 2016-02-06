@@ -254,6 +254,7 @@
     	var chordBox = 4, // Maximum distance between the lowest and highest fretted note on the fretboard
     	chordNotes = [],	// Will contain the generated chord notes, starting with the root
     	offset = offset || 0,
+      above9thFret = false, // If true, will try to generate chords above the 9th fret of the instrument
       results = {
     		error: "",
     		chordList: [],
@@ -299,7 +300,7 @@
     			fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(tuning[string]);
     			if (fretPosition < 0) fretPosition = MDL_A_SCALE.length + fretPosition;
     			tabPool[string].push(fretPosition);
-    			tabPool[string].push(fretPosition + 12); // Finding the octave
+    			if (above9thFret) tabPool[string].push(fretPosition + 12); // Finding the octave
     		}
     	}
 
@@ -727,6 +728,22 @@
             } else break;
         }
         return n;
+    }
+
+    /** Count the number of occurrences of every items in an array
+     * @param {Array} array | Required
+     * @return {Object}
+     */
+    function countOccurences(array) {
+      if (Array.isArray(array)) {
+        var result = {};
+        for(i = 0; i < array.length; ++i) {
+            if(!result[array[i]])
+                result[array[i]] = 0;
+            ++result[array[i]];
+        }
+        return result;
+      } else throw array + " is not an array.";
     }
 
     return Chordictionary;
