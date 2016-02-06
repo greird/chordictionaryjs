@@ -97,7 +97,10 @@
     	};
 
     	try {
-    		if (this.isValidTab(tab)) var tab = splitTab(tab);
+    		if (this.isValidTab(tab)) {
+          var tab = splitTab(tab);
+          results.tab = tab.join(' ');
+        }
     	} catch (e) {
     		results.error = e;
     		return results;
@@ -394,7 +397,7 @@
     	if (highestFret > fretsToDisplay) base = Math.abs(Math.min.apply(Math, notes) - 1);
     	// base can be wrong in case of open strings, we're using the highest note to fix that
     	if (base === 1 && highestFret > 5) base = highestFret - 3;
-      
+
       // Enable auto-resize of the chord layout
       if (fretsToDisplay === 0) fretsToDisplay = highestFret - base + 2;
 
