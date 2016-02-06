@@ -74,23 +74,22 @@ Chordictionary.getChordLayout("x32010", "EADGBE");
 
 ### Check if tab or tuning is valid
 
-`Chordictionary.isValidTab()` and `Chordictionary.isValidTuning()` will check the validity of a given tab notation or tuning.
-They will either return an array containing each individual notes or false if invalid.
+`Chordictionary.isValidTab()` and `Chordictionary.isValidTuning()` will check the validity of a given tab notation or tuning and return True or False.
 
 ```javascript
 // Examples
 
 Chordictionary.isValidTab("x32010");
 // Return
-['x','3','2','0','1','0']
+True // ['x','3','2','0','1','0']
 
 Chordictionary.isValidTab("911111099");
 // Return
-['9','11','11','10','9','9']
+True // ['9','11','11','10','9','9']
 
 Chordictionary.isValidTab("E#A#D#G#B#E#");
 // Return
-['E#','A#','D#','G#','B#','E#']
+True // ['E#','A#','D#','G#','B#','E#']
 ```
 
 ***
