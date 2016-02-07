@@ -1,4 +1,4 @@
-/*!Chordictionary v0.1.0, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
+/*!Chordictionary v0.2.1-beta, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 (function (window) {
 
   'use strict';
@@ -36,47 +36,44 @@
     */
     var MDL_CHORD_FORMULAS = [
     	// Major
-    	{formula:"1-3-5", 				integer:"047", 			name:"Major", 												suffix:""					},
-    	{formula:"1-5", 					integer:"07", 			name:"Power chord", 									suffix:"5"				},
-    	{formula:"1-4-5", 				integer:"057", 			name:"Suspended fourth", 							suffix:"sus4"			},
-    	{formula:"1-2-5", 				integer:"027", 			name:"Suspended second", 							suffix:"sus2"			},
-    	{formula:"1-3-5-9", 			integer:"04714", 		name:"Added ninth", 									suffix:"add9"			},
-    	{formula:"1-3-5-6", 			integer:"0479", 		name:"Major Sixth", 									suffix:"6"				},
-    	{formula:"1-3-5-6-9", 		integer:"047914", 	name:"Sixth, added ninth", 						suffix:"6/9"			},
-    	{formula:"1-3-5-7", 			integer:"04711", 		name:"Major seventh", 								suffix:"maj7"			},
-    	{formula:"1-3-5-7-9", 		integer:"0471114", 	name:"Major ninth", 									suffix:"maj9"			},
-    	{formula:"1-3-5-7-#11", 	integer:"0471118", 	name:"Major seventh, sharp eleventh",	suffix:"maj7#11"	},
-    	{formula:"1-3-5-7-9-13", 	integer:"047111421",name:"Major thirteen", 								suffix:"Maj13"		},
+    	{formula:"1-3-5", 				integer:"0-4-7", 			   name:"Major", 												suffix:""					},
+    	{formula:"1-5", 					integer:"0-7", 			     name:"Power chord", 									suffix:"5"				},
+    	{formula:"1-4-5", 				integer:"0-5-7", 			   name:"Suspended fourth", 						suffix:"sus4"			},
+    	{formula:"1-2-5", 				integer:"0-2-7", 			   name:"Suspended second", 						suffix:"sus2"			},
+    	{formula:"1-3-5-9", 			integer:"0-4-7-14", 	   name:"Added ninth", 									suffix:"add9"			},
+    	{formula:"1-3-5-6", 			integer:"0-4-7-9", 		   name:"Major Sixth", 									suffix:"6"				},
+    	{formula:"1-3-5-6-9", 		integer:"0-4-7-9-14",    name:"Sixth, added ninth", 					suffix:"6/9"			},
+    	{formula:"1-3-5-7", 			integer:"0-4-7-11", 	   name:"Major seventh", 								suffix:"maj7"			},
+    	{formula:"1-3-5-7-9", 		integer:"0-4-7-11-14", 	 name:"Major ninth", 									suffix:"maj9"			},
+    	{formula:"1-3-5-7-#11", 	integer:"0-4-7-11-18", 	 name:"Major seventh, sharp eleventh",suffix:"maj7#11"	},
+    	{formula:"1-3-5-7-9-13", 	integer:"0-4-7-11-14-21",name:"Major thirteen", 							suffix:"Maj13"		},
     	// Minor
-    	{formula:"1-b3-5", 						integer:"037", 				name:"Minor", 										suffix:"min"			},
-    	{formula:"1-b3-5-9", 					integer:"03714", 			name:"Minor, added ninth", 				suffix:"m(add9)"	},
-    	{formula:"1-b3-5-6", 					integer:"0379", 			name:"Minor sixth", 							suffix:"m6"				},
-    	{formula:"1-b3-5-b6", 				integer:"0378", 			name:"Minor, flat sixth", 				suffix:"mb6"			},
-    	{formula:"1-b3-5-6-9", 				integer:"037914", 		name:"Minor sixth, added ninth",	suffix:"m6/9"			},
-    	{formula:"1-b3-5-b7", 				integer:"03710", 			name:"Minor seventh", 						suffix:"m7"				},
-    	{formula:"1-b3-5-7", 					integer:"03711", 			name:"Minor, major seventh", 			suffix:"m(maj7)"	},
-    	{formula:"1-b3-5-b7", 				integer:"03610", 			name:"Minor seventh, flat fifth", suffix:"m7b5"			},
-    	{formula:"1-b3-5-b7-9", 			integer:"0371014", 		name:"Minor ninth", 							suffix:"m9"				},
-    	{formula:"1-b3-5-7-9", 				integer:"0371114", 		name:"Minor ninth, major seventh",suffix:"m9(maj7)"	},
-    	{formula:"1-b3-b5-b7-9", 			integer:"0371014", 		name:"Minor eleventh", 						suffix:"m9b5"			},
-    	{formula:"1-b3-5-b7-9-11-13", integer:"03710141721",name:"Minor thirteen", 						suffix:"m13"			},
+    	{formula:"1-b3-5", 						integer:"0-3-7", 				      name:"Minor", 										 suffix:"min"			},
+    	{formula:"1-b3-5-9", 					integer:"0-3-7-14", 			    name:"Minor, added ninth", 			   suffix:"m(add9)"	},
+    	{formula:"1-b3-5-6", 					integer:"0-3-7-9", 			      name:"Minor sixth", 							 suffix:"m6"			},
+    	{formula:"1-b3-5-b6", 				integer:"0-3-7-8", 			      name:"Minor, flat sixth", 				 suffix:"mb6"			},
+    	{formula:"1-b3-5-6-9", 				integer:"0-3-7-9-14", 		    name:"Minor sixth, added ninth",   suffix:"m6/9"		},
+    	{formula:"1-b3-5-b7", 				integer:"0-3-7-10", 			    name:"Minor seventh", 					   suffix:"m7"			},
+    	{formula:"1-b3-5-7", 					integer:"0-3-7-11",           name:"Minor, major seventh", 		   suffix:"m(maj7)"	},
+    	{formula:"1-b3-5-b7", 				integer:"0-3-6-10", 			    name:"Minor seventh, flat fifth",  suffix:"m7b5"		},
+    	{formula:"1-b3-5-b7-9", 			integer:"0-3-7-10-14", 		    name:"Minor ninth",                suffix:"m9"			},
+    	{formula:"1-b3-5-7-9", 				integer:"0-3-7-11-14", 		    name:"Minor ninth, major seventh", suffix:"m9(maj7)"},
+    	{formula:"1-b3-b5-b7-9", 			integer:"0-3-7-10-14", 		    name:"Minor eleventh", 					   suffix:"m9b5"		},
+    	{formula:"1-b3-5-b7-9-11-13", integer:"0-3-7-10-14-17-21",  name:"Minor thirteen", 				     suffix:"m13"			},
     	// Others
-    	{formula:"1-3-5-b7",	integer:"04710",	name:"Dominant seventh",	suffix:"7"		},
-    	{formula:"1-3-5#", 		integer:"048", 		name:"Augmented", 				suffix:"aug"	},
-    	{formula:"1-3-b5", 		integer:"046", 		name:"Diminished", 				suffix:"dim"	},
-    	{formula:"1", 				integer:"0", 			name:"Single note", 			suffix:""			},
+    	{formula:"1-3-5-b7",	integer:"0-4-7-10",	name:"Dominant seventh",	suffix:"7"		},
+    	{formula:"1-3-5#", 		integer:"0-4-8", 		name:"Augmented", 				suffix:"aug"	},
+    	{formula:"1-3-b5", 		integer:"0-4-6",    name:"Diminished", 				suffix:"dim"	},
+    	{formula:"1", 				integer:"0", 			  name:"Single note", 			suffix:""			},
     	// No fifth
-    	{formula:"1-3-b7",	integer:"0410",	name:"Seventh",	suffix:"7"		},
-    	{formula:"1-3-6", 	integer:"049", 	name:"Sixth", 	suffix:"6"		}
+    	{formula:"1-3-b7",	integer:"0-4-10",	name:"Seventh",	suffix:"7"		},
+    	{formula:"1-3-6", 	integer:"0-4-9", 	name:"Sixth", 	suffix:"6"		}
     ];
 
 /**
  * PUBLIC METHODS––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * Theses methods can be called outside this lib.
 */
-
-// NOTE: Include splitTab/Tuning and isValidTab/Tuning/Chord as public functions
-
     /** This function aims to identify the maximum information about a chord, based on its tab notation and the instrument tuning
      * @param {String} tab | Required | The chord tab
      * @param {String} tuning | Required | The instrument tuning
@@ -193,7 +190,7 @@
 
     		var unique = removeDuplicates(rawFormulas[i].formula);
 
-    		intFormulas.push(unique.join(""));	// Store clean formulas in new array
+    		intFormulas.push(unique.join("-"));	// Store clean formulas in new array
     	}
 
       // 4 - Search the chordFormulas dictionary for a match
@@ -277,13 +274,14 @@
       // 1 - Fetch the right chord formula from the dictionary
     	try {
     		var chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
-    		var chordFormula = chordInfo.integer;
+    		var chordFormula = chordInfo.integer.split('-');
     	} catch (e) {
         results.error = e;
     		return results;
     	}
 
       // 2 - Identify chord's notes
+      // NOTE: Doesn't work with formulas containing integers > 9
     	for (var i = 1; i < chordFormula.length; i++) {
     		var index = parseInt(chordFormula[i]) + parseInt(MDL_A_SCALE.indexOf(rootNote));
     		if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
