@@ -1,0 +1,41 @@
+<link type="text/css" rel="stylesheet" href="../sources/chordictionary.css"/>
+<script src="../sources/chordictionary.js"></script>
+
+<h3>var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);</h3>
+<script>var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);</script>
+
+<h3>guitar.getChordInfo("131211")</h3>
+<pre><script>
+var chordInfo = guitar.getChordInfo("131211");
+for (var key in chordInfo) {
+  document.write('<b>' + key + ' => </b>' + chordInfo[key] + '<br />');
+}
+</script></pre>
+
+<h3>guitar.getChordsList("G", 5)</h3>
+<pre><script>
+var chordsList = guitar.getChordsList("G", 5);
+for (var key in chordsList) {
+  document.write('<b>' + key + ' => </b>');
+  for (var i in chordsList[key]) {
+    document.write(chordsList[key][i] + ' ');
+  }
+  document.write('<br />');
+}
+</script></pre>
+
+<h3>guitar.isValidTab("x32010")</h3>
+<pre><script>
+document.write(guitar.isValidTab("x32010")+'<br />');
+</script></pre>
+
+<h3>guitar.isValidTuning()</h3>
+<pre><script>
+document.write(guitar.isValidTuning()+'<br />');
+</script></pre>
+
+<h3>guitar.getChordLayout("C", "x32010")</h3>
+<div id="chord"></div>
+<script>
+document.getElementById('chord').innerHTML = guitar.getChordLayout("C", "x32010");
+</script>

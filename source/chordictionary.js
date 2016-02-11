@@ -3,8 +3,6 @@
 
   'use strict';
   function define() {
-    var Chordictionary = {};
-
 /**
  * CONSTANTS––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * Shared with all functions in this lib.
@@ -74,12 +72,28 @@
  * PUBLIC METHODS––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * Theses methods can be called outside this lib.
 */
+    var Chordictionary = {};
+
+    /** Constructor class
+    * @param {String} tuning | Required | The instrument tuning
+    * @param {Int} fretNumber | Required | The instrument frets number
+    * @param {Int} fretsToDisplay | Optional | The number of frets to be displayed when printing a chord, default 0 (auto-resize)
+    * @param {Int} maxSpan | Optional | The maximum number of frets that can be played in one chord, default 5
+    */
+    Chordictionary.Instrument = function (tuning, fretNumber, fretsToDisplay, maxSpan) {
+      this.tuning = tuning;
+      this.fretNumber = fretNumber;
+      this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay : 0;
+      this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 5;
+      return this;
+    }
+
     /** This function aims to identify the maximum information about a chord, based on its tab notation and the instrument tuning
      * @param {String} tab | Required | The chord tab
      * @param {String} tuning | Required | The instrument tuning
      * @return {Object}
     */
-    Chordictionary.getChordInfo = function(tab, tuning) {
+    Chordictionary.Instrument.prototype.getChordInfo = function(tab) {
 
     	var notes = [],	// Notes that compose the chord.
     	intFormulas = [],	// Formulas of the chord in integer notation.
@@ -89,7 +103,7 @@
     		"name": "",
     		"tab": tab,
     		"notes": "",
-    		"tuning": tuning,
+    		"tuning": this.tuning,
     		"formula": ""
     	};
 
@@ -104,7 +118,7 @@
     	}
 
     	try {
-    		if(this.isValidTuning(tuning)) var tuning = splitTuning(tuning);
+    		if(this.isValidTuning(this.tuning)) var tuning = splitTuning(this.tuning);
     	} catch (e) {
     		results.error = e;
     		return results;
@@ -246,11 +260,12 @@
      * @param {int} offset | Optional | Offset to skip a given number of chords
      * @return {Array} | A list of tabs
     */
-    Chordictionary.getChordsList = function(chordName, tuning, limit, offset) {
+    Chordictionary.Instrument.prototype.getChordsList = function(chordName, limit, offset) {
 
-    	var chordBox = 4, // Maximum distance between the lowest and highest fretted note on the fretboard
+    	var chordBox = this.maxSpan, // Maximum distance between the lowest and highest fretted note on the fretboard
     	chordNotes = [],	// Will contain the generated chord notes, starting with the root
     	offset = offset || 0,
+      // TODO: REMOVE THIS VAR !!
       above9thFret = false, // If true, will try to generate chords above the 9th fret of the instrument
       results = {
     		error: "",
@@ -265,7 +280,7 @@
     			var chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
     			chordNotes.push(rootNote);
     		} else throw WORDING.invalidChordName;
-    		if(this.isValidTuning(tuning)) var tuning = splitTuning(tuning);
+    		if(this.isValidTuning(this.tuning)) var tuning = splitTuning(this.tuning);
     	} catch (e) {
     		results.error = e;
     		return results;
@@ -298,6 +313,7 @@
     			fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(tuning[string]);
     			if (fretPosition < 0) fretPosition = MDL_A_SCALE.length + fretPosition;
     			tabPool[string].push(fretPosition);
+          // TODO: USE this.fretNumber instead !!
     			if (above9thFret) tabPool[string].push(fretPosition + 12); // Finding the octave
     		}
     	}
@@ -369,16 +385,16 @@
      * @param {String} tuning | Required | The instrument tuning
      * @return {String}
     */
-    Chordictionary.getChordLayout = function(name, tab, tuning, fretsToDisplay) {
+    Chordictionary.Instrument.prototype.getChordLayout = function(name, tab) {
 
     	var frets,	// used guitar frets for this chord
     	chordLayout,	// will contain the chord layout in html
-    	fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay : 0;	// number of guitar frets to dipslay
+    	fretsToDisplay = this.fretsToDisplay;
 
     	try {
     		if (this.isValidTab(tab)) var frets = splitTab(tab);
         else var frets = [0,0,0,0,0,0];
-        if(this.isValidTuning(tuning)) var tuning = splitTuning(tuning)
+        if(this.isValidTuning(this.tuning)) var tuning = splitTuning(this.tuning)
         else var tuning = ['E','A','D','G','B','E'];
     	} catch (e) {
     		return false;
@@ -438,7 +454,7 @@
     * @param {String} tuning | Required | The instrument tuning
     * @return {Boolean}
     */
-    Chordictionary.isValidTab = function(tab) {
+    Chordictionary.Instrument.prototype.isValidTab = function(tab) {
       var pattern = new RegExp("^[x0-9]*$", "i");
       if (pattern.test(tab)) {
         return true;
@@ -452,7 +468,8 @@
      * @param {String} tuning | Required | The instrument tuning
      * @return {Boolean}
     */
-    Chordictionary.isValidTuning = function(tuning) {
+    Chordictionary.Instrument.prototype.isValidTuning = function(tuning) {
+      var tuning = tuning || this.tuning;
       var pattern = new RegExp("^[#a-g]+$", "i");
       if (pattern.test(tuning)) {
         return true;
