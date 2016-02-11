@@ -8,9 +8,7 @@ It converts common chord tab notation, such as `x32010`, into its graphical repr
 
 ***
 
-## How to use
-
-### Setup
+## Setup
 
 Include `Chordictionary.min.js` to your project.
 
@@ -22,7 +20,7 @@ Here I've define a new instrument in standard guitar tuning "EADGBE" (from the l
 I want the graphic representation to display 7 frets (set this value to 0 for auto-resize).
 The maximum number of frets I can cover with my hand is 5 (Chordictionary will take this in consideration when generating chords).
 
-### Recognize a chord and get all information about a tab
+## Recognize a chord and get all information about a tab
 
 `myInstrument.getChordInfo(tab);` will return every known information about a tab notation, including: the chord name(s), the notes composition and the chord(s) formula.
 
@@ -43,7 +41,7 @@ myInstrument.getChordInfo("xx5545");
 }
 ```
 
-### Get tab notation from a chord name
+## Get tab notation from a chord name
 
 `myInstrument.getChordsList(name, limit, offset);` will return a list of valid tab notation for a chord.
 
@@ -65,7 +63,7 @@ myInstrument.getChordsList("G", 5);
 }
 ```
 
-### Get graphical representation of a tab
+## Get graphical representation of a tab
 
 `myInstrument.getChordLayout(tab);` will return an html layout for the given tab notation.
 
