@@ -14,7 +14,7 @@ It converts common chord tab notation, such as `x32010`, into its graphical repr
 
 Include `Chordictionary.min.js` to your project.
 
-The first thing you will need to do, is to define your instrument.
+The first thing you will need to do is to define your instrument.
 
 `var myInstrument = new Chordictionary.Instrument('EADGBE', 24, 7, 5);`
 
@@ -25,6 +25,7 @@ The maximum number of frets I can cover with my hand is 5 (Chordictionary will t
 ### Recognize a chord and get all information about a tab
 
 `myInstrument.getChordInfo(tab);` will return every known information about a tab notation, including: the chord name(s), the notes composition and the chord(s) formula.
+
 `tab` A standard tab notation, as a string with no blank space. Can contains any number or the letter 'x'.
 
 ```javascript
@@ -45,8 +46,11 @@ myInstrument.getChordInfo("xx5545");
 ### Get tab notation from a chord name
 
 `myInstrument.getChordsList(name, limit, offset);` will return a list of valid tab notation for a chord.
+
 `name` The chord name as a string such as 'C', 'Gmin', 'E#sus4', 'F#7', etc.
+
 `limit` The number of chords to be generated.
+
 `offset` The id of the last chord generated, used for pagination. You will retrieve this value in the return from the previous call.
 
 ```javascript
@@ -64,6 +68,7 @@ myInstrument.getChordsList("G", 5);
 ### Get graphical representation of a tab
 
 `myInstrument.getChordLayout(tab);` will return an html layout for the given tab notation.
+
 `tab` A standard tab notation, as a string with no blank space. Can contains any number or the letter 'x'.
 
 ```javascript
