@@ -262,11 +262,8 @@
     */
     Chordictionary.Instrument.prototype.getChordsList = function(chordName, limit, offset) {
 
-    	var chordBox = this.maxSpan, // Maximum distance between the lowest and highest fretted note on the fretboard
-    	chordNotes = [],	// Will contain the generated chord notes, starting with the root
+    	var	chordNotes = [],	// Will contain the generated chord notes, starting with the root
     	offset = offset || 0,
-      // TODO: REMOVE THIS VAR !!
-      above9thFret = false, // If true, will try to generate chords above the 9th fret of the instrument
       results = {
     		error: "",
     		chordList: [],
@@ -313,8 +310,7 @@
     			fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(tuning[string]);
     			if (fretPosition < 0) fretPosition = MDL_A_SCALE.length + fretPosition;
     			tabPool[string].push(fretPosition);
-          // TODO: USE this.fretNumber instead !!
-    			if (above9thFret) tabPool[string].push(fretPosition + 12); // Finding the octave
+          if (fretPosition + 12 < this.fretNumber) tabPool[string].push(fretPosition + 12);
     		}
     	}
 
@@ -351,7 +347,7 @@
     		// 1. If the composition of the chord is wrong
     		// 2. If the gap between the highest and lowest fret of the chord is two wide
     		if (isValidChord(chordPool[iChord], chordNotes, tuning)
-    		&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < chordBox) {
+    		&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
     			// Find the basic chords :
     			for (var i = 0; i < chordPool[iChord].length; i++) {
     				if (isNaN(chordPool[iChord][i])) continue;
