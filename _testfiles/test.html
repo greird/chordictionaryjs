@@ -17,9 +17,14 @@ for (var key in chordInfo) {
 var chordsList = guitar.getChordsList("G", 5);
 for (var key in chordsList) {
   document.write('<b>' + key + ' => </b>');
-  for (var i in chordsList[key]) {
-    document.write(chordsList[key][i] + ' ');
+  if (chordsList[key].length > 1) {
+    for (var i in chordsList[key]) {
+      document.write(chordsList[key][i] + ' ');
+    }
+  } else {
+    document.write(chordsList[key]);
   }
+
   document.write('<br />');
 }
 </script></pre>
