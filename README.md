@@ -14,7 +14,7 @@ Include `Chordictionary.min.js` to your project.
 
 The first thing you will need to do is to define your instrument.
 
-`Chordictionary.Instrument(tuning, fretNumber, fretsToDisplay, maxSpan)`
+```javascriptChordictionary.Instrument(tuning, fretNumber, fretsToDisplay, maxSpan)```
 
 `tuning` The instrument tuning in standard letter notation (e.g.: "EADGBE")
 
