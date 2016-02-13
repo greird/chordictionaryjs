@@ -11,11 +11,12 @@
      * @const {Object} | Wordings (mostly displayed on error)
     */
     var WORDING = {
+      croppedChordLayout: "Number of frets does not allow full display of the chord.",
+      failedToConvertTabIntoNotes: "Could not convert the tab into notes.",
+      failedToCalculateFormula: "Could not calculate the formulas.",
       invalidTab: "The tab should only be composed of \"x\" and numbers from 1 to 9.",
       invalidTuning: "The tuning doesn't seem right. It should only be composed of 1 or more letters from A to G.",
       invalidChordName: "The chord name doesn't seem right. A valid chord name could be Amin, C, Gsus4...",
-      failedToConvertTabIntoNotes: "Could not convert the tab into notes.",
-      failedToCalculateFormula: "Could not calculate the formulas.",
       noMatch: "The tab didn't match any known chord."
     };
 
@@ -410,7 +411,12 @@
     	if (base === 1 && highestFret > 5) base = highestFret - 3;
 
       // Enable auto-resize of the chord layout
-      if (fretsToDisplay === 0) fretsToDisplay = highestFret - base + 2;
+      if (fretsToDisplay === 0) {
+        fretsToDisplay = highestFret - base + 2;
+      } else if (highestFret - base + 1 >= fretsToDisplay) {
+        throw WORDING.croppedChordLayout;
+        fretsToDisplay = highestFret - base + 2;
+      }
 
     	chordLayout = '<table class="chord">';
     	// Generate guitar frets (rows)
