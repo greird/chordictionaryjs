@@ -70,7 +70,7 @@ myInstrument.getChordsList("G", 5);
 `tab` A standard tab notation, as a string with no blank space. Can contains any number or the letter 'x'.
 
 ```javascript
-// Example
+// Usage
 myInstrument.getChordLayout("x32010");
 
 // Will return a string or false if cannot generate layout.
@@ -85,10 +85,10 @@ However, an SVG version of this could be more scalable. I might work on this soo
 ### Check if tab or tuning is valid
 
 `Chordictionary.isValidTab(tab)` and `Chordictionary.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
-Note that these functions are completely unrelated to your instrument instance. 
+Note that these functions are completely unrelated to your instrument instance.
 
 ```javascript
-// Examples
+// Usage
 
 Chordictionary.isValidTab("x32010");
 // Return
