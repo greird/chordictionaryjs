@@ -16,17 +16,13 @@ The first thing you will need to do is to define your instrument.
 
 ```javascript 
 Chordictionary.Instrument(tuning, fretNumber, fretsToDisplay, maxSpan) 
+/**
+* @param {String} tuning | Required | The instrument tuning in standard letter notation (e.g.: "EADGBE")
+* @param {Int} fretNumber | Required | The instrument's number of frets.
+* @param {Int} fretsToDisplay | Optional | The number of frets to be displayed on a chord layout. (0 = auto-resize, default 0)
+* @param {Int} maxSpan | Optional | The maximum number of frets that can be played in one chord. (Default 5)
+*/
 ```
-
-`tuning` The instrument tuning in standard letter notation (e.g.: "EADGBE")
-
-`fretNumber` The instrument's number of frets.
-
-`fretsToDisplay` The number of frets to be displayed on a chord layout. 0 = auto-resize. (Optional, default to 0)
-
-`maxSpan` The maximum number of frets that can be played in one chord. (Optional, default to 5)
-
-
 
 For instance, if you're an electric guitar player, you may define you instrument as follow.
 
