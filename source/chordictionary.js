@@ -1,4 +1,4 @@
-/*!Chordictionary v0.3.0-beta, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
+/*!Chordictionary v0.4.0-beta, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 (function (window) {
 
   'use strict';
@@ -85,7 +85,7 @@
       try {
     		if(Chordictionary.isValidTuning(tuning)) this.tuning = splitTuning(tuning);
         this.fretNumber = fretNumber;
-        this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay : 0;
+        this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay + 1 : 0;
         this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 5;
     	} catch (e) {
         console.error(e);
@@ -394,19 +394,24 @@
     	for (var i = 0; i < frets.length; i++) {
     		if (isNaN(frets[i]) === false) notes.push(frets[i]);
     	}
-    	// calculate the highest fret to display
+
+    	// calculate the highest and lowest frets to display
     	var highestFret = Math.abs(Math.max.apply(Math, notes));
+      var lowestFret =  Math.abs(Math.min.apply(Math, notes));
+
     	// Make sure the graphic starts at the first fret when it is in range or move up the neck if necessary
     	var base = 1;
-    	if (highestFret > fretsToDisplay) base = Math.abs(Math.min.apply(Math, notes) - 1);
+    	if (highestFret >= fretsToDisplay) base = (lowestFret > 0 ? lowestFret : 1);
+
     	// base can be wrong in case of open strings, we're using the highest note to fix that
-    	if (base === 1 && highestFret > 5) base = highestFret - 3;
+    	if (base === 1 && highestFret > 5) base = highestFret - fretsToDisplay + 2;
 
       // Enable auto-resize of the chord layout
+      // FIXME: in case of open string, if tab doesn't fit in the layout it should throw an error but doesn't.
       if (fretsToDisplay === 0) {
         fretsToDisplay = highestFret - base + 2;
-      } else if (highestFret - base + 1 >= fretsToDisplay) {
-        throw WORDING.croppedChordLayout;
+      } else if (highestFret - base + 1 > fretsToDisplay - 1) {
+        console.error(WORDING.croppedChordLayout);
         fretsToDisplay = highestFret - base + 2;
       }
 
@@ -439,7 +444,7 @@
     	chordLayout += '<caption align="bottom">' + name + '</caption>';
     	chordLayout += '</table>';
 
-    	//console.log(frets + ' => base: ' + base + ' => highest fret: ' + highestFret);
+    	console.log(frets + ' => base: ' + base + ' => highest fret: ' + highestFret);
 
     	return chordLayout;
     }
