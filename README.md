@@ -14,10 +14,24 @@ Include `Chordictionary.min.js` to your project.
 
 The first thing you will need to do is to define your instrument.
 
+`Chordictionary.Instrument(tuning, fretNumber, fretsToDisplay, maxSpan)`
+
+`tuning` The instrument tuning in standard letter notation (e.g.: "EADGBE")
+
+`fretNumber` The instrument's number of frets.
+
+`fretsToDisplay` The number of frets to be displayed on a chord layout. 0 = auto-resize. (Optional, default to 0)
+
+`maxSpan` The maximum number of frets that can be played in one chord. (Optional, default to 5)
+
+
+
+For instance, if you're an electric guitar player, you may define you instrument as follow.
+
 `var myInstrument = new Chordictionary.Instrument('EADGBE', 24, 7, 5);`
 
-Here I've define a new instrument in standard guitar tuning "EADGBE" (from the lowest to highest string). It has a total of 24 frets.
-I want the graphic representation to display 7 frets (set this value to 0 for auto-resize).
+Here I've define a guitar in standard tuning "EADGBE" (from the lowest to highest string). It has a total of 24 frets.
+I want the graphic representation to display 7 frets.
 The maximum number of frets I can cover with my hand is 5 (Chordictionary will take this in consideration when generating chords).
 
 ## Recognize a chord and get all information about a tab
