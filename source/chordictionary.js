@@ -408,11 +408,15 @@
 
       // Enable auto-resize of the chord layout
       // FIXME: in case of open string, if tab doesn't fit in the layout it should throw an error but doesn't.
-      if (fretsToDisplay === 0) {
-        fretsToDisplay = highestFret - base + 2;
-      } else if (highestFret - base + 1 > fretsToDisplay - 1) {
-        console.error(WORDING.croppedChordLayout);
-        fretsToDisplay = highestFret - base + 2;
+      try {
+        if (fretsToDisplay === 0) {
+          fretsToDisplay = highestFret - base + 2;
+        } else if (highestFret - base + 1 > fretsToDisplay - 1) {
+          throw WORDING.croppedChordLayout;
+          fretsToDisplay = highestFret - base + 2;
+        }
+      } catch (e) {
+        console.error(e);
       }
 
     	chordLayout = '<table class="chord">';
@@ -444,7 +448,7 @@
     	chordLayout += '<caption align="bottom">' + name + '</caption>';
     	chordLayout += '</table>';
 
-    	console.log(frets + ' => base: ' + base + ' => highest fret: ' + highestFret);
+    	//console.log(frets + ' => base: ' + base + ' => highest fret: ' + highestFret);
 
     	return chordLayout;
     }
