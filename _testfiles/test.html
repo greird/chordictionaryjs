@@ -2,7 +2,18 @@
 <script src="../source/chordictionary.js"></script>
 
 <h3>var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);</h3>
-<script>var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);</script>
+<pre>
+<script>
+var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);
+for (var key in guitar) {
+  if (key === "getChordInfo" || key === "getChordsList" || key === "getChordLayout") {
+    document.write('<b>' + key + ' => </b> function <br />');
+    continue;
+  }
+  document.write('<b>' + key + ' => </b>' + guitar[key] + '<br />');
+}
+</script>
+</pre>
 
 <h3>guitar.getChordInfo("131211")</h3>
 <pre><script>
@@ -29,14 +40,14 @@ for (var key in chordsList) {
 }
 </script></pre>
 
-<h3>guitar.isValidTab("x32010")</h3>
+<h3>Chordictionary.isValidTab("x32010")</h3>
 <pre><script>
-document.write(guitar.isValidTab("x32010")+'<br />');
+document.write(Chordictionary.isValidTab("x32010")+'<br />');
 </script></pre>
 
-<h3>guitar.isValidTuning()</h3>
+<h3>Chordictionary.isValidTuning("E#A#D#G#B#E#")</h3>
 <pre><script>
-document.write(guitar.isValidTuning()+'<br />');
+document.write(Chordictionary.isValidTuning("E#A#D#G#B#E#")+'<br />');
 </script></pre>
 
 <h3>guitar.getChordLayout("C", "x32010")</h3>

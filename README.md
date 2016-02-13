@@ -81,24 +81,24 @@ For the moment, the chord layout is built with table elements ("Tablature" is de
 However, an SVG version of this could be more scalable. I might work on this soon.
 
 ![alt text](http://git.hubertfauconnier.com/img/chord.png "")
-<!---
+
 ### Check if tab or tuning is valid
 
-`myInstrument.isValidTab(tab)` and `myInstrument.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
+`Chordictionary.isValidTab(tab)` and `Chordictionary.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
+Note that these functions are completely unrelated to your instrument instance. 
 
 ```javascript
 // Examples
 
-myInstrument.isValidTab("x32010");
+Chordictionary.isValidTab("x32010");
 // Return
 True // ['x','3','2','0','1','0']
 
-myInstrument.isValidTab("911111099");
+Chordictionary.isValidTab("911111099");
 // Return
 True // ['9','11','11','10','9','9']
 
-myInstrument.isValidTuning("E#A#D#G#B#E#");
+Chordictionary.isValidTuning("E#A#D#G#B#E#");
 // Return
 True // ['E#','A#','D#','G#','B#','E#']
 ```
--->

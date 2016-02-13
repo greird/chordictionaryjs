@@ -82,16 +82,20 @@
     * @param {Int} maxSpan | Optional | The maximum number of frets that can be played in one chord, default 5
     */
     Chordictionary.Instrument = function (tuning, fretNumber, fretsToDisplay, maxSpan) {
-      this.tuning = tuning;
-      this.fretNumber = fretNumber;
-      this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay : 0;
-      this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 5;
+      try {
+    		if(Chordictionary.isValidTuning(tuning)) this.tuning = splitTuning(tuning);
+        this.fretNumber = fretNumber;
+        this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay : 0;
+        this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 5;
+    	} catch (e) {
+        console.error(e);
+    		return false;
+    	}
       return this;
     }
 
     /** This function aims to identify the maximum information about a chord, based on its tab notation and the instrument tuning
      * @param {String} tab | Required | The chord tab
-     * @param {String} tuning | Required | The instrument tuning
      * @return {Object}
     */
     Chordictionary.Instrument.prototype.getChordInfo = function(tab) {
@@ -104,22 +108,15 @@
     		"name": "",
     		"tab": tab,
     		"notes": "",
-    		"tuning": this.tuning,
+    		"tuning": this.tuning.join(""),
     		"formula": ""
     	};
 
     	try {
-    		if (this.isValidTab(tab)) {
+    		if (Chordictionary.isValidTab(tab)) {
           var tab = splitTab(tab);
           results.tab = tab.join(' ');
         }
-    	} catch (e) {
-    		results.error = e;
-    		return results;
-    	}
-
-    	try {
-    		if(this.isValidTuning(this.tuning)) var tuning = splitTuning(this.tuning);
     	} catch (e) {
     		results.error = e;
     		return results;
@@ -139,7 +136,7 @@
     			// It's a fret number
     			else {
     				// Convert the note to the given scale and get its position
-    				stringRootNote = tuning[i];
+    				stringRootNote = this.tuning[i];
     				index = parseInt(tab[i]) + MDL_A_SCALE.indexOf(stringRootNote);
     				// Store each notes names
     				if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
@@ -158,7 +155,7 @@
 
     	try {
     		// For each string
-    		for (var i = 0; i < tuning.length; i++) {
+    		for (var i = 0; i < this.tuning.length; i++) {
 
     			// Add a new root/formula entry
     			rawFormulas.push({
@@ -256,7 +253,6 @@
 
     /** Return a list of tabs corresponding to a given chord
      * @param {String} chordName | Required | The chord name (e.g: Amin, G, Csus4)
-     * @param {String} tuning | Required | The instrument tuning
      * @param {int} limit | Optional | The number of chords to return
      * @param {int} offset | Optional | Offset to skip a given number of chords
      * @return {Array} | A list of tabs
@@ -272,13 +268,12 @@
     	};
 
     	try {
-    		if (typeof(chordName) == "string") {
+    		if (typeof(chordName) === "string") {
     			var chordName = splitChordName(chordName);
     			var rootNote = chordName[0];	// Root note of the chord
     			var chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
     			chordNotes.push(rootNote);
     		} else throw WORDING.invalidChordName;
-    		if(this.isValidTuning(this.tuning)) var tuning = splitTuning(this.tuning);
     	} catch (e) {
     		results.error = e;
     		return results;
@@ -304,11 +299,11 @@
     	// Find the position of theses notes on the fretboard and store it in tabPool
     	var tabPool = [];
     	var fretPosition;
-    	for (var string = 0; string < tuning.length; string++) {
+    	for (var string = 0; string < this.tuning.length; string++) {
     		tabPool[string] = [];
     		tabPool[string].push('x');
     		for (var note = 0; note < chordNotes.length; note++) {
-    			fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(tuning[string]);
+    			fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(this.tuning[string]);
     			if (fretPosition < 0) fretPosition = MDL_A_SCALE.length + fretPosition;
     			tabPool[string].push(fretPosition);
           if (fretPosition + 12 < this.fretNumber) tabPool[string].push(fretPosition + 12);
@@ -318,7 +313,7 @@
       // 3 - Combine the tabs from tabPool and store store the result in chordPool
     	var chordPool = [];
     	// For each string
-    	for (var string = 0; string < tuning.length; string++) {
+    	for (var string = 0; string < this.tuning.length; string++) {
     		// For each potential note on this string
     		var chordPoolLength = chordPool.length;
     		for (var i = 0; i < tabPool[string].length; i++) {
@@ -347,12 +342,12 @@
     	for (var iChord = offset; iChord < chordPool.length; iChord++) {
     		// 1. If the composition of the chord is wrong
     		// 2. If the gap between the highest and lowest fret of the chord is two wide
-    		if (isValidChord(chordPool[iChord], chordNotes, tuning)
+    		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
     		&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
     			// Find the basic chords :
     			for (var i = 0; i < chordPool[iChord].length; i++) {
     				if (isNaN(chordPool[iChord][i])) continue;
-    				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(tuning[i]);
+    				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
     				if (chordPool[iChord][i] <= 4	// Note is is below the 4th fret.
     					&& MDL_A_SCALE.indexOf(rootNote) == noteIndex // It's the root !
     					&& chordPool[iChord].lastIndexOf("x") < i) // No mutted string after the root.
@@ -379,7 +374,6 @@
     /** Converts a tab notation into its graphic representation
      * @param {String} name | Optional | The chord name
      * @param {String} tab | Required | The tab notation
-     * @param {String} tuning | Required | The instrument tuning
      * @return {String}
     */
     Chordictionary.Instrument.prototype.getChordLayout = function(name, tab) {
@@ -389,10 +383,8 @@
     	fretsToDisplay = this.fretsToDisplay;
 
     	try {
-    		if (this.isValidTab(tab)) var frets = splitTab(tab);
+    		if (Chordictionary.isValidTab(tab)) var frets = splitTab(tab);
         else var frets = [0,0,0,0,0,0];
-        if(this.isValidTuning(this.tuning)) var tuning = splitTuning(this.tuning)
-        else var tuning = ['E','A','D','G','B','E'];
     	} catch (e) {
     		return false;
     	}
@@ -429,7 +421,7 @@
     		else chordLayout += '<tr><th></th>'; // exclude fret number column
 
     		// Generate 6 strings (cols) for the current fret
-    		for (var gtrString = 0; gtrString < tuning.length; gtrString++) {
+    		for (var gtrString = 0; gtrString < this.tuning.length; gtrString++) {
     			if (gtrFret == 0) {
     				if (frets[gtrString] == 0) chordLayout += '<th><div class="dot open"></div></th>';
     				else chordLayout += '<th></th>';
@@ -453,10 +445,10 @@
     }
 
     /** Return true if tab contains only digits or the letter x
-    * @param {String} tuning | Required | The instrument tuning
+    * @param {String} tab | Required | The tab to check for validity
     * @return {Boolean}
     */
-    Chordictionary.Instrument.prototype.isValidTab = function(tab) {
+    Chordictionary.isValidTab = function(tab) {
       var pattern = new RegExp("^[x0-9]*$", "i");
       if (pattern.test(tab)) {
         return true;
@@ -470,8 +462,8 @@
      * @param {String} tuning | Required | The instrument tuning
      * @return {Boolean}
     */
-    Chordictionary.Instrument.prototype.isValidTuning = function(tuning) {
-      var tuning = tuning || this.tuning;
+    Chordictionary.isValidTuning = function(tuning) {
+      var tuning = tuning;
       var pattern = new RegExp("^[#a-g]+$", "i");
       if (pattern.test(tuning)) {
         return true;
