@@ -77,7 +77,7 @@ myInstrument.getChordsList("G", 5);
 
 ## Get graphical representation of a tab
 
-`myInstrument.getChordLayout(tab);` will return an html layout for the given tab notation.
+`myInstrument.getChordLayout(name, tab);` will return an html layout for the given tab notation.
 
 `name` The name of the chord. It will be displayed in a caption below the tab graphical representation.
 
