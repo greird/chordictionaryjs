@@ -79,11 +79,13 @@ myInstrument.getChordsList("G", 5);
 
 `myInstrument.getChordLayout(tab);` will return an html layout for the given tab notation.
 
+`name` The name of the chord. It will be displayed in a caption below the tab graphical representation.
+
 `tab` A standard tab notation, as a string with no blank space. Can contains any number or the letter 'x'.
 
 ```javascript
 // Usage
-myInstrument.getChordLayout("x32010");
+myInstrument.getChordLayout("C", "x32010");
 
 // Will return a string or false if cannot generate layout.
 '<table class="chord">...</table>'
