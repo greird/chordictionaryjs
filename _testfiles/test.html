@@ -30,10 +30,11 @@ for (var key in chordsList) {
   document.write('<b>' + key + ' => </b>');
   if (typeof chordsList[key] === "object") {
     for (var i in chordsList[key]) {
-      document.write('<br />- <b>' + i + ': </b>');
+      document.write('<div style="width:100%;"><h3>' + i + ': </h3><br />');
       for (var j in chordsList[key][i]) {
-        document.write('[' + chordsList[key][i][j] + '] ');
+        document.write('<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList[key][i][j].join('')) + '</div>');
       }
+      document.write('</div><div style="clear:both;"><br />');
     }
   } else {
     document.write(chordsList[key]);
@@ -56,5 +57,5 @@ document.write(Chordictionary.isValidTuning("E#A#D#G#B#E#")+'<br />');
 <h3>guitar.getChordLayout("C", "x32010")</h3>
 <div id="chord"></div>
 <script>
-document.getElementById('chord').innerHTML = guitar.getChordLayout("C", "355737");
+document.write(guitar.getChordLayout("C", "x32010"));
 </script>

@@ -337,11 +337,11 @@
     	}
 
       // 4 - Post processing to remove invalid chords from the pool and sort them by categories
-    	var validChords = { basic:[], powerchord:[], bar:[], misc:[] };
+    	var validChords = { basic:[], bar:[], powerchord:[], misc:[] };
     	for (var iChord = offset; iChord < chordPool.length; iChord++) {
 
         // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
-        var chordAnatomy = { rootBelow4thFret:false, rootIsLowestNote:false, rootOnLowestFret:false, noMuteAfterRoot:false, openString:0, barredString:0, frettedNotes:0 }
+        var chordAnatomy = { rootBelow4thFret:false, rootIsLowestNote:false, rootOnLowestFret:false, noMuteAfterRoot:false, openString:0, barredString:0, frettedNotes:0, splittedChord:false }
 
     		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
     		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
@@ -367,7 +367,7 @@
                 }
 
                 // Check if there's no notes below the root on the neck
-                if (arrayFind(chordPool[iChord], "max") >= chordPool[iChord][i]) {
+                if (arrayFind(chordPool[iChord], "min") >= chordPool[iChord][i]) {
                   chordAnatomy.rootOnLowestFret = true;
                 }
               }
@@ -378,12 +378,19 @@
               }
 
               // Check for consecutive fretted notes
-              if (chordPool[iChord][i] > 0 && i < chordPool[iChord].length - 1 && chordPool[iChord][i] === chordPool[iChord][i-1]) {
+              if ((chordPool[iChord][i] > 0 && i < chordPool[iChord].length - 1 && chordPool[iChord][i] === chordPool[iChord][i-1])
+                || arrayFind(chordPool[iChord], chordPool[iChord][i]) >= 3) {
                 chordAnatomy.barredString++;
               }
 
-
               chordAnatomy.frettedNotes++;
+            } else {
+              // Check if there's any mutted string in the middle of the chord
+              if (i > 0 && i < chordPool[iChord].length - 1
+                && ((chordPool[iChord][i+1] != "x" && chordPool[iChord][i-1] != "x")
+                || (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
+                chordAnatomy.splittedChord = true;
+              }
             }
     			}
 
@@ -392,15 +399,23 @@
           while (sorted === false) {
             // Basic chord
             if (chordAnatomy.rootBelow4thFret && chordAnatomy.noMuteAfterRoot && chordAnatomy.rootIsLowestNote) {
-              validChords.basic.push(chordPool[iChord]);
-              sorted = true;
+              if (chordAnatomy.barredString >= 1) {
+                if (chordAnatomy.rootOnLowestFret) {
+                  validChords.basic.push(chordPool[iChord]);
+                  sorted = true;
+                }
+              } else {
+                validChords.basic.push(chordPool[iChord]);
+                sorted = true;
+              }
             }
             // Powerchord
-            if (!chordAnatomy.noMuteAfterRoot && chordAnatomy.frettedNotes === 3) {
+            if (!chordAnatomy.noMuteAfterRoot && chordAnatomy.frettedNotes <= 3 && chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && !chordAnatomy.splittedChord && !chordAnatomy.openString) {
               validChords.powerchord.push(chordPool[iChord]);
               sorted = true;
             }
-            if (chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && chordAnatomy.noMuteAfterRoot && chordAnatomy.barredString >= 1) {
+            // Bar chord
+            if (chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && chordAnatomy.barredString >= 1 && !chordAnatomy.splittedChord && !chordAnatomy.openString) {
               validChords.bar.push(chordPool[iChord]);
               sorted = true;
             }
