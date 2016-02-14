@@ -338,8 +338,9 @@
 
       // 4 - Post processing to remove invalid or unwanted chords from the pool
     	// NOTE: Here we apply a series of checks to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
-    	var validChords = [];
+    	var validChords = { basic:[], bar:[], misc:[] };
     	for (var iChord = offset; iChord < chordPool.length; iChord++) {
+        var chordAnatomy = { rootBelow4thFret:false, noMuteAfterRoot:false, barredString:false }
     		// 1. If the composition of the chord is wrong
     		// 2. If the gap between the highest and lowest fret of the chord is two wide
     		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
@@ -348,18 +349,22 @@
     			for (var i = 0; i < chordPool[iChord].length; i++) {
     				if (isNaN(chordPool[iChord][i])) continue;
     				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
-    				if (chordPool[iChord][i] <= 4	// Note is is below the 4th fret.
-    					&& MDL_A_SCALE.indexOf(rootNote) == noteIndex // It's the root !
-    					&& chordPool[iChord].lastIndexOf("x") < i) // No mutted string after the root.
-    				{
-    					validChords.push(chordPool[iChord]);
+    				if (chordPool[iChord][i] <= 4 && MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
+              chordAnatomy.rootBelow4thFret = true;
+              if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterRoot = true;
+            }
+
+            // Basic chord
+            if (chordAnatomy.rootBelow4thFret && chordAnatomy.noMuteAfterRoot) {
+    					validChords.basic.push(chordPool[iChord]);
     					break;
     				} else {
+              validChords.misc.push(chordPool[iChord]);
     					break;
     				}
     			}
     			// If limit is reached, stop the loop and store the current inden
-    			if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
+    			if (limit > 0 && limit < chordPool[iChord].length && validChords.basic.length >= limit) {
     				offset = iChord + 1;
     				break;
     			}

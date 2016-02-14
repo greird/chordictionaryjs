@@ -25,12 +25,15 @@ for (var key in chordInfo) {
 
 <h3>guitar.getChordsList("G", 5)</h3>
 <pre><script>
-var chordsList = guitar.getChordsList("G", 5);
+var chordsList = guitar.getChordsList("G");
 for (var key in chordsList) {
   document.write('<b>' + key + ' => </b>');
-  if (chordsList[key].length > 1) {
+  if (typeof chordsList[key] === "object") {
     for (var i in chordsList[key]) {
-      document.write(chordsList[key][i] + ' ');
+      document.write('<br />- <b>' + i + ': </b>');
+      for (var j in chordsList[key][i]) {
+        document.write('[' + chordsList[key][i][j] + '] ');
+      }
     }
   } else {
     document.write(chordsList[key]);
