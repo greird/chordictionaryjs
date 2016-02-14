@@ -1,4 +1,4 @@
-/*!Chordictionary v0.4.0-beta, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
+/*!Chordictionary v0.5.0-beta, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 (function (window) {
 
   'use strict';
@@ -336,34 +336,58 @@
     		}
     	}
 
-      // 4 - Post processing to remove invalid or unwanted chords from the pool
-    	// NOTE: Here we apply a series of checks to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
-    	var validChords = { basic:[], bar:[], misc:[] };
+      // 4 - Post processing to remove invalid chords from the pool and sort them by categories
+    	var validChords = { basic:[], powerchord:[], bar:[], misc:[] };
     	for (var iChord = offset; iChord < chordPool.length; iChord++) {
-        var chordAnatomy = { rootBelow4thFret:false, noMuteAfterRoot:false, barredString:false }
-    		// 1. If the composition of the chord is wrong
-    		// 2. If the gap between the highest and lowest fret of the chord is two wide
+
+        // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
+        var chordAnatomy = { rootBelow4thFret:false, rootIsLowestNote:false, noMuteAfterRoot:false, barredString:false, frettedNotes:0 }
+
+    		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
     		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
     		&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
-    			// Find the basic chords :
-    			for (var i = 0; i < chordPool[iChord].length; i++) {
-    				if (isNaN(chordPool[iChord][i])) continue;
-    				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
-    				if (chordPool[iChord][i] <= 4 && MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
-              chordAnatomy.rootBelow4thFret = true;
-              if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterRoot = true;
-            }
 
+    			// For each note of the chord
+    			for (var i = 0; i < chordPool[iChord].length; i++) {
+    				if (!isNaN(chordPool[iChord][i])) {
+      				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
+
+              // Check if the root is the first fretted note
+              if (chordAnatomy.frettedNotes === 0 && MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
+                chordAnatomy.rootIsLowestNote = true;
+
+                // Check if the root is below the 5th fret and if there's any mutted string after this root
+                if (chordPool[iChord][i] <= 4) {
+                  chordAnatomy.rootBelow4thFret = true;
+                  if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterRoot = true;
+                }
+              }
+
+              chordAnatomy.frettedNotes++;
+            }
+    			}
+
+          // Sort the chord that matches the criterias
+          var sorted = false;
+          while (sorted === false) {
             // Basic chord
             if (chordAnatomy.rootBelow4thFret && chordAnatomy.noMuteAfterRoot) {
-    					validChords.basic.push(chordPool[iChord]);
-    					break;
-    				} else {
+              validChords.basic.push(chordPool[iChord]);
+              sorted = true;
+            }
+            // Powerchord
+            if (!chordAnatomy.noMuteAfterRoot && chordAnatomy.frettedNotes === 3) {
+              validChords.powerchord.push(chordPool[iChord]);
+              sorted = true;
+            }
+            if (!sorted) {
+              // Other
               validChords.misc.push(chordPool[iChord]);
-    					break;
-    				}
-    			}
-    			// If limit is reached, stop the loop and store the current inden
+              sorted = true;
+            }
+          }
+
+    			// If limit is reached, stop the loop and store the current index
     			if (limit > 0 && limit < chordPool[iChord].length && validChords.basic.length >= limit) {
     				offset = iChord + 1;
     				break;
