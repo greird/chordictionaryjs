@@ -86,7 +86,7 @@
     		if(Chordictionary.isValidTuning(tuning)) this.tuning = splitTuning(tuning);
         this.fretNumber = fretNumber;
         this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay + 1 : 0;
-        this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 5;
+        this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 4;
     	} catch (e) {
         console.error(e);
     		return false;
@@ -341,7 +341,7 @@
     	for (var iChord = offset; iChord < chordPool.length; iChord++) {
 
         // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
-        var chordAnatomy = { rootBelow4thFret:false, rootIsLowestNote:false, noMuteAfterRoot:false, barredString:false, frettedNotes:0 }
+        var chordAnatomy = { rootBelow4thFret:false, rootIsLowestNote:false, rootOnLowestFret:false, noMuteAfterRoot:false, openString:0, barredString:0, frettedNotes:0 }
 
     		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
     		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
@@ -352,16 +352,36 @@
     				if (!isNaN(chordPool[iChord][i])) {
       				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
 
-              // Check if the root is the first fretted note
-              if (chordAnatomy.frettedNotes === 0 && MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
-                chordAnatomy.rootIsLowestNote = true;
+              // It's the root !
+              if (MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
 
-                // Check if the root is below the 5th fret and if there's any mutted string after this root
-                if (chordPool[iChord][i] <= 4) {
-                  chordAnatomy.rootBelow4thFret = true;
-                  if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterRoot = true;
+                // Check if the root is the first fretted note
+                if (chordAnatomy.frettedNotes === 0) {
+                  chordAnatomy.rootIsLowestNote = true;
+
+                  // Check if the root is below the 5th fret and if there's any mutted string after this root
+                  if (chordPool[iChord][i] <= 4) {
+                    chordAnatomy.rootBelow4thFret = true;
+                    if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterRoot = true;
+                  }
+                }
+
+                // Check if there's no notes below the root on the neck
+                if (arrayFind(chordPool[iChord], "max") >= chordPool[iChord][i]) {
+                  chordAnatomy.rootOnLowestFret = true;
                 }
               }
+
+              // Check for open strings
+              if (chordPool[iChord][i] === 0) {
+                chordAnatomy.openString++;
+              }
+
+              // Check for consecutive fretted notes
+              if (chordPool[iChord][i] > 0 && i < chordPool[iChord].length - 1 && chordPool[iChord][i] === chordPool[iChord][i-1]) {
+                chordAnatomy.barredString++;
+              }
+
 
               chordAnatomy.frettedNotes++;
             }
@@ -371,13 +391,17 @@
           var sorted = false;
           while (sorted === false) {
             // Basic chord
-            if (chordAnatomy.rootBelow4thFret && chordAnatomy.noMuteAfterRoot) {
+            if (chordAnatomy.rootBelow4thFret && chordAnatomy.noMuteAfterRoot && chordAnatomy.rootIsLowestNote) {
               validChords.basic.push(chordPool[iChord]);
               sorted = true;
             }
             // Powerchord
             if (!chordAnatomy.noMuteAfterRoot && chordAnatomy.frettedNotes === 3) {
               validChords.powerchord.push(chordPool[iChord]);
+              sorted = true;
+            }
+            if (chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && chordAnatomy.noMuteAfterRoot && chordAnatomy.barredString >= 1) {
+              validChords.bar.push(chordPool[iChord]);
               sorted = true;
             }
             if (!sorted) {

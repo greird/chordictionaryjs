@@ -4,7 +4,7 @@
 <h3>var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);</h3>
 <pre>
 <script>
-var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);
+var guitar = new Chordictionary.Instrument('EADGBE', 24, 7);
 for (var key in guitar) {
   if (key === "getChordInfo" || key === "getChordsList" || key === "getChordLayout") {
     document.write('<b>' + key + ' => </b> function <br />');
@@ -56,5 +56,5 @@ document.write(Chordictionary.isValidTuning("E#A#D#G#B#E#")+'<br />');
 <h3>guitar.getChordLayout("C", "x32010")</h3>
 <div id="chord"></div>
 <script>
-document.getElementById('chord').innerHTML = guitar.getChordLayout("C", "x91215xx");
+document.getElementById('chord').innerHTML = guitar.getChordLayout("C", "355737");
 </script>
