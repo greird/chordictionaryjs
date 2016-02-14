@@ -115,7 +115,6 @@
     	try {
     		if (Chordictionary.isValidTab(tab)) {
           var tab = splitTab(tab);
-          results.tab = tab.join(' ');
         }
     	} catch (e) {
     		results.error = e;
