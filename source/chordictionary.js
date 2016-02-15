@@ -1,4 +1,4 @@
-/*!Chordictionary v0.5.0-beta, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
+/**Chordictionary v0.5.0-beta, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 (function (window) {
 
   'use strict';
