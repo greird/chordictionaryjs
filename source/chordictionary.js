@@ -403,36 +403,29 @@
     			}
 
           // Sort and filter the chords according to the previously defined criterias
-          // TODO: Refactoring needed here !! first push the chord only once, then add tags
-          var sorted = false;
-          while (sorted === false) {
+          // TODO: Refactoring needed here !! first push the chord only once, then add tags. create a function to tag a chord
+          try {
+            var chordId = validChords.length;
+            validChords.push({tab: chordPool[iChord], tag:[]});
+
             // Basic chord
             if (chordAnatomy.rootBelow4thFret && chordAnatomy.noMuteAfterRoot && chordAnatomy.rootIsLowestNote) {
               if (chordAnatomy.barredString >= 1) {
-                if (chordAnatomy.rootOnLowestFret) {
-                  validChords.push({tab: chordPool[iChord], tag:['basic', 'bar']});
-                  sorted = true;
-                }
-              } else {
-                validChords.push({tab: chordPool[iChord], tag:['basic']});
-                sorted = true;
-              }
+                if (chordAnatomy.rootOnLowestFret) validChords[chordId].tag.push('basic', 'bar');
+              } else validChords[chordId].tag.push('basic');
             }
             // Powerchord
             if (!chordAnatomy.noMuteAfterRoot && chordAnatomy.frettedNotes <= 3 && chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && !chordAnatomy.splittedChord && !chordAnatomy.openString) {
-              validChords.push({tab: chordPool[iChord], tag:['powerchord']});
-              sorted = true;
+              validChords[chordId].tag.push('powerchord');
             }
             // Bar chord
             if (chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && chordAnatomy.barredString >= 1 && !chordAnatomy.splittedChord && !chordAnatomy.openString) {
-              validChords.push({tab: chordPool[iChord], tag:['bar']});
-              sorted = true;
+              validChords[chordId].tag.push('bar');
             }
-            if (!sorted) {
-              // Other
-              validChords.push({tab: chordPool[iChord], tag:['unrecognized']});
-              sorted = true;
-            }
+            // Other
+            if (!validChords[chordId].tag.length) validChords[chordId].tag.push('unrecognized');
+          } catch (e) {
+              console.error(e);
           }
 
     			// If limit is reached, stop the loop and store the current index
