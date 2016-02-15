@@ -24,21 +24,36 @@ for (var key in chordInfo) {
 </script></pre>
 
 <h3>guitar.getChordsList("G", 5)</h3>
-<pre><script>
+<script>
 var chordsList = guitar.getChordsList("G");
-var count = 0;
-for (var types in chordsList.chordList) {
-  count += chordsList.chordList[types].length;
-}document.write("<h4>" + count + " chords found.</h4>");
+document.write("<h4>" + chordsList.chordList.length + " chords found.</h4>");
+</script>
+<h4>Basic chords</h4>
+<div id="basic" style="width:100%;"></div><div style="clear:both;"></div>
+<h4>Bar chords</h4>
+<div id="bar" style="width:100%;"></div><div style="clear:both;"></div>
+<h4>Powerchords</h4>
+<div id="powerchord" style="width:100%;"></div><div style="clear:both;"></div>
+<h4>Unrecognized</h4>
+<div id="unrecognized" style="width:100%;"></div><div style="clear:both;"></div>
+<pre><script>
 for (var key in chordsList) {
   document.write('<b>' + key + ' => </b>');
-  if (typeof chordsList[key] === "object") {
+  if (key === "chordList") {
     for (var i in chordsList[key]) {
-      document.write('<div style="width:100%;"><h3>' + i + ': </h3><br />');
-      for (var j in chordsList[key][i]) {
-        document.write('<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList[key][i][j].join('')) + '</div>');
+      if (chordsList.chordList[i].tag.indexOf("basic") > -1) {
+        document.getElementById('basic').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
-      document.write('</div><div style="clear:both;"><br />');
+      if (chordsList.chordList[i].tag.indexOf("bar") > -1) {
+        console.log(chordsList.chordList[i]);
+        document.getElementById('bar').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+      }
+      if (chordsList.chordList[i].tag.indexOf("powerchord") > -1) {
+        document.getElementById('powerchord').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+      }
+      if (chordsList.chordList[i].tag.indexOf("unrecognized") > -1) {
+        document.getElementById('unrecognized').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+      }
     }
   } else {
     document.write(chordsList[key]);

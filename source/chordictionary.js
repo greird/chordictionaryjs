@@ -336,11 +336,20 @@
     	}
 
       // 4 - Post processing to remove invalid chords from the pool and sort them by categories
-    	var validChords = { basic:[], bar:[], powerchord:[], misc:[] };
+    	var validChords = [];
     	for (var iChord = offset; iChord < chordPool.length; iChord++) {
 
         // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
-        var chordAnatomy = { rootBelow4thFret:false, rootIsLowestNote:false, rootOnLowestFret:false, noMuteAfterRoot:false, openString:0, barredString:0, frettedNotes:0, splittedChord:false }
+        var chordAnatomy = {
+          rootBelow4thFret:false,
+          rootIsLowestNote:false,
+          rootOnLowestFret:false,
+          noMuteAfterRoot:false,
+          openString:0,
+          barredString:0,
+          frettedNotes:0,
+          splittedChord:false
+        }
 
     		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
     		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
@@ -394,39 +403,40 @@
     			}
 
           // Sort and filter the chords according to the previously defined criterias
+          // TODO: Refactoring needed here !! first push the chord only once, then add tags
           var sorted = false;
           while (sorted === false) {
             // Basic chord
             if (chordAnatomy.rootBelow4thFret && chordAnatomy.noMuteAfterRoot && chordAnatomy.rootIsLowestNote) {
               if (chordAnatomy.barredString >= 1) {
                 if (chordAnatomy.rootOnLowestFret) {
-                  validChords.basic.push(chordPool[iChord]);
+                  validChords.push({tab: chordPool[iChord], tag:['basic', 'bar']});
                   sorted = true;
                 }
               } else {
-                validChords.basic.push(chordPool[iChord]);
+                validChords.push({tab: chordPool[iChord], tag:['basic']});
                 sorted = true;
               }
             }
             // Powerchord
             if (!chordAnatomy.noMuteAfterRoot && chordAnatomy.frettedNotes <= 3 && chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && !chordAnatomy.splittedChord && !chordAnatomy.openString) {
-              validChords.powerchord.push(chordPool[iChord]);
+              validChords.push({tab: chordPool[iChord], tag:['powerchord']});
               sorted = true;
             }
             // Bar chord
             if (chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && chordAnatomy.barredString >= 1 && !chordAnatomy.splittedChord && !chordAnatomy.openString) {
-              validChords.bar.push(chordPool[iChord]);
+              validChords.push({tab: chordPool[iChord], tag:['bar']});
               sorted = true;
             }
             if (!sorted) {
               // Other
-              validChords.misc.push(chordPool[iChord]);
+              validChords.push({tab: chordPool[iChord], tag:['unrecognized']});
               sorted = true;
             }
           }
 
     			// If limit is reached, stop the loop and store the current index
-    			if (limit > 0 && limit < chordPool[iChord].length && validChords.basic.length >= limit) {
+    			if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
     				offset = iChord + 1;
     				break;
     			}
