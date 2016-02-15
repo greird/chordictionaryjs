@@ -403,36 +403,49 @@
     			}
 
           // Sort and filter the chords according to the previously defined criterias
-          // TODO: Refactoring needed here !! first push the chord only once, then add tags. create a function to tag a chord
+          // TODO: Refactoring needed here !! There's probably a faster way to do this..
+
           try {
             var chordId = validChords.length;
+            var tags = [];
             validChords.push({tab: chordPool[iChord], tag:[]});
 
             // Basic chord
-            if (chordAnatomy.rootBelow4thFret && chordAnatomy.noMuteAfterRoot && chordAnatomy.rootIsLowestNote) {
+            if (chordAnatomy.rootBelow4thFret
+              && chordAnatomy.noMuteAfterRoot
+              && chordAnatomy.rootIsLowestNote) {
               if (chordAnatomy.barredString >= 1) {
-                if (chordAnatomy.rootOnLowestFret) validChords[chordId].tag.push('basic', 'bar');
-              } else validChords[chordId].tag.push('basic');
+                if (chordAnatomy.rootOnLowestFret) {
+                  if (tags.indexOf('basic')) tags.push('basic');
+                  if (tags.indexOf('bar')) tags.push('bar');
+                }
+              } else if (tags.indexOf('basic')) tags.push('basic');
             }
             // Powerchord
-            if (!chordAnatomy.noMuteAfterRoot && chordAnatomy.frettedNotes <= 3 && chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && !chordAnatomy.splittedChord && !chordAnatomy.openString) {
-              validChords[chordId].tag.push('powerchord');
-            }
+            if (!chordAnatomy.noMuteAfterRoot
+              && chordAnatomy.frettedNotes <= 3
+              && chordAnatomy.rootIsLowestNote
+              && chordAnatomy.rootOnLowestFret
+              && !chordAnatomy.splittedChord
+              && !chordAnatomy.openString) if (tags.indexOf('powerchord')) tags.push('powerchord');
             // Bar chord
-            if (chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret && chordAnatomy.barredString >= 1 && !chordAnatomy.splittedChord && !chordAnatomy.openString) {
-              validChords[chordId].tag.push('bar');
-            }
-            // Other
-            if (!validChords[chordId].tag.length) validChords[chordId].tag.push('unrecognized');
+            if (chordAnatomy.rootIsLowestNote
+              && chordAnatomy.rootOnLowestFret
+              && chordAnatomy.barredString >= 1
+              && !chordAnatomy.splittedChord
+              && !chordAnatomy.openString) if (tags.indexOf('bar')) tags.push('bar');
+
+            // Apply the tags
+            if (tags.length) validChords[chordId].tag = tags.join(', ');
           } catch (e) {
-              console.error(e);
+            console.error(e);
           }
 
-    			// If limit is reached, stop the loop and store the current index
-    			if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
-    				offset = iChord + 1;
-    				break;
-    			}
+          // If limit is reached, stop the loop and store the current index
+          if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
+            offset = iChord + 1;
+            break;
+          }
     		}
     	}
 

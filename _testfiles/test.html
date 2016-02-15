@@ -45,13 +45,12 @@ for (var key in chordsList) {
         document.getElementById('basic').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
       if (chordsList.chordList[i].tag.indexOf("bar") > -1) {
-        console.log(chordsList.chordList[i]);
         document.getElementById('bar').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
       if (chordsList.chordList[i].tag.indexOf("powerchord") > -1) {
         document.getElementById('powerchord').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
-      if (chordsList.chordList[i].tag.indexOf("unrecognized") > -1) {
+      if (chordsList.chordList[i].tag.length === 0) {
         document.getElementById('unrecognized').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
     }
