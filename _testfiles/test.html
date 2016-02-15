@@ -26,6 +26,10 @@ for (var key in chordInfo) {
 <h3>guitar.getChordsList("G", 5)</h3>
 <pre><script>
 var chordsList = guitar.getChordsList("G");
+var count = 0;
+for (var types in chordsList.chordList) {
+  count += chordsList.chordList[types].length;
+}document.write("<h4>" + count + " chords found.</h4>");
 for (var key in chordsList) {
   document.write('<b>' + key + ' => </b>');
   if (typeof chordsList[key] === "object") {

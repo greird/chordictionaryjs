@@ -393,7 +393,7 @@
             }
     			}
 
-          // Sort the chord that matches the criterias
+          // Sort and filter the chords according to the previously defined criterias
           var sorted = false;
           while (sorted === false) {
             // Basic chord
