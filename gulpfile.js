@@ -3,16 +3,15 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
-    concat = require('gulp-concat'),
+    concat = require('gulp-concat');
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
     return gulp.src('src/*.js')
         .pipe(gulp.dest('build'))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())
+        .pipe(uglify({ preserveComments: "license" }))
         .pipe(gulp.dest('build'))
-        .pipe(notify({ message: 'Scripts task complete' }));
 });
 
 // Lint Task
