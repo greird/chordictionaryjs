@@ -92,7 +92,7 @@
     		return false;
     	}
       return this;
-    }
+    };
 
     /** This function aims to identify the maximum information about a chord, based on its tab notation and the instrument tuning
      * @param {String} tab | Required | The chord tab
@@ -114,7 +114,7 @@
 
     	try {
     		if (Chordictionary.isValidTab(tab)) {
-          var tab = splitTab(tab);
+          tab = splitTab(tab);
         }
     	} catch (e) {
     		results.error = e;
@@ -179,7 +179,7 @@
     					interval = (MDL_A_SCALE.length) + interval;
     				}
     				// 0 is the root
-    				else if (interval == 0) {
+    				else if (interval === 0) {
     					rawFormulas[i].root = notes[j];
     				}
 
@@ -195,9 +195,9 @@
 
     	for (var i = 0; i < rawFormulas.length; i++) {
 
-    		if (rawFormulas[i].root == "") continue;	// If there's no root, do not keep the formula
+    		if (rawFormulas[i].root === "") continue;	// If there's no root, do not keep the formula
     		roots.push(rawFormulas[i].root);	// Store the root
-    		rawFormulas[i].formula.sort(function(a,b){return a-b});
+    		rawFormulas[i].formula.sort(function(a,b){return a-b;});
 
     		var unique = removeDuplicates(rawFormulas[i].formula);
 
@@ -248,7 +248,7 @@
     		results.name = matches;
     	}
     	return results;
-    }
+    };
 
     /** Return a list of tabs corresponding to a given chord
      * @param {String} chordName | Required | The chord name (e.g: Amin, G, Csus4)
@@ -260,6 +260,9 @@
 
     	var	chordNotes = [],	// Will contain the generated chord notes, starting with the root
     	offset = offset || 0,
+      chordType,	// Type of chord (Min, Maj, Dom7, etc.)
+      chordFormula = [],
+      rootNote,	// Root note of the chord
       results = {
     		error: "",
     		chordList: [],
@@ -269,8 +272,8 @@
     	try {
     		if (typeof(chordName) === "string") {
     			var chordName = splitChordName(chordName);
-    			var rootNote = chordName[0];	// Root note of the chord
-    			var chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
+    			rootNote = chordName[0];	// Root note of the chord
+    			chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
     			chordNotes.push(rootNote);
     		} else throw WORDING.invalidChordName;
     	} catch (e) {
@@ -281,7 +284,7 @@
       // 1 - Fetch the right chord formula from the dictionary
     	try {
     		var chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
-    		var chordFormula = chordInfo.integer.split('-');
+    		chordFormula = chordInfo.integer.split('-');
     	} catch (e) {
         results.error = e;
     		return results;
@@ -349,11 +352,11 @@
           barredString:0,
           frettedNotes:0,
           splittedChord:false
-        }
+        };
 
     		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
     		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
-    		&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
+    		  && (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
 
     			// For each note of the chord
     			for (var i = 0; i < chordPool[iChord].length; i++) {
@@ -452,7 +455,7 @@
       results.chordList = validChords;
       results.offset = offset;
     	return results;
-    }
+    };
 
     /** Converts a tab notation into its graphic representation
      * @param {String} name | Optional | The chord name
@@ -466,8 +469,8 @@
     	fretsToDisplay = this.fretsToDisplay;
 
     	try {
-    		if (Chordictionary.isValidTab(tab)) var frets = splitTab(tab);
-        else var frets = [0,0,0,0,0,0];
+    		if (Chordictionary.isValidTab(tab)) frets = splitTab(tab);
+        else frets = [0,0,0,0,0,0];
     	} catch (e) {
     		return false;
     	}
@@ -495,8 +498,8 @@
         if (fretsToDisplay === 0) {
           fretsToDisplay = highestFret - base + 2;
         } else if (highestFret - base + 1 > fretsToDisplay - 1) {
-          throw WORDING.croppedChordLayout;
           fretsToDisplay = highestFret - base + 2;
+          throw WORDING.croppedChordLayout;
         }
       } catch (e) {
         console.error(e);
@@ -508,14 +511,14 @@
 
     		var fretNumber = gtrFret + base - 1; // Fret number to be displayed
 
-    		if (base == 1 && gtrFret == 0) chordLayout += '<thead>';
+    		if (base == 1 && gtrFret === 0) chordLayout += '<thead>';
     		if (fretNumber % 2 && fretNumber > 0) chordLayout += '<tr><th class="fret-number">' + fretNumber + '</th>';
     		else chordLayout += '<tr><th></th>'; // exclude fret number column
 
     		// Generate 6 strings (cols) for the current fret
     		for (var gtrString = 0; gtrString < this.tuning.length; gtrString++) {
-    			if (gtrFret == 0) {
-    				if (frets[gtrString] == 0) chordLayout += '<th><div class="dot open"></div></th>';
+    			if (gtrFret === 0) {
+    				if (frets[gtrString] === 0) chordLayout += '<th><div class="dot open"></div></th>';
     				else chordLayout += '<th></th>';
     			}
     			else {
@@ -524,7 +527,7 @@
     			}
     		}
 
-    		if (base == 1 && gtrFret == 0) chordLayout += '<tr></thead>';
+    		if (base == 1 && gtrFret === 0) chordLayout += '<tr></thead>';
     		else chordLayout += '</tr>';
 
     	}
@@ -534,7 +537,7 @@
     	//console.log(frets + ' => base: ' + base + ' => highest fret: ' + highestFret);
 
     	return chordLayout;
-    }
+    };
 
     /** Return true if tab contains only digits or the letter x
     * @param {String} tab | Required | The tab to check for validity
@@ -548,14 +551,13 @@
         throw WORDING.invalidTab;
         return false;
       }
-    }
+    };
 
     /** Return true if tuning contains only letters from A to G
      * @param {String} tuning | Required | The instrument tuning
      * @return {Boolean}
     */
     Chordictionary.isValidTuning = function(tuning) {
-      var tuning = tuning;
       var pattern = new RegExp("^[#a-g]+$", "i");
       if (pattern.test(tuning)) {
         return true;
@@ -563,7 +565,7 @@
         throw WORDING.invalidTuning;
         return false;
       }
-    }
+    };
 
 /**
  * PRIVATE FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -609,7 +611,7 @@
      * @return {Array} | Containing each fret
     */
     function splitTab(tab, tuning) {
-      var tuning = tuning || "EADGBE";
+      tuning = tuning || "EADGBE";
       var tabArray = [];
       try {
         if (tab.length <= tuning.length) return tab.split("");
@@ -702,11 +704,12 @@
     */
     function removeDuplicates(arr) {
       try {
-        if (Array.isArray(arr)) var arr = arr;
-        else throw arr + " is not an array.";
-        return arr.filter(function(elem, index, self) {
-          return index == self.indexOf(elem);
-        });
+        if (!Array.isArray(arr)) throw arr + " is not an array.";
+        else {
+          return arr.filter(function(elem, index, self) {
+            return index == self.indexOf(elem);
+          });
+        }
       } catch (e) {
         return false;
       }
@@ -721,8 +724,7 @@
     function searchInObject(obj, keyword) {
       try {
         if(typeof obj === "object") {
-          var obj = obj;
-          if(typeof keyword == "string") var keyword = keyword.toLowerCase();
+          if(typeof keyword == "string") keyword = keyword.toLowerCase();
           for (var i = 0; i < obj.length; i++) {
             for (var key in obj[i]) {
               if (obj[i][key] == keyword) return obj[i];
@@ -750,12 +752,8 @@
       var result;
 
       try {
-
-        if (Array.isArray(arr)) var arr = arr;
-        else throw arr + " is not an array.";
-
-        if (what) var what = what;
-        else throw "Missing parameter.";
+        if (!Array.isArray(arr)) throw arr + " is not an array.";
+        if (!what) throw "Missing parameter.";
 
         switch (what) {
           case "min":
@@ -852,6 +850,6 @@
 
   if (typeof(Chordictionary) === 'undefined') {
     window.Chordictionary = define();
-  } else console.error();("Chordictionary is already defined.");
+  } else console.error("Chordictionary is already defined.");
 
 })(window);
