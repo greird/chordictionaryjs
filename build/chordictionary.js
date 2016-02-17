@@ -258,8 +258,9 @@
     */
     Chordictionary.Instrument.prototype.getChordsList = function(chordName, limit, offset) {
 
+      offset = offset || 0;
+
     	var	chordNotes = [],	// Will contain the generated chord notes, starting with the root
-    	offset = offset || 0,
       chordType,	// Type of chord (Min, Maj, Dom7, etc.)
       chordFormula = [],
       rootNote,	// Root note of the chord
@@ -271,7 +272,7 @@
 
     	try {
     		if (typeof(chordName) === "string") {
-    			var chordName = splitChordName(chordName);
+    			chordName = splitChordName(chordName);
     			rootNote = chordName[0];	// Root note of the chord
     			chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
     			chordNotes.push(rootNote);
@@ -315,7 +316,7 @@
       // 3 - Combine the tabs from tabPool and store store the result in chordPool
     	var chordPool = [];
     	// For each string
-    	for (var string = 0; string < this.tuning.length; string++) {
+    	for (string = 0; string < this.tuning.length; string++) {
     		// For each potential note on this string
     		var chordPoolLength = chordPool.length;
     		for (var i = 0; i < tabPool[string].length; i++) {
@@ -583,19 +584,19 @@
       // TODO: make it work with tabs and notes
       // TODO: add param to check for triads, open strings, etc.
 
-      var result, index, notesCount = {};
+      var result, index, iNote, notesCount = {};
 
       for (var iFret = 0; iFret < tab.length; iFret++) {
         if (isNaN(tab[iFret])) continue;
         index = tab[iFret] + MDL_A_SCALE.indexOf(tuning[iFret]);
         if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
-        for (var iNote = 0; iNote < chordNotes.length; iNote++) {
+        for (iNote = 0; iNote < chordNotes.length; iNote++) {
           if (!notesCount[MDL_A_SCALE[index]]) notesCount[MDL_A_SCALE[index]] = 1;
           else if (MDL_A_SCALE[index] == MDL_A_SCALE[iNote]) notesCount[MDL_A_SCALE[index]]++;
         }
       }
       // If every note has appeared at least once, chord is valid
-      for (var iNote = 0; iNote < chordNotes.length; iNote++) {
+      for (iNote = 0; iNote < chordNotes.length; iNote++) {
         if (chordNotes[iNote] in notesCount) result = true;
         else {
           result = false;
