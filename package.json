@@ -1,0 +1,37 @@
+{
+  "name": "chordictionary",
+  "version": "0.1.0-alpha.0",
+  "description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
+  "main": "/build/chordictionary.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greird/chordictionaryjs.git"
+  },
+  "keywords": [
+    "music",
+    "score",
+    "chord",
+    "note",
+    "guitar",
+    "instrument"
+  ],
+  "author": "Hubert Fauconnier <h.fauconnier@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/greird/chordictionaryjs/issues"
+  },
+  "homepage": "https://www.chordictionaryjs.com",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.2",
+    "jshint": "^2.9.1",
+    "uglify-js": "*"
+  }
+}

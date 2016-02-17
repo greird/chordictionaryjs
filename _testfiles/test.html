@@ -1,10 +1,10 @@
-<link type="text/css" rel="stylesheet" href="../source/chordictionary.css"/>
-<script src="../source/chordictionary.js"></script>
+<link type="text/css" rel="stylesheet" href="../src/chordictionary.css"/>
+<script src="../build/chordictionary.min.js"></script>
 
-<h3>var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);</h3>
+<h3>var guitar = new Chordictionary.Instrument('EADGBE', 24, 7);</h3>
 <pre>
 <script>
-var guitar = new Chordictionary.Instrument('EADGBE', 24, 7, 5);
+var guitar = new Chordictionary.Instrument('EADGBE', 24, 7);
 for (var key in guitar) {
   if (key === "getChordInfo" || key === "getChordsList" || key === "getChordLayout") {
     document.write('<b>' + key + ' => </b> function <br />');
@@ -24,13 +24,35 @@ for (var key in chordInfo) {
 </script></pre>
 
 <h3>guitar.getChordsList("G", 5)</h3>
+<script>
+var chordsList = guitar.getChordsList("G");
+document.write("<h4>" + chordsList.chordList.length + " chords found.</h4>");
+</script>
+<h4>Basic chords</h4>
+<div id="basic" style="width:100%;"></div><div style="clear:both;"></div>
+<h4>Bar chords</h4>
+<div id="bar" style="width:100%;"></div><div style="clear:both;"></div>
+<h4>Powerchords</h4>
+<div id="powerchord" style="width:100%;"></div><div style="clear:both;"></div>
+<h4>Unrecognized</h4>
+<div id="unrecognized" style="width:100%;"></div><div style="clear:both;"></div>
 <pre><script>
-var chordsList = guitar.getChordsList("G", 5);
 for (var key in chordsList) {
   document.write('<b>' + key + ' => </b>');
-  if (chordsList[key].length > 1) {
+  if (key === "chordList") {
     for (var i in chordsList[key]) {
-      document.write(chordsList[key][i] + ' ');
+      if (chordsList.chordList[i].tag.indexOf("basic") > -1) {
+        document.getElementById('basic').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+      }
+      if (chordsList.chordList[i].tag.indexOf("bar") > -1) {
+        document.getElementById('bar').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+      }
+      if (chordsList.chordList[i].tag.indexOf("powerchord") > -1) {
+        document.getElementById('powerchord').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+      }
+      if (chordsList.chordList[i].tag.length === 0) {
+        document.getElementById('unrecognized').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+      }
     }
   } else {
     document.write(chordsList[key]);
@@ -53,5 +75,5 @@ document.write(Chordictionary.isValidTuning("E#A#D#G#B#E#")+'<br />');
 <h3>guitar.getChordLayout("C", "x32010")</h3>
 <div id="chord"></div>
 <script>
-document.getElementById('chord').innerHTML = guitar.getChordLayout("C", "x91215xx");
+document.write(guitar.getChordLayout("C", "x32010"));
 </script>

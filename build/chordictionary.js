@@ -1,4 +1,4 @@
-/*!Chordictionary v0.4.0-beta, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
+/**Chordictionary v0.1.0-alpha.0, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 (function (window) {
 
   'use strict';
@@ -86,13 +86,13 @@
     		if(Chordictionary.isValidTuning(tuning)) this.tuning = splitTuning(tuning);
         this.fretNumber = fretNumber;
         this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay + 1 : 0;
-        this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 5;
+        this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 4;
     	} catch (e) {
         console.error(e);
     		return false;
     	}
       return this;
-    }
+    };
 
     /** This function aims to identify the maximum information about a chord, based on its tab notation and the instrument tuning
      * @param {String} tab | Required | The chord tab
@@ -114,8 +114,7 @@
 
     	try {
     		if (Chordictionary.isValidTab(tab)) {
-          var tab = splitTab(tab);
-          results.tab = tab.join(' ');
+          tab = splitTab(tab);
         }
     	} catch (e) {
     		results.error = e;
@@ -180,7 +179,7 @@
     					interval = (MDL_A_SCALE.length) + interval;
     				}
     				// 0 is the root
-    				else if (interval == 0) {
+    				else if (interval === 0) {
     					rawFormulas[i].root = notes[j];
     				}
 
@@ -196,9 +195,9 @@
 
     	for (var i = 0; i < rawFormulas.length; i++) {
 
-    		if (rawFormulas[i].root == "") continue;	// If there's no root, do not keep the formula
+    		if (rawFormulas[i].root === "") continue;	// If there's no root, do not keep the formula
     		roots.push(rawFormulas[i].root);	// Store the root
-    		rawFormulas[i].formula.sort(function(a,b){return a-b});
+    		rawFormulas[i].formula.sort(function(a,b){return a-b;});
 
     		var unique = removeDuplicates(rawFormulas[i].formula);
 
@@ -249,7 +248,7 @@
     		results.name = matches;
     	}
     	return results;
-    }
+    };
 
     /** Return a list of tabs corresponding to a given chord
      * @param {String} chordName | Required | The chord name (e.g: Amin, G, Csus4)
@@ -259,8 +258,12 @@
     */
     Chordictionary.Instrument.prototype.getChordsList = function(chordName, limit, offset) {
 
+      offset = offset || 0;
+
     	var	chordNotes = [],	// Will contain the generated chord notes, starting with the root
-    	offset = offset || 0,
+      chordType,	// Type of chord (Min, Maj, Dom7, etc.)
+      chordFormula = [],
+      rootNote,	// Root note of the chord
       results = {
     		error: "",
     		chordList: [],
@@ -269,9 +272,9 @@
 
     	try {
     		if (typeof(chordName) === "string") {
-    			var chordName = splitChordName(chordName);
-    			var rootNote = chordName[0];	// Root note of the chord
-    			var chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
+    			chordName = splitChordName(chordName);
+    			rootNote = chordName[0];	// Root note of the chord
+    			chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
     			chordNotes.push(rootNote);
     		} else throw WORDING.invalidChordName;
     	} catch (e) {
@@ -282,7 +285,7 @@
       // 1 - Fetch the right chord formula from the dictionary
     	try {
     		var chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
-    		var chordFormula = chordInfo.integer.split('-');
+    		chordFormula = chordInfo.integer.split('-');
     	} catch (e) {
         results.error = e;
     		return results;
@@ -313,7 +316,7 @@
       // 3 - Combine the tabs from tabPool and store store the result in chordPool
     	var chordPool = [];
     	// For each string
-    	for (var string = 0; string < this.tuning.length; string++) {
+    	for (string = 0; string < this.tuning.length; string++) {
     		// For each potential note on this string
     		var chordPoolLength = chordPool.length;
     		for (var i = 0; i < tabPool[string].length; i++) {
@@ -336,40 +339,124 @@
     		}
     	}
 
-      // 4 - Post processing to remove invalid or unwanted chords from the pool
-    	// NOTE: Here we apply a series of checks to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
+      // 4 - Post processing to remove invalid chords from the pool and sort them by categories
     	var validChords = [];
     	for (var iChord = offset; iChord < chordPool.length; iChord++) {
-    		// 1. If the composition of the chord is wrong
-    		// 2. If the gap between the highest and lowest fret of the chord is two wide
+
+        // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
+        var chordAnatomy = {
+          rootBelow4thFret:false,
+          rootIsLowestNote:false,
+          rootOnLowestFret:false,
+          noMuteAfterRoot:false,
+          openString:0,
+          barredString:0,
+          frettedNotes:0,
+          splittedChord:false
+        };
+
+    		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
     		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
-    		&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
-    			// Find the basic chords :
+    		  && (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
+
+    			// For each note of the chord
     			for (var i = 0; i < chordPool[iChord].length; i++) {
-    				if (isNaN(chordPool[iChord][i])) continue;
-    				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
-    				if (chordPool[iChord][i] <= 4	// Note is is below the 4th fret.
-    					&& MDL_A_SCALE.indexOf(rootNote) == noteIndex // It's the root !
-    					&& chordPool[iChord].lastIndexOf("x") < i) // No mutted string after the root.
-    				{
-    					validChords.push(chordPool[iChord]);
-    					break;
-    				} else {
-    					break;
-    				}
+    				if (!isNaN(chordPool[iChord][i])) {
+      				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
+
+              // It's the root !
+              if (MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
+
+                // Check if the root is the first fretted note
+                if (chordAnatomy.frettedNotes === 0) {
+                  chordAnatomy.rootIsLowestNote = true;
+
+                  // Check if the root is below the 5th fret and if there's any mutted string after this root
+                  if (chordPool[iChord][i] <= 4) {
+                    chordAnatomy.rootBelow4thFret = true;
+                    if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterRoot = true;
+                  }
+                }
+
+                // Check if there's no notes below the root on the neck
+                if (arrayFind(chordPool[iChord], "min") >= chordPool[iChord][i]) {
+                  chordAnatomy.rootOnLowestFret = true;
+                }
+              }
+
+              // Check for open strings
+              if (chordPool[iChord][i] === 0) {
+                chordAnatomy.openString++;
+              }
+
+              // Check for consecutive fretted notes
+              if ((chordPool[iChord][i] > 0 && i < chordPool[iChord].length - 1 && chordPool[iChord][i] === chordPool[iChord][i-1])
+                || arrayFind(chordPool[iChord], chordPool[iChord][i]) >= 3) {
+                chordAnatomy.barredString++;
+              }
+
+              chordAnatomy.frettedNotes++;
+            } else {
+              // Check if there's any mutted string in the middle of the chord
+              if (i > 0 && i < chordPool[iChord].length - 1
+                && ((chordPool[iChord][i+1] != "x" && chordPool[iChord][i-1] != "x")
+                || (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
+                chordAnatomy.splittedChord = true;
+              }
+            }
     			}
-    			// If limit is reached, stop the loop and store the current inden
-    			if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
-    				offset = iChord + 1;
-    				break;
-    			}
+
+          // Sort and filter the chords according to the previously defined criterias
+          // TODO: Refactoring needed here !! There's probably a faster way to do this..
+
+          try {
+            var chordId = validChords.length;
+            var tags = [];
+            validChords.push({tab: chordPool[iChord], tag:[]});
+
+            // Basic chord
+            if (chordAnatomy.rootBelow4thFret
+              && chordAnatomy.noMuteAfterRoot
+              && chordAnatomy.rootIsLowestNote) {
+              if (chordAnatomy.barredString >= 1) {
+                if (chordAnatomy.rootOnLowestFret) {
+                  if (tags.indexOf('basic')) tags.push('basic');
+                  if (tags.indexOf('bar')) tags.push('bar');
+                }
+              } else if (tags.indexOf('basic')) tags.push('basic');
+            }
+            // Powerchord
+            if (!chordAnatomy.noMuteAfterRoot
+              && chordAnatomy.frettedNotes <= 3
+              && chordAnatomy.rootIsLowestNote
+              && chordAnatomy.rootOnLowestFret
+              && !chordAnatomy.splittedChord
+              && !chordAnatomy.openString) if (tags.indexOf('powerchord')) tags.push('powerchord');
+            // Bar chord
+            if (chordAnatomy.rootIsLowestNote
+              && chordAnatomy.rootOnLowestFret
+              && chordAnatomy.barredString >= 1
+              && !chordAnatomy.splittedChord
+              && !chordAnatomy.openString) if (tags.indexOf('bar')) tags.push('bar');
+
+            // Apply the tags
+            if (tags.length) validChords[chordId].tag = tags.join(', ');
+          } catch (e) {
+            console.error(e);
+          }
+
+          // If limit is reached, stop the loop and store the current index
+          if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
+            offset = iChord + 1;
+            break;
+          }
     		}
     	}
 
       results.chordList = validChords;
       results.offset = offset;
     	return results;
-    }
+    };
 
     /** Converts a tab notation into its graphic representation
      * @param {String} name | Optional | The chord name
@@ -383,8 +470,8 @@
     	fretsToDisplay = this.fretsToDisplay;
 
     	try {
-    		if (Chordictionary.isValidTab(tab)) var frets = splitTab(tab);
-        else var frets = [0,0,0,0,0,0];
+    		if (Chordictionary.isValidTab(tab)) frets = splitTab(tab);
+        else frets = [0,0,0,0,0,0];
     	} catch (e) {
     		return false;
     	}
@@ -412,8 +499,8 @@
         if (fretsToDisplay === 0) {
           fretsToDisplay = highestFret - base + 2;
         } else if (highestFret - base + 1 > fretsToDisplay - 1) {
-          throw WORDING.croppedChordLayout;
           fretsToDisplay = highestFret - base + 2;
+          throw WORDING.croppedChordLayout;
         }
       } catch (e) {
         console.error(e);
@@ -425,14 +512,14 @@
 
     		var fretNumber = gtrFret + base - 1; // Fret number to be displayed
 
-    		if (base == 1 && gtrFret == 0) chordLayout += '<thead>';
+    		if (base == 1 && gtrFret === 0) chordLayout += '<thead>';
     		if (fretNumber % 2 && fretNumber > 0) chordLayout += '<tr><th class="fret-number">' + fretNumber + '</th>';
     		else chordLayout += '<tr><th></th>'; // exclude fret number column
 
     		// Generate 6 strings (cols) for the current fret
     		for (var gtrString = 0; gtrString < this.tuning.length; gtrString++) {
-    			if (gtrFret == 0) {
-    				if (frets[gtrString] == 0) chordLayout += '<th><div class="dot open"></div></th>';
+    			if (gtrFret === 0) {
+    				if (frets[gtrString] === 0) chordLayout += '<th><div class="dot open"></div></th>';
     				else chordLayout += '<th></th>';
     			}
     			else {
@@ -441,7 +528,7 @@
     			}
     		}
 
-    		if (base == 1 && gtrFret == 0) chordLayout += '<tr></thead>';
+    		if (base == 1 && gtrFret === 0) chordLayout += '<tr></thead>';
     		else chordLayout += '</tr>';
 
     	}
@@ -451,7 +538,7 @@
     	//console.log(frets + ' => base: ' + base + ' => highest fret: ' + highestFret);
 
     	return chordLayout;
-    }
+    };
 
     /** Return true if tab contains only digits or the letter x
     * @param {String} tab | Required | The tab to check for validity
@@ -465,14 +552,13 @@
         throw WORDING.invalidTab;
         return false;
       }
-    }
+    };
 
     /** Return true if tuning contains only letters from A to G
      * @param {String} tuning | Required | The instrument tuning
      * @return {Boolean}
     */
     Chordictionary.isValidTuning = function(tuning) {
-      var tuning = tuning;
       var pattern = new RegExp("^[#a-g]+$", "i");
       if (pattern.test(tuning)) {
         return true;
@@ -480,7 +566,7 @@
         throw WORDING.invalidTuning;
         return false;
       }
-    }
+    };
 
 /**
  * PRIVATE FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -498,19 +584,19 @@
       // TODO: make it work with tabs and notes
       // TODO: add param to check for triads, open strings, etc.
 
-      var result, index, notesCount = {};
+      var result, index, iNote, notesCount = {};
 
       for (var iFret = 0; iFret < tab.length; iFret++) {
         if (isNaN(tab[iFret])) continue;
         index = tab[iFret] + MDL_A_SCALE.indexOf(tuning[iFret]);
         if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
-        for (var iNote = 0; iNote < chordNotes.length; iNote++) {
+        for (iNote = 0; iNote < chordNotes.length; iNote++) {
           if (!notesCount[MDL_A_SCALE[index]]) notesCount[MDL_A_SCALE[index]] = 1;
           else if (MDL_A_SCALE[index] == MDL_A_SCALE[iNote]) notesCount[MDL_A_SCALE[index]]++;
         }
       }
       // If every note has appeared at least once, chord is valid
-      for (var iNote = 0; iNote < chordNotes.length; iNote++) {
+      for (iNote = 0; iNote < chordNotes.length; iNote++) {
         if (chordNotes[iNote] in notesCount) result = true;
         else {
           result = false;
@@ -526,7 +612,7 @@
      * @return {Array} | Containing each fret
     */
     function splitTab(tab, tuning) {
-      var tuning = tuning || "EADGBE";
+      tuning = tuning || "EADGBE";
       var tabArray = [];
       try {
         if (tab.length <= tuning.length) return tab.split("");
@@ -619,11 +705,12 @@
     */
     function removeDuplicates(arr) {
       try {
-        if (Array.isArray(arr)) var arr = arr;
-        else throw arr + " is not an array.";
-        return arr.filter(function(elem, index, self) {
-          return index == self.indexOf(elem);
-        });
+        if (!Array.isArray(arr)) throw arr + " is not an array.";
+        else {
+          return arr.filter(function(elem, index, self) {
+            return index == self.indexOf(elem);
+          });
+        }
       } catch (e) {
         return false;
       }
@@ -638,8 +725,7 @@
     function searchInObject(obj, keyword) {
       try {
         if(typeof obj === "object") {
-          var obj = obj;
-          if(typeof keyword == "string") var keyword = keyword.toLowerCase();
+          if(typeof keyword == "string") keyword = keyword.toLowerCase();
           for (var i = 0; i < obj.length; i++) {
             for (var key in obj[i]) {
               if (obj[i][key] == keyword) return obj[i];
@@ -667,12 +753,8 @@
       var result;
 
       try {
-
-        if (Array.isArray(arr)) var arr = arr;
-        else throw arr + " is not an array.";
-
-        if (what) var what = what;
-        else throw "Missing parameter.";
+        if (!Array.isArray(arr)) throw arr + " is not an array.";
+        if (!what) throw "Missing parameter.";
 
         switch (what) {
           case "min":
@@ -769,6 +851,6 @@
 
   if (typeof(Chordictionary) === 'undefined') {
     window.Chordictionary = define();
-  } else console.error();("Chordictionary is already defined.");
+  } else console.error("Chordictionary is already defined.");
 
 })(window);
