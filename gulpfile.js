@@ -16,13 +16,15 @@ gulp.task('scripts', function() {
 
 // Lint Task
 gulp.task('lint', function() {
-    return gulp.src('js/*.js')
+    return gulp.src('src/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
 // Default task
-gulp.task('default', ['lint', 'scripts', 'watch']);
+ gulp.task('default', ['watch'], function() {
+   gulp.start('lint', 'scripts');
+ });
 
 // Watch
 gulp.task('watch', function() {
