@@ -65,12 +65,17 @@ myInstrument.getChordInfo("xx5545");
 
 ```javascript
 // Usage
-myInstrument.getChordsList("G", 5);
+myInstrument.getChordsList("G", 4);
 
 // Will return an object
 {
 	error: "",
-	chordList: [[3,2,0,0,0,3],[3,2,0,4,0,3],[3,2,0,0,3,3],[3,2,5,4,3,3],[3,5,5,4,3,3]],
+	chordList: [
+		{ tab: [3,2,0,0,0,3], tag: ['basic'] },
+		{ tab: [3,2,0,4,0,3], tag: ['basic'] },
+		{ tab: [3,2,0,0,3,3], tag: ['basic'] },
+		{ tab: [3,5,5,4,3,3], tag: ['basic', 'bar'] },
+		],
 	offset: 29927
 }
 ```
@@ -116,3 +121,16 @@ Chordictionary.isValidTuning("E#A#D#G#B#E#");
 // Return
 True // ['E#','A#','D#','G#','B#','E#']
 ```
+
+***
+
+## For dev purpose
+
+```
+git clone https://github.com/greird/chordictionaryjs.git
+npm install
+```
+
+The only file to edit is `/src/chordictionary.js`.
+
+Type `Gulp` to compile the content of `/src` into `/build`.
