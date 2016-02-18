@@ -126,6 +126,11 @@ True // ['E#','A#','D#','G#','B#','E#']
 
 ## For dev purpose
 
-`npm install https://github.com/greird/chordictionaryjs.git`
+```
+git clone https://github.com/greird/chordictionaryjs.git
+npm install
+```
+
+The only file to edit is `/src/chordictionary.js`.
 
 Type `Gulp` to compile the content of `/src` into `/build`.
