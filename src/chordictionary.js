@@ -383,7 +383,7 @@
 
                 chordAnatomy.frettedNotes++;
               } else {
-                
+
                 // Check if there's any mutted string in the middle of the chord
                 if (i > 0 && i < chordPool[iChord].length - 1
                   && ((chordPool[iChord][i+1] != "x" && chordPool[iChord][i-1] != "x")
@@ -537,7 +537,6 @@
         return true;
       } else {
         throw WORDING.invalidTab;
-        return false;
       }
     };
 
@@ -551,7 +550,6 @@
         return true;
       } else {
         throw WORDING.invalidTuning;
-        return false;
       }
     };
 
@@ -601,34 +599,30 @@
     function splitTab(tab, tuning) {
       tuning = tuning || "EADGBE";
       var tabArray = [];
-      try {
-        if (tab.length <= tuning.length) return tab.split("");
-        else if (tab.length == tuning.length * 2) {
+      if (tab.length <= tuning.length) return tab.split("");
+      else if (tab.length == tuning.length * 2) {
+        for (var i = 0; i < tab.length; i++) {
+           if (!(i % 2)) tabArray.push(tab.slice(i, i+2));
+        }
+        return tabArray;
+      }
+      else if (tab.length > tuning.length) {
+        if (arrayFind(tab.split(""), "max") > 1) {
+          // NOTE: Split after each caracter from [2-9]
           for (var i = 0; i < tab.length; i++) {
-             if (!(i % 2)) tabArray.push(tab.slice(i, i+2));
+            if (tab.charAt(i).search(/[x02-9]/i) != -1
+              || (tab.charAt(i) == 1 && tab.charAt(i+1).search(/x/i) != -1))
+            {
+              tabArray.push(tab.slice(i, i+1));
+            }
+            else if (tab.charAt(i+1).search(/x/i) == -1) {
+              tabArray.push(tab.slice(i, i+2));
+              i++;
+            }
           }
           return tabArray;
-        }
-        else if (tab.length > tuning.length) {
-          if (arrayFind(tab.split(""), "max") > 1) {
-            // NOTE: Split after each caracter from [2-9]
-            for (var i = 0; i < tab.length; i++) {
-              if (tab.charAt(i).search(/[x02-9]/i) != -1
-                || (tab.charAt(i) == 1 && tab.charAt(i+1).search(/x/i) != -1))
-              {
-                tabArray.push(tab.slice(i, i+1));
-              }
-              else if (tab.charAt(i+1).search(/x/i) == -1) {
-                tabArray.push(tab.slice(i, i+2));
-                i++;
-              }
-            }
-            return tabArray;
-          } else throw WORDING.invalidTab;
-        }
-      } catch (e) {
-        return false;
-      }
+        } else throw WORDING.invalidTab;
+      } else return false;
     }
 
     /** Split tuning into notes
@@ -639,25 +633,22 @@
       var tuningArray = [];
       var noSharps = new RegExp("^[a-g]+$", "i");
       var containSharps = new RegExp("^[#a-g]+$", "i");
-      try {
-        if (noSharps.test(tuning)) return tuning.toUpperCase().split("");
-        else if (containSharps.test(tuning)) {
-          tuning = tuning.toUpperCase();
-          for (var i = 0; i < tuning.length; i++) {
-            if (tuning.charAt(i) != "#") {
-              if (tuning.charAt(i+1) != "#") tuningArray.push(tuning.slice(i, i+1));
-              else {
-                tuningArray.push(tuning.slice(i, i+2));
-                i++;
-              }
+
+      if (noSharps.test(tuning)) {
+        return tuning.toUpperCase().split("");
+      } else if (containSharps.test(tuning)) {
+        tuning = tuning.toUpperCase();
+        for (var i = 0; i < tuning.length; i++) {
+          if (tuning.charAt(i) != "#") {
+            if (tuning.charAt(i+1) != "#") tuningArray.push(tuning.slice(i, i+1));
+            else {
+              tuningArray.push(tuning.slice(i, i+2));
+              i++;
             }
           }
-          return tuningArray;
         }
-        else throw WORDING.invalidTuning;
-      } catch (e) {
-        return false;
-      }
+        return tuningArray;
+      } else throw WORDING.invalidTuning;
     }
 
     /** Separates the chord root from the chord nature/quality;
@@ -691,15 +682,11 @@
      * @return {Array} | An array with no duplicates;
     */
     function removeDuplicates(arr) {
-      try {
-        if (!Array.isArray(arr)) throw arr + " is not an array.";
-        else {
-          return arr.filter(function(elem, index, self) {
-            return index == self.indexOf(elem);
-          });
-        }
-      } catch (e) {
-        return false;
+      if (!Array.isArray(arr)) throw arr + " is not an array.";
+      else {
+        return arr.filter(function(elem, index, self) {
+          return index == self.indexOf(elem);
+        });
       }
     }
 
@@ -710,7 +697,6 @@
      * @return {Boolean} | false if no result
     */
     function searchInObject(obj, keyword) {
-      try {
         if(typeof obj === "object") {
           if(typeof keyword == "string") keyword = keyword.toLowerCase();
           for (var i = 0; i < obj.length; i++) {
@@ -725,10 +711,6 @@
         } else {
           throw obj +' is not an object.';
         }
-        return false;
-      } catch (e) {
-        return false;
-      }
     }
 
     /** Find the minimum/maximum int in an array ignoring any NaN value OR Find an occurrences of a keyword in an array
@@ -737,14 +719,13 @@
      * @param {String} what | Required | "min" or "max" or a keyword to search for
     */
     function arrayFind(arr, what) {
-      var result;
+      var result = false;
 
-      try {
-        if (!Array.isArray(arr)) throw arr + " is not an array.";
-        if (!what) throw "Missing parameter.";
+      if (!Array.isArray(arr)) throw arr + " is not an array.";
+      if (typeof what === 'undefined') throw "Missing parameter.";
 
-        switch (what) {
-          case "min":
+      switch (what) {
+        case "min":
           result = Math.min.apply(Math, arr);
           if(!isNaN(result)) return result;
           else {
@@ -761,8 +742,8 @@
               }
             }
           }
-          break;
-          case "max":
+        break;
+        case "max":
           result = Math.max.apply(Math, arr);
           if(!isNaN(result)) return result;
           else {
@@ -779,14 +760,10 @@
               }
             }
           }
-          break;
-          default:
-            result = occurrences(arr.join(""), what);
-          break;
-        }
-
-      } catch (e) {
-        return false;
+        break;
+        default:
+          result = occurrences(arr.join(""), what);
+        break;
       }
 
       return result;
