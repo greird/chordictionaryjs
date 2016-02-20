@@ -1,4 +1,4 @@
-/**Chordictionary v0.1.0-alpha.0, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
+/**Chordictionary v0.1.0-alpha.1, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 (function (window) {
 
   'use strict';
@@ -340,118 +340,105 @@
     	}
 
       // 4 - Post processing to remove invalid chords from the pool and sort them by categories
-    	var validChords = [];
-    	for (var iChord = offset; iChord < chordPool.length; iChord++) {
+      try {
+      	var validChords = [];
+      	for (var iChord = offset; iChord < chordPool.length; iChord++) {
 
-        // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
-        var chordAnatomy = {
-          rootBelow4thFret:false,
-          rootIsLowestNote:false,
-          rootOnLowestFret:false,
-          noMuteAfterRoot:false,
-          openString:0,
-          barredString:0,
-          frettedNotes:0,
-          splittedChord:false
-        };
+          // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
+          var chordAnatomy = {
+            rootBelow4thFret:false,
+            rootIsLowestNote:false,
+            rootOnLowestFret:false,
+            noMuteAfterFirstNote:false,
+            openString:false,
+            barredString:0,
+            frettedNotes:0,
+            splittedChord:false
+          };
 
-    		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
-    		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
-    		  && (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
+      		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
+      		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
+      		  && (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
 
-    			// For each note of the chord
-    			for (var i = 0; i < chordPool[iChord].length; i++) {
-    				if (!isNaN(chordPool[iChord][i])) {
-      				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
+      			// For each note of the chord
+      			for (var i = 0; i < chordPool[iChord].length; i++) {
+      				if (!isNaN(chordPool[iChord][i])) {
+        				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
 
-              // It's the root !
-              if (MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
-
-                // Check if the root is the first fretted note
-                if (chordAnatomy.frettedNotes === 0) {
-                  chordAnatomy.rootIsLowestNote = true;
-
-                  // Check if the root is below the 5th fret and if there's any mutted string after this root
-                  if (chordPool[iChord][i] <= 4) {
-                    chordAnatomy.rootBelow4thFret = true;
-                    if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterRoot = true;
-                  }
+                // It's the root !
+                if (MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
+                  if (chordAnatomy.frettedNotes === 0) chordAnatomy.rootIsLowestNote = true;
+                  if (chordPool[iChord][i] <= 4) chordAnatomy.rootBelow4thFret = true;
+                  if (arrayFind(chordPool[iChord], "min") >= chordPool[iChord][i]) chordAnatomy.rootOnLowestFret = true;
                 }
 
-                // Check if there's no notes below the root on the neck
-                if (arrayFind(chordPool[iChord], "min") >= chordPool[iChord][i]) {
-                  chordAnatomy.rootOnLowestFret = true;
+                if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterFirstNote = true;
+                if (chordPool[iChord][i] === 0) chordAnatomy.openString = true;
+
+                // Check for consecutive fretted notes
+                if ((chordPool[iChord][i] > 0 && i < chordPool[iChord].length - 1 && chordPool[iChord][i] === chordPool[iChord][i-1])
+                  || arrayFind(chordPool[iChord], chordPool[iChord][i]) >= 3) {
+                  chordAnatomy.barredString++;
+                }
+
+                chordAnatomy.frettedNotes++;
+              } else {
+                
+                // Check if there's any mutted string in the middle of the chord
+                if (i > 0 && i < chordPool[iChord].length - 1
+                  && ((chordPool[iChord][i+1] != "x" && chordPool[iChord][i-1] != "x")
+                  || (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
+                  chordAnatomy.splittedChord = true;
                 }
               }
+      			}
 
-              // Check for open strings
-              if (chordPool[iChord][i] === 0) {
-                chordAnatomy.openString++;
-              }
+            // Sort and filter the chords according to the previously defined criterias
+            // TODO: Refactoring needed here !! There's probably a faster way to do this..
 
-              // Check for consecutive fretted notes
-              if ((chordPool[iChord][i] > 0 && i < chordPool[iChord].length - 1 && chordPool[iChord][i] === chordPool[iChord][i-1])
-                || arrayFind(chordPool[iChord], chordPool[iChord][i]) >= 3) {
-                chordAnatomy.barredString++;
-              }
-
-              chordAnatomy.frettedNotes++;
-            } else {
-              // Check if there's any mutted string in the middle of the chord
-              if (i > 0 && i < chordPool[iChord].length - 1
-                && ((chordPool[iChord][i+1] != "x" && chordPool[iChord][i-1] != "x")
-                || (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
-                chordAnatomy.splittedChord = true;
-              }
-            }
-    			}
-
-          // Sort and filter the chords according to the previously defined criterias
-          // TODO: Refactoring needed here !! There's probably a faster way to do this..
-
-          try {
             var chordId = validChords.length;
             var tags = [];
             validChords.push({tab: chordPool[iChord], tag:[]});
 
             // Basic chord
             if (chordAnatomy.rootBelow4thFret
-              && chordAnatomy.noMuteAfterRoot
-              && chordAnatomy.rootIsLowestNote) {
+              && chordAnatomy.noMuteAfterFirstNote
+              && chordAnatomy.rootIsLowestNote
+              && !chordAnatomy.splittedChord) {
               if (chordAnatomy.barredString >= 1) {
-                if (chordAnatomy.rootOnLowestFret) {
-                  if (tags.indexOf('basic')) tags.push('basic');
-                  if (tags.indexOf('bar')) tags.push('bar');
-                }
+                if (chordAnatomy.rootOnLowestFret) if (tags.indexOf('basic')) tags.push('basic');
               } else if (tags.indexOf('basic')) tags.push('basic');
             }
+
             // Powerchord
-            if (!chordAnatomy.noMuteAfterRoot
+            if (!chordAnatomy.noMuteAfterFirstNote
               && chordAnatomy.frettedNotes <= 3
               && chordAnatomy.rootIsLowestNote
               && chordAnatomy.rootOnLowestFret
               && !chordAnatomy.splittedChord
               && !chordAnatomy.openString) if (tags.indexOf('powerchord')) tags.push('powerchord');
+
             // Bar chord
             if (chordAnatomy.rootIsLowestNote
               && chordAnatomy.rootOnLowestFret
               && chordAnatomy.barredString >= 1
+              && chordAnatomy.noMuteAfterFirstNote
               && !chordAnatomy.splittedChord
               && !chordAnatomy.openString) if (tags.indexOf('bar')) tags.push('bar');
 
             // Apply the tags
             if (tags.length) validChords[chordId].tag = tags.join(', ');
-          } catch (e) {
-            console.error(e);
-          }
 
-          // If limit is reached, stop the loop and store the current index
-          if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
-            offset = iChord + 1;
-            break;
-          }
-    		}
-    	}
+            // If limit is reached, stop the loop and store the current index
+            if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
+              offset = iChord + 1;
+              break;
+            }
+      		}
+      	}
+      } catch (e) {
+        console.error(e);
+      }
 
       results.chordList = validChords;
       results.offset = offset;

@@ -37,21 +37,25 @@ document.write("<h4>" + chordsList.chordList.length + " chords found.</h4>");
 <h4>Unrecognized</h4>
 <div id="unrecognized" style="width:100%;"></div><div style="clear:both;"></div>
 <pre><script>
+var divbasic = document.getElementById('basic');
+var divbar = document.getElementById('bar');
+var divpowerchord = document.getElementById('powerchord');
+var divunrecognized = document.getElementById('unrecognized');
 for (var key in chordsList) {
   document.write('<b>' + key + ' => </b>');
   if (key === "chordList") {
     for (var i in chordsList[key]) {
       if (chordsList.chordList[i].tag.indexOf("basic") > -1) {
-        document.getElementById('basic').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+        divbasic.innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
       if (chordsList.chordList[i].tag.indexOf("bar") > -1) {
-        document.getElementById('bar').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+        divbar.innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
       if (chordsList.chordList[i].tag.indexOf("powerchord") > -1) {
-        document.getElementById('powerchord').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+        divpowerchord.innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
       if (chordsList.chordList[i].tag.length === 0) {
-        document.getElementById('unrecognized').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+        divunrecognized.innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
       }
     }
   } else {
