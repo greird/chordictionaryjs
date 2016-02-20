@@ -264,37 +264,34 @@
       chordType,	// Type of chord (Min, Maj, Dom7, etc.)
       chordFormula = [],
       rootNote,	// Root note of the chord
+      rootIndex,
       results = {
     		error: "",
     		chordList: [],
         offset: 0
     	};
 
+      // 1 - Fetch the right chord formula from the dictionary
     	try {
     		if (typeof(chordName) === "string") {
     			chordName = splitChordName(chordName);
     			rootNote = chordName[0];	// Root note of the chord
     			chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
     			chordNotes.push(rootNote);
+          rootIndex = MDL_A_SCALE.indexOf(rootNote);
     		} else throw WORDING.invalidChordName;
-    	} catch (e) {
-    		results.error = e;
-    		return results;
-    	}
 
-      // 1 - Fetch the right chord formula from the dictionary
-    	try {
     		var chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
     		chordFormula = chordInfo.integer.split('-');
     	} catch (e) {
-        results.error = e;
+        results.error = WORDING.invalidChordName;
     		return results;
     	}
 
       // 2 - Identify chord's notes
       // NOTE: Doesn't work with formulas containing integers > 9
     	for (var i = 1; i < chordFormula.length; i++) {
-    		var index = parseInt(chordFormula[i]) + parseInt(MDL_A_SCALE.indexOf(rootNote));
+    		var index = parseInt(chordFormula[i]) + parseInt(rootIndex);
     		if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
     		chordNotes.push(MDL_A_SCALE[index]);
     	}
@@ -366,7 +363,7 @@
         				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
 
                 // It's the root !
-                if (MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
+                if (rootIndex == noteIndex) {
                   if (chordAnatomy.frettedNotes === 0) chordAnatomy.rootIsLowestNote = true;
                   if (chordPool[iChord][i] <= 4) chordAnatomy.rootBelow4thFret = true;
                   if (arrayFind(chordPool[iChord], "min") >= chordPool[iChord][i]) chordAnatomy.rootOnLowestFret = true;
@@ -403,7 +400,7 @@
             // Basic chord
             if (chordAnatomy.rootBelow4thFret
               && chordAnatomy.noMuteAfterFirstNote
-              && chordAnatomy.rootIsLowestNote
+              && chordAnatomy.rootIsLowestNote // FIXME: Prevent a standard D chord to be tagged
               && !chordAnatomy.splittedChord) {
               if (chordAnatomy.barredString >= 1) {
                 if (chordAnatomy.rootOnLowestFret) if (tags.indexOf('basic')) tags.push('basic');
@@ -411,6 +408,7 @@
             }
 
             // Powerchord
+            // FIXME: This doesn't work at all !!
             if (!chordAnatomy.noMuteAfterFirstNote
               && chordAnatomy.frettedNotes <= 3
               && chordAnatomy.rootIsLowestNote
@@ -419,6 +417,7 @@
               && !chordAnatomy.openString) if (tags.indexOf('powerchord')) tags.push('powerchord');
 
             // Bar chord
+            // FIXME: chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret ==> Prevent some valid bar chords to be tagged..
             if (chordAnatomy.rootIsLowestNote
               && chordAnatomy.rootOnLowestFret
               && chordAnatomy.barredString >= 1
