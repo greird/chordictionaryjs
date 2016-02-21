@@ -1,79 +1,173 @@
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.0.14/css/bulma.min.css"/>
 <link type="text/css" rel="stylesheet" href="../src/chordictionary.css"/>
 <script src="../build/chordictionary.min.js"></script>
 
-<h3>var guitar = new Chordictionary.Instrument('EADGBE', 24, 7);</h3>
-<pre>
-<script>
-var guitar = new Chordictionary.Instrument('EADGBE', 24, 7);
-for (var key in guitar) {
-  if (key === "getChordInfo" || key === "getChordsList" || key === "getChordLayout") {
-    document.write('<b>' + key + ' => </b> function <br />');
-    continue;
-  }
-  document.write('<b>' + key + ' => </b>' + guitar[key] + '<br />');
-}
-</script>
-</pre>
+<section class="hero is-warning is-bold">
+  <div class="hero-content">
+    <div class="container">
+      <h1 class="title">Chordictionary.js</h1>
+      <h2 class="subtitle">This is a test page, displaying every available methods and how to use them.</h2>
+    </div>
+  </div>
+</section>
 
-<h3>guitar.getChordInfo("131211")</h3>
-<pre><script>
-var chordInfo = guitar.getChordInfo("131211");
-for (var key in chordInfo) {
-  document.write('<b>' + key + ' => </b>' + chordInfo[key] + '<br />');
-}
-</script></pre>
+<section class="section">
+  <div class="container">
+    <div class="heading">
+      <h1 class="title">Instrument definition</h1>
+    </div>
+    <h2 class="subtitle">
+      var guitar = new Chordictionary.Instrument('EADGBE', 24, 5, 4);
+    </h2>
+    <div class="message">
+      <div class="message-header">
+        Return
+      </div>
+      <div class="message-body">
+        <script>
+        var guitar = new Chordictionary.Instrument('EADGBE', 24, 5, 4);
+        for (var key in guitar) {
+          if (key === "getChordInfo" || key === "getChordsList" || key === "getChordLayout") {
+            document.write('<strong>' + key + ' => </strong> function <br />');
+            continue;
+          }
+          document.write('<strong>' + key + ' => </strong>' + guitar[key] + '<br />');
+        }
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
 
-<h3>guitar.getChordsList("G", 5)</h3>
-<script>
-var chordsList = guitar.getChordsList("G");
-document.write("<h4>" + chordsList.chordList.length + " chords found.</h4>");
-</script>
-<h4>Basic chords</h4>
-<div id="basic" style="width:100%;"></div><div style="clear:both;"></div>
-<h4>Bar chords</h4>
-<div id="bar" style="width:100%;"></div><div style="clear:both;"></div>
-<h4>Powerchords</h4>
-<div id="powerchord" style="width:100%;"></div><div style="clear:both;"></div>
-<h4>Unrecognized</h4>
-<div id="unrecognized" style="width:100%;"></div><div style="clear:both;"></div>
-<pre><script>
-for (var key in chordsList) {
-  document.write('<b>' + key + ' => </b>');
-  if (key === "chordList") {
-    for (var i in chordsList[key]) {
-      if (chordsList.chordList[i].tag.indexOf("basic") > -1) {
-        document.getElementById('basic').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
-      }
-      if (chordsList.chordList[i].tag.indexOf("bar") > -1) {
-        document.getElementById('bar').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
-      }
-      if (chordsList.chordList[i].tag.indexOf("powerchord") > -1) {
-        document.getElementById('powerchord').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
-      }
-      if (chordsList.chordList[i].tag.length === 0) {
-        document.getElementById('unrecognized').innerHTML += '<div id="chord" style="margin-right: 20px;float:left;">' + guitar.getChordLayout("Test", chordsList.chordList[i].tab.join('')) + '</div>';
+<section class="section">
+  <div class="container">
+    <div class="heading">
+      <h1 class="title">Chord recognition</h1>
+    </div>
+    <h2 class="subtitle">
+      guitar.getChordInfo('131211')
+    </h2>
+    <div class="message">
+      <div class="message-header">
+        Return
+      </div>
+      <div class="message-body">
+        <script>
+        var chordInfo = guitar.getChordInfo("131211");
+        for (var key in chordInfo) {
+          document.write('<strong>' + key + ' => </strong>' + chordInfo[key] + '<br />');
+        }
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="heading">
+      <h1 class="title">Chord generation</h1>
+    </div>
+    <h2 class="subtitle">
+      guitar.getChordsList("G")
+    </h2>
+    <h3 class="subtitle">
+      <script>
+      var chordsList = guitar.getChordsList("G");
+      document.write(chordsList.chordList.length + " chords found.");
+      </script>
+    </h2>
+    <div class="message">
+      <div class="message-header">
+        Return
+      </div>
+      <div class="message-body">
+        <script>
+        for (var key in chordsList) {
+          document.write('<strong>' + key + ' => </strong>');
+          if (key === 'chordList') {
+            document.write('// too many objects<br />');
+          } else {
+            document.write(chordsList[key] + '<br />');
+          }
+
+        }
+        </script>
+      </div>
+    </div>
+    <script>
+    for (var i in chordsList.chordList) {
+      var tagList = "";
+      if (chordsList.chordList[i].tag.length) {
+        document.write('<div id="chord" style="margin-right: 20px;float:left;">');
+        for (var tag in chordsList.chordList[i].tag) {
+          if (tagList != "") tagList += ',' + chordsList.chordList[i].tag[tag];
+          else tagList = chordsList.chordList[i].tag[tag];
+        }
+        document.write(guitar.getChordLayout(tagList, chordsList.chordList[i].tab.join('')));
+        document.write('</div>');
       }
     }
-  } else {
-    document.write(chordsList[key]);
-  }
+    </script>
+    <div style="clear:both;"></div>
+  </div>
+</section>
 
-  document.write('<br />');
-}
-</script></pre>
+<section class="section">
+  <div class="container">
+    <div class="heading">
+      <h1 class="title">Tab notation validation</h1>
+    </div>
+    <h2 class="subtitle">
+      Chordictionary.isValidTab("x32010")
+    </h2>
+    <div class="message">
+      <div class="message-header">
+        Return
+      </div>
+      <div class="message-body">
+        <script>
+        document.write(Chordictionary.isValidTab("x32010")+'<br />');
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
 
-<h3>Chordictionary.isValidTab("x32010")</h3>
-<pre><script>
-document.write(Chordictionary.isValidTab("x32010")+'<br />');
-</script></pre>
+<section class="section">
+  <div class="container">
+    <div class="heading">
+      <h1 class="title">Tuning notation validation</h1>
+    </div>
+    <h2 class="subtitle">
+      Chordictionary.isValidTuning("E#A#D#G#B#E#")
+    </h2>
+    <div class="message">
+      <div class="message-header">
+        Return
+      </div>
+      <div class="message-body">
+        <script>
+        document.write(Chordictionary.isValidTuning("E#A#D#G#B#E#")+'<br />');
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
 
-<h3>Chordictionary.isValidTuning("E#A#D#G#B#E#")</h3>
-<pre><script>
-document.write(Chordictionary.isValidTuning("E#A#D#G#B#E#")+'<br />');
-</script></pre>
-
-<h3>guitar.getChordLayout("C", "x32010")</h3>
-<div id="chord"></div>
-<script>
-document.write(guitar.getChordLayout("C", "x32010"));
-</script>
+<section class="section">
+  <div class="container">
+    <div class="heading">
+      <h1 class="title">Graphical tab representation</h1>
+    </div>
+    <h2 class="subtitle">
+      guitar.getChordLayout("C", "x32010")
+    </h2>
+    <div id="chord" style="margin-right: 20px;float:left;">
+      <script>
+      document.write(guitar.getChordLayout("C", "x32010"));
+      </script>
+    </div>
+    <div style="clear:both;"></div>
+  </div>
+</section>

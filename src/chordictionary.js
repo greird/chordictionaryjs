@@ -1,4 +1,4 @@
-/**Chordictionary v0.1.0-alpha.0, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
+/**Chordictionary v0.1.0-alpha.1, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 (function (window) {
 
   'use strict';
@@ -440,7 +440,7 @@
               && !chordAnatomy.openString) if (tags.indexOf('bar')) tags.push('bar');
 
             // Apply the tags
-            if (tags.length) validChords[chordId].tag = tags.join(', ');
+            if (tags.length) validChords[chordId].tag = tags;
           } catch (e) {
             console.error(e);
           }
