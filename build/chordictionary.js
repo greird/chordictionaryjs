@@ -264,37 +264,34 @@
       chordType,	// Type of chord (Min, Maj, Dom7, etc.)
       chordFormula = [],
       rootNote,	// Root note of the chord
+      rootIndex,
       results = {
     		error: "",
     		chordList: [],
         offset: 0
     	};
 
+      // 1 - Fetch the right chord formula from the dictionary
     	try {
     		if (typeof(chordName) === "string") {
     			chordName = splitChordName(chordName);
     			rootNote = chordName[0];	// Root note of the chord
     			chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
     			chordNotes.push(rootNote);
+          rootIndex = MDL_A_SCALE.indexOf(rootNote);
     		} else throw WORDING.invalidChordName;
-    	} catch (e) {
-    		results.error = e;
-    		return results;
-    	}
 
-      // 1 - Fetch the right chord formula from the dictionary
-    	try {
     		var chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
     		chordFormula = chordInfo.integer.split('-');
     	} catch (e) {
-        results.error = e;
+        results.error = WORDING.invalidChordName;
     		return results;
     	}
 
       // 2 - Identify chord's notes
       // NOTE: Doesn't work with formulas containing integers > 9
     	for (var i = 1; i < chordFormula.length; i++) {
-    		var index = parseInt(chordFormula[i]) + parseInt(MDL_A_SCALE.indexOf(rootNote));
+    		var index = parseInt(chordFormula[i]) + parseInt(rootIndex);
     		if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
     		chordNotes.push(MDL_A_SCALE[index]);
     	}
@@ -340,109 +337,96 @@
     	}
 
       // 4 - Post processing to remove invalid chords from the pool and sort them by categories
-    	var validChords = [];
-    	for (var iChord = offset; iChord < chordPool.length; iChord++) {
+      try {
+      	var validChords = [];
+      	for (var iChord = offset; iChord < chordPool.length; iChord++) {
 
-        // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
-        var chordAnatomy = {
-          rootBelow4thFret:false,
-          rootIsLowestNote:false,
-          rootOnLowestFret:false,
-          noMuteAfterRoot:false,
-          openString:0,
-          barredString:0,
-          frettedNotes:0,
-          splittedChord:false
-        };
+          // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
+          var chordAnatomy = {
+            rootBelow4thFret:false,
+            rootIsLowestNote:false,
+            rootOnLowestFret:false,
+            noMuteAfterFirstNote:false,
+            openString:false,
+            barredString:0,
+            frettedNotes:0,
+            splittedChord:false
+          };
 
-    		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
-    		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
-    		  && (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
+      		// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
+      		if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
+      		  && (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
 
-    			// For each note of the chord
-    			for (var i = 0; i < chordPool[iChord].length; i++) {
-    				if (!isNaN(chordPool[iChord][i])) {
-      				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
+      			// For each note of the chord
+      			for (var i = 0; i < chordPool[iChord].length; i++) {
+      				if (!isNaN(chordPool[iChord][i])) {
+        				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
 
-              // It's the root !
-              if (MDL_A_SCALE.indexOf(rootNote) == noteIndex) {
-
-                // Check if the root is the first fretted note
-                if (chordAnatomy.frettedNotes === 0) {
-                  chordAnatomy.rootIsLowestNote = true;
-
-                  // Check if the root is below the 5th fret and if there's any mutted string after this root
-                  if (chordPool[iChord][i] <= 4) {
-                    chordAnatomy.rootBelow4thFret = true;
-                    if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterRoot = true;
-                  }
+                // It's the root !
+                if (rootIndex == noteIndex) {
+                  if (chordAnatomy.frettedNotes === 0) chordAnatomy.rootIsLowestNote = true;
+                  if (chordPool[iChord][i] <= 4) chordAnatomy.rootBelow4thFret = true;
+                  if (arrayFind(chordPool[iChord], "min") >= chordPool[iChord][i]) chordAnatomy.rootOnLowestFret = true;
                 }
 
-                // Check if there's no notes below the root on the neck
-                if (arrayFind(chordPool[iChord], "min") >= chordPool[iChord][i]) {
-                  chordAnatomy.rootOnLowestFret = true;
+                if (chordPool[iChord].lastIndexOf("x") < i) chordAnatomy.noMuteAfterFirstNote = true;
+                if (chordPool[iChord][i] === 0) chordAnatomy.openString = true;
+
+                // Check for consecutive fretted notes
+                if ((chordPool[iChord][i] > 0 && i < chordPool[iChord].length - 1 && chordPool[iChord][i] === chordPool[iChord][i-1])
+                  || arrayFind(chordPool[iChord], chordPool[iChord][i]) >= 3) {
+                  chordAnatomy.barredString++;
+                }
+
+                chordAnatomy.frettedNotes++;
+              } else {
+
+                // Check if there's any mutted string in the middle of the chord
+                if (i > 0 && i < chordPool[iChord].length - 1
+                  && ((chordPool[iChord][i+1] != "x" && chordPool[iChord][i-1] != "x")
+                  || (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
+                  chordAnatomy.splittedChord = true;
                 }
               }
+      			}
 
-              // Check for open strings
-              if (chordPool[iChord][i] === 0) {
-                chordAnatomy.openString++;
-              }
+            // Sort and filter the chords according to the previously defined criterias
+            // TODO: Refactoring needed here !! There's probably a faster way to do this..
 
-              // Check for consecutive fretted notes
-              if ((chordPool[iChord][i] > 0 && i < chordPool[iChord].length - 1 && chordPool[iChord][i] === chordPool[iChord][i-1])
-                || arrayFind(chordPool[iChord], chordPool[iChord][i]) >= 3) {
-                chordAnatomy.barredString++;
-              }
-
-              chordAnatomy.frettedNotes++;
-            } else {
-              // Check if there's any mutted string in the middle of the chord
-              if (i > 0 && i < chordPool[iChord].length - 1
-                && ((chordPool[iChord][i+1] != "x" && chordPool[iChord][i-1] != "x")
-                || (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
-                chordAnatomy.splittedChord = true;
-              }
-            }
-    			}
-
-          // Sort and filter the chords according to the previously defined criterias
-          // TODO: Refactoring needed here !! There's probably a faster way to do this..
-
-          try {
             var chordId = validChords.length;
             var tags = [];
             validChords.push({tab: chordPool[iChord], tag:[]});
 
             // Basic chord
             if (chordAnatomy.rootBelow4thFret
-              && chordAnatomy.noMuteAfterRoot
-              && chordAnatomy.rootIsLowestNote) {
+              && chordAnatomy.noMuteAfterFirstNote
+              && chordAnatomy.rootIsLowestNote // FIXME: Prevent a standard D chord to be tagged
+              && !chordAnatomy.splittedChord) {
               if (chordAnatomy.barredString >= 1) {
-                if (chordAnatomy.rootOnLowestFret) {
-                  if (tags.indexOf('basic')) tags.push('basic');
-                  if (tags.indexOf('bar')) tags.push('bar');
-                }
+                if (chordAnatomy.rootOnLowestFret) if (tags.indexOf('basic')) tags.push('basic');
               } else if (tags.indexOf('basic')) tags.push('basic');
             }
+
             // Powerchord
-            if (!chordAnatomy.noMuteAfterRoot
+            // FIXME: This doesn't work at all !!
+            if (!chordAnatomy.noMuteAfterFirstNote
               && chordAnatomy.frettedNotes <= 3
               && chordAnatomy.rootIsLowestNote
               && chordAnatomy.rootOnLowestFret
               && !chordAnatomy.splittedChord
               && !chordAnatomy.openString) if (tags.indexOf('powerchord')) tags.push('powerchord');
+
             // Bar chord
+            // FIXME: chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret ==> Prevent some valid bar chords to be tagged..
             if (chordAnatomy.rootIsLowestNote
               && chordAnatomy.rootOnLowestFret
               && chordAnatomy.barredString >= 1
+              && chordAnatomy.noMuteAfterFirstNote
               && !chordAnatomy.splittedChord
               && !chordAnatomy.openString) if (tags.indexOf('bar')) tags.push('bar');
 
             // Apply the tags
             if (tags.length) validChords[chordId].tag = tags;
-          } catch (e) {
-            console.error(e);
           }
 
           // If limit is reached, stop the loop and store the current index
@@ -451,7 +435,9 @@
             break;
           }
     		}
-    	}
+      } catch (e) {
+        console.error(e);
+      }
 
       results.chordList = validChords;
       results.offset = offset;
@@ -550,7 +536,6 @@
         return true;
       } else {
         throw WORDING.invalidTab;
-        return false;
       }
     };
 
@@ -564,7 +549,6 @@
         return true;
       } else {
         throw WORDING.invalidTuning;
-        return false;
       }
     };
 
@@ -614,34 +598,30 @@
     function splitTab(tab, tuning) {
       tuning = tuning || "EADGBE";
       var tabArray = [];
-      try {
-        if (tab.length <= tuning.length) return tab.split("");
-        else if (tab.length == tuning.length * 2) {
+      if (tab.length <= tuning.length) return tab.split("");
+      else if (tab.length == tuning.length * 2) {
+        for (var i = 0; i < tab.length; i++) {
+           if (!(i % 2)) tabArray.push(tab.slice(i, i+2));
+        }
+        return tabArray;
+      }
+      else if (tab.length > tuning.length) {
+        if (arrayFind(tab.split(""), "max") > 1) {
+          // NOTE: Split after each caracter from [2-9]
           for (var i = 0; i < tab.length; i++) {
-             if (!(i % 2)) tabArray.push(tab.slice(i, i+2));
+            if (tab.charAt(i).search(/[x02-9]/i) != -1
+              || (tab.charAt(i) == 1 && tab.charAt(i+1).search(/x/i) != -1))
+            {
+              tabArray.push(tab.slice(i, i+1));
+            }
+            else if (tab.charAt(i+1).search(/x/i) == -1) {
+              tabArray.push(tab.slice(i, i+2));
+              i++;
+            }
           }
           return tabArray;
-        }
-        else if (tab.length > tuning.length) {
-          if (arrayFind(tab.split(""), "max") > 1) {
-            // NOTE: Split after each caracter from [2-9]
-            for (var i = 0; i < tab.length; i++) {
-              if (tab.charAt(i).search(/[x02-9]/i) != -1
-                || (tab.charAt(i) == 1 && tab.charAt(i+1).search(/x/i) != -1))
-              {
-                tabArray.push(tab.slice(i, i+1));
-              }
-              else if (tab.charAt(i+1).search(/x/i) == -1) {
-                tabArray.push(tab.slice(i, i+2));
-                i++;
-              }
-            }
-            return tabArray;
-          } else throw WORDING.invalidTab;
-        }
-      } catch (e) {
-        return false;
-      }
+        } else throw WORDING.invalidTab;
+      } else return false;
     }
 
     /** Split tuning into notes
@@ -652,25 +632,22 @@
       var tuningArray = [];
       var noSharps = new RegExp("^[a-g]+$", "i");
       var containSharps = new RegExp("^[#a-g]+$", "i");
-      try {
-        if (noSharps.test(tuning)) return tuning.toUpperCase().split("");
-        else if (containSharps.test(tuning)) {
-          tuning = tuning.toUpperCase();
-          for (var i = 0; i < tuning.length; i++) {
-            if (tuning.charAt(i) != "#") {
-              if (tuning.charAt(i+1) != "#") tuningArray.push(tuning.slice(i, i+1));
-              else {
-                tuningArray.push(tuning.slice(i, i+2));
-                i++;
-              }
+
+      if (noSharps.test(tuning)) {
+        return tuning.toUpperCase().split("");
+      } else if (containSharps.test(tuning)) {
+        tuning = tuning.toUpperCase();
+        for (var i = 0; i < tuning.length; i++) {
+          if (tuning.charAt(i) != "#") {
+            if (tuning.charAt(i+1) != "#") tuningArray.push(tuning.slice(i, i+1));
+            else {
+              tuningArray.push(tuning.slice(i, i+2));
+              i++;
             }
           }
-          return tuningArray;
         }
-        else throw WORDING.invalidTuning;
-      } catch (e) {
-        return false;
-      }
+        return tuningArray;
+      } else throw WORDING.invalidTuning;
     }
 
     /** Separates the chord root from the chord nature/quality;
@@ -704,15 +681,11 @@
      * @return {Array} | An array with no duplicates;
     */
     function removeDuplicates(arr) {
-      try {
-        if (!Array.isArray(arr)) throw arr + " is not an array.";
-        else {
-          return arr.filter(function(elem, index, self) {
-            return index == self.indexOf(elem);
-          });
-        }
-      } catch (e) {
-        return false;
+      if (!Array.isArray(arr)) throw arr + " is not an array.";
+      else {
+        return arr.filter(function(elem, index, self) {
+          return index == self.indexOf(elem);
+        });
       }
     }
 
@@ -723,7 +696,6 @@
      * @return {Boolean} | false if no result
     */
     function searchInObject(obj, keyword) {
-      try {
         if(typeof obj === "object") {
           if(typeof keyword == "string") keyword = keyword.toLowerCase();
           for (var i = 0; i < obj.length; i++) {
@@ -738,10 +710,6 @@
         } else {
           throw obj +' is not an object.';
         }
-        return false;
-      } catch (e) {
-        return false;
-      }
     }
 
     /** Find the minimum/maximum int in an array ignoring any NaN value OR Find an occurrences of a keyword in an array
@@ -750,14 +718,13 @@
      * @param {String} what | Required | "min" or "max" or a keyword to search for
     */
     function arrayFind(arr, what) {
-      var result;
+      var result = false;
 
-      try {
-        if (!Array.isArray(arr)) throw arr + " is not an array.";
-        if (!what) throw "Missing parameter.";
+      if (!Array.isArray(arr)) throw arr + " is not an array.";
+      if (typeof what === 'undefined') throw "Missing parameter.";
 
-        switch (what) {
-          case "min":
+      switch (what) {
+        case "min":
           result = Math.min.apply(Math, arr);
           if(!isNaN(result)) return result;
           else {
@@ -774,8 +741,8 @@
               }
             }
           }
-          break;
-          case "max":
+        break;
+        case "max":
           result = Math.max.apply(Math, arr);
           if(!isNaN(result)) return result;
           else {
@@ -792,14 +759,10 @@
               }
             }
           }
-          break;
-          default:
-            result = occurrences(arr.join(""), what);
-          break;
-        }
-
-      } catch (e) {
-        return false;
+        break;
+        default:
+          result = occurrences(arr.join(""), what);
+        break;
       }
 
       return result;
