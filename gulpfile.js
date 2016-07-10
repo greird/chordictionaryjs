@@ -2,24 +2,33 @@
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
+    csso = require('gulp-csso'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
     qunit = require('gulp-qunit');
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
-    return gulp.src('src/*.js')
-        .pipe(gulp.dest('build'))
+    return gulp.src('./src/*.js')
+    
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify({ preserveComments: "license" }))
-        .pipe(gulp.dest('build'))
+        .pipe(gulp.dest('./build'))
 });
 
 // Lint Task
 gulp.task('lint', function() {
-    return gulp.src('src/*.js')
+    return gulp.src('./src/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
+});
+
+// CSS task
+gulp.task('css', function () {
+    return gulp.src('./src/chordictionary.css')
+        .pipe(csso())
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest('./build'));
 });
 
 // Test Tasks
@@ -39,11 +48,11 @@ gulp.task('testbuild', function() {
 
  // Build task
  gulp.task('build', function() {
-   gulp.start('lint', 'scripts', 'testbuild');
+   gulp.start('css', 'lint', 'scripts', 'testbuild');
  });
 
 // Watch
 gulp.task('watch', function() {
-  // Watch .js files
-  gulp.watch('src/*.js', ['lint', 'scripts']);
+  gulp.watch('./src/*.js', ['lint', 'scripts']);
+  gulp.watch('./src/chordictionary.css', ['css']);
 });
