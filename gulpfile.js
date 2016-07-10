@@ -3,7 +3,8 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
-    concat = require('gulp-concat');
+    concat = require('gulp-concat'),
+    qunit = require('gulp-qunit');
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
@@ -21,15 +22,19 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
+// Test Task
+gulp.task('test', function() {
+    return gulp.src('./_testfiles/index.html')
+        .pipe(qunit());
+});
+
 // Default task
  gulp.task('default', ['watch'], function() {
-   gulp.start('lint', 'scripts');
+   gulp.start('lint', 'test', 'scripts');
  });
 
 // Watch
 gulp.task('watch', function() {
-
   // Watch .js files
   gulp.watch('src/*.js', ['lint', 'scripts']);
-
 });
