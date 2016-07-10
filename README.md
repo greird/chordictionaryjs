@@ -1,6 +1,9 @@
 ChordictionaryJS
 ======
 
+![status](https://img.shields.io/badge/Dependencies-none-green.svg)
+[![GitHub issues](https://img.shields.io/github/issues/greird/chordictionaryjs.svg?maxAge=2592000)](https://github.com/greird/chordictionaryjs/issues)
+
 Web-based dynamic chord recognition and generation for any fretted instrument.
 It converts common chord tab notation, such as `x32010`, into its graphical representation, recognizes the chord and returns its real name and composition.
 
