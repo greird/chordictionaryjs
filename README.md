@@ -133,4 +133,6 @@ npm install
 
 The only file to edit is `/src/chordictionary.js`.
 
-Type `Gulp` to compile the content of `/src` into `/build`.
+To test the `/src/chordictionary.js` file, type `Gulp test`.
+
+Type `Gulp build` to compile the content of `/src` into `/build`. Tests will be run on the compiled file.

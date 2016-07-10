@@ -22,15 +22,24 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
-// Test Task
+// Test Tasks
 gulp.task('test', function() {
-    return gulp.src('./_testfiles/index.html')
+    return gulp.src('./_testfiles/test_dev.html') // check the src file
+        .pipe(qunit());
+});
+gulp.task('testbuild', function() {
+    return gulp.src('./_testfiles/test_build.html') // check the builded file
         .pipe(qunit());
 });
 
 // Default task
  gulp.task('default', ['watch'], function() {
-   gulp.start('lint', 'test', 'scripts');
+   gulp.start('lint', 'scripts');
+ });
+
+ // Build task
+ gulp.task('build', function() {
+   gulp.start('lint', 'scripts', 'testbuild');
  });
 
 // Watch

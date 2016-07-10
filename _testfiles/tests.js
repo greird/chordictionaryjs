@@ -2,10 +2,17 @@ var guitar = new Chordictionary.Instrument('EADGBE', 24, 5, 4);
 
 QUnit.test("Chordictionary.isValidTab()", function(assert) {
 	assert.ok(Chordictionary.isValidTab("x32010") === true, "x32010 is a valid tab.");
+	assert.ok(Chordictionary.isValidTab("911111099") === true, "911111099 is a valid tab (['9','11','11','10','9','9']).");
+});
+
+QUnit.test("Chordictionary.isValidTuning()", function(assert) {
+	assert.ok(Chordictionary.isValidTuning("EADGBE") === true, "EADGBE is a valid tuning.");
+	assert.ok(Chordictionary.isValidTuning("E#A#D#G#B#E#") === true, "E#A#D#G#B#E# is a valid tuning.");
+	assert.ok(Chordictionary.isValidTuning("DA#DGA#D") === true, "DADGA#D is a valid tuning.");
 });
 
 QUnit.test("guitar.getChordInfo()", function(assert) {
-	
+
 // Major chords
 	// A
 	assert.ok(guitar.getChordInfo('x02220').name == "A", "x02220 is an A chord");
