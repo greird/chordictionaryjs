@@ -1,7 +1,8 @@
 ChordictionaryJS
 ======
 
-![status](https://img.shields.io/badge/Dependencies-none-green.svg)
+![status](https://img.shields.io/badge/dependencies-none-green.svg)
+![status](https://img.shields.io/badge/version-alpha-blue.svg)
 [![GitHub issues](https://img.shields.io/github/issues/greird/chordictionaryjs.svg?maxAge=2592000)](https://github.com/greird/chordictionaryjs/issues)
 
 Web-based dynamic chord recognition and generation for any fretted instrument.
