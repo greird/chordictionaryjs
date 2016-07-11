@@ -14,30 +14,41 @@ QUnit.test("Chordictionary.isValidTuning()", function(assert) {
 QUnit.test("guitar.getChordInfo()", function(assert) {
 	
 	// Add chords to be tested below. [tab, name, notes, formula]
-	var chords = [
+	var 
+		formula = {
+			"min": "1-b3-5",
+			"maj": "1-3-5",
+			"6": "1-3-6",
+			"maj6": "1-3-5-6",
+			"7": "1-3-5-b7",
+			"m7": "1-b3-5-b7",
+			"m6": "1-b3-5-6",
+			"m7b5": "1-b3-b5-b7"
+		},
+		chords = [
 		// Major
-		['x02220', 'A', 'xAEAC#E', '1-3-5'], 
-		['x24442', 'B', 'xBF#BD#F#', '1-3-5'], 
-		['x32010', 'C', 'xCEGCE', '1-3-5'], 
-		['xx0232', 'D', 'xxDADF#', '1-3-5'], 
-		['022100', 'E', 'EBEG#BE', '1-3-5'], 
-		['133211', 'F', 'FCFACF', '1-3-5'], 
-		['320033', 'G', 'GBDGDG', '1-3-5'], 
+		['x02220', 'A', 'xAEAC#E', formula.maj], 
+		['x24442', 'B', 'xBF#BD#F#', formula.maj], 
+		['x32010', 'C', 'xCEGCE', formula.maj], 
+		['xx0232', 'D', 'xxDADF#', formula.maj], 
+		['022100', 'E', 'EBEG#BE', formula.maj], 
+		['133211', 'F', 'FCFACF', formula.maj], 
+		['320033', 'G', 'GBDGDG', formula.maj], 
 		// Minor
-		['x02210', ['Amin', 'C6'], 'xAEACE', ['1-b3-5', '1-3-6']], 
-		['x24432', ["Bmin", "D6"], 'xBF#BDF#', ['1-b3-5', '1-3-6']], 
-		['x35543', ["Cmin", "D#6"], 'xCGCD#G', ['1-b3-5', '1-3-6']], 
-		['xx0231', ["Dmin", "F6"], 'xxDADF', ['1-b3-5', '1-3-6']], 
-		['022000', ["Emin", "G6"], 'EBEGBE', ['1-b3-5', '1-3-6']], 
-		['133111', ["Fmin", "G#6"], 'FCFG#CF', ['1-b3-5', '1-3-6']], 
-		['355333', ["Gmin", "A#6"], 'GDGA#DG', ['1-b3-5', '1-3-6']],
+		['x02210', ['Amin', 'C6'], 'xAEACE', [formula.min, formula['6']]], 
+		['x24432', ["Bmin", "D6"], 'xBF#BDF#', [formula.min, formula['6']]], 
+		['x35543', ["Cmin", "D#6"], 'xCGCD#G', [formula.min, formula['6']]], 
+		['xx0231', ["Dmin", "F6"], 'xxDADF', [formula.min, formula['6']]], 
+		['022000', ["Emin", "G6"], 'EBEGBE', [formula.min, formula['6']]], 
+		['133111', ["Fmin", "G#6"], 'FCFG#CF', [formula.min, formula['6']]], 
+		['355333', ["Gmin", "A#6"], 'GDGA#DG', [formula.min, formula['6']]],
 		// 7
-		['131211', 'F7', 'FCD#ACF', '1-3-5-b7'],
+		['131211', 'F7', 'FCD#ACF', formula['7']],
 		// Minor 7 or 6
-		['133231', ["F6", "Dm7"], 'FCFADF', ["1-3-5-6", "1-b3-5-b7"]], 
+		['133231', ["F6", "Dm7"], 'FCFADF', [formula.maj6, formula.m7]], 
 		// Minor 6 or Minor 7b5
-		['xx5545', ["Cm6", "Am7b5"], 'xxGCD#A', ["1-b3-5-6", "1-b3-b5-b7"]],
-		['8988xx', ["D#m6", "Cm7b5"], 'CF#A#D#xx', ["1-b3-5-6", "1-b3-b5-b7"]]
+		['xx5545', ["Cm6", "Am7b5"], 'xxGCD#A', [formula.m6, formula.m7b5]],
+		['8988xx', ["D#m6", "Cm7b5"], 'CF#A#D#xx', [formula.m6, formula.m7b5]]
 	];
 
 	for (var i = 0; i < chords.length; i++) {
