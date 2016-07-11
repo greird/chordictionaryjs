@@ -2,9 +2,9 @@ ChordictionaryJS
 ======
 
 ![status](https://img.shields.io/badge/version-alpha-blue.svg)
-[![David](https://img.shields.io/david/greird/chordictionaryjs.svg?maxAge=2592000)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
-[![David](https://img.shields.io/david/dev/greird/chordictionaryjs.svg?maxAge=2592000)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
-[![GitHub issues](https://img.shields.io/github/issues/greird/chordictionaryjs.svg?maxAge=2592000)](https://github.com/greird/chordictionaryjs/issues)
+[![David](https://img.shields.io/david/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
+[![David](https://img.shields.io/david/dev/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
+[![GitHub issues](https://img.shields.io/github/issues/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/issues)
 
 Web-based dynamic chord recognition and generation for any fretted instrument.
 It converts common chord tab notation, such as `x32010`, into its graphical representation, recognizes the chord and returns its real name and composition.
