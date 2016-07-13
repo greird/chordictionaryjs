@@ -5,13 +5,64 @@ ChordictionaryJS
 [![David](https://img.shields.io/david/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
 [![David](https://img.shields.io/david/dev/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
 [![GitHub issues](https://img.shields.io/github/issues/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/issues)
+[![Build Status](https://travis-ci.org/greird/chordictionaryjs.svg)](https://travis-ci.org/greird/chordictionaryjs)
 
 Web-based dynamic chord recognition and generation for any fretted instrument.
 It converts common chord tab notation, such as `x32010`, into its graphical representation, recognizes the chord and returns its real name and composition.
 
 **Please note this is work in progress and it is not 100% reliable yet.**
 
+## Table of Contents
+- [List of supported chords](#list-of-supported-chords)
+- [Setup](#setup)
+- [How To](#how-to)
+- [Development](#development)
+- [What's next ?](#whats-next-)
+
 ***
+
+
+## List of supported chords
+
+Note that tests have been run through guitar standard tuning only (EADGBE). 
+Results may vary depending on your instrument's tuning and number of strings.
+
+##### Supported
+- Minor (min)
+- Major (maj)
+- Powerchord (5)
+- Suspended fourth (sus4)
+- Suspended second (sus2)
+- Sixth (6)
+- Seventh & Dominant seventh (7)
+- Minor seventh (m7)
+- Major seventh (maj7)
+- Minor, flat sixth (mb6)
+
+##### Not supported yet
+- Minor sixth (m6) - recognized but wrong formula displayed
+- Minor seventh, flat fifth (m7b5) - recognized but wrong formula displayed
+- Sixth, added ninth (6/9)
+- Added ninth(add9)
+- Major ninth (maj9)
+- Major seventh, sharp eleventh (maj7#11)
+- Major thirteen (maj13)
+
+##### To be checked
+- Major sixth (maj6)
+- Minor, added ninth (m(add9))
+- Minor sixth, added ninth (m6/9)
+- Minor, major seventh (m(maj7))
+- Minor ninth (m9)
+- Minor ninth, major seventh (m9(maj7))
+- Minor eleventh (m9b5)
+- Minor thirteen (m13)
+- Augmented (aug)
+- Diminished (dim)
+- other ?
+
+***
+
 
 ## Setup
 
@@ -106,7 +157,8 @@ True // Will be interpreted as ['E#','A#','D#','G#','B#','E#']
 
 ***
 
-## For dev purpose
+
+## How to contribute
 
 ```
 git clone https://github.com/greird/chordictionaryjs.git
@@ -121,46 +173,6 @@ Type `Gulp build` to compile the content of `/src` into `/build`. Tests will be 
 
 ***
 
-## List of supported chords
-
-Note that tests have been run through guitar standard tuning only (EADGBE). 
-Results may vary depending on your instrument's tuning and number of strings.
-
-##### Supported
-- Minor (min)
-- Major (maj)
-- Powerchord (5)
-- Suspended fourth (sus4)
-- Suspended second (sus2)
-- Sixth (6)
-- Seventh & Dominant seventh (7)
-- Minor seventh (m7)
-- Major seventh (maj7)
-- Minor, flat sixth (mb6)
-- Minor sixth (m6) - recognized but wrong formula displayed
-- Minor seventh, flat fifth (m7b5) - recognized but wrong formula displayed
-
-##### Not supported yet
-- Sixth, added ninth (6/9)
-- Added ninth(add9)
-- Major ninth (maj9)
-- Major seventh, sharp eleventh (maj7#11)
-- Major thirteen (maj13)
-
-##### To be checked
-- Major sixth (maj6)
-- Minor, added ninth (m(add9))
-- Minor sixth, added ninth (m6/9)
-- Minor, major seventh (m(maj7))
-- Minor ninth (m9)
-- Minor ninth, major seventh (m9(maj7))
-- Minor eleventh (m9b5)
-- Minor thirteen (m13)
-- Augmented (aug)
-- Diminished (dim)
-- other ?
-
-***
 
 ## What's next ?
 
