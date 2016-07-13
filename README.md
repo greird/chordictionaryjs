@@ -16,7 +16,7 @@ It converts common chord tab notation, such as `x32010`, into its graphical repr
 - [List of supported chords](#list-of-supported-chords)
 - [Setup](#setup)
 - [How To](#how-to)
-- [Development](#development)
+- [Contribute](#contribute)
 - [What's next ?](#whats-next-)
 
 ***
@@ -158,7 +158,9 @@ True // Will be interpreted as ['E#','A#','D#','G#','B#','E#']
 ***
 
 
-## How to contribute
+## Contribute
+
+Come on guys, I can't do this alone ! :)
 
 ```
 git clone https://github.com/greird/chordictionaryjs.git
@@ -167,9 +169,12 @@ npm install
 
 The only file to edit is `/src/chordictionary.js`.
 
-To test the `/src/chordictionary.js` file, type `Gulp test` or go to `/_testfiles/test_dev.html`.
+To run some unit tests on your modifications, type `Gulp test` or go to `/_testfiles/test_dev.html`.  
+You may need to edit or add new tests in `/_testfiles/test.js`.  
+I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 
-Type `Gulp build` to compile the content of `/src` into `/build`. Tests will be run on the compiled file.
+Finally, type `Gulp build` to compile the content of `/src` into `/build`.  
+It will lint and minify your code before running the tests again on the final file.
 
 ***
 
