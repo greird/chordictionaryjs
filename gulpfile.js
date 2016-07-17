@@ -26,7 +26,9 @@ gulp.task('lint', function() {
                 'semi': [2, 'always'],
                 'eqeqeq': [1, 'smart'],
                 'strict': [2, 'safe'], 
-                'no-redeclare': 2
+                'no-redeclare': 2, 
+                'no-lonely-if': 1, 
+                'one-var-declaration-per-line': [1, "initializations"]
             },
             envs: [
                 'browser',
