@@ -1,15 +1,17 @@
 // Load plugins
 var gulp = require('gulp'),
-    jshint = require('gulp-jshint'),
+    eslint = require('gulp-eslint'),
     uglify = require('gulp-uglify'),
     csso = require('gulp-csso'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
-    qunit = require('gulp-qunit');
+    qunit = require('gulp-qunit'),
+    babel = require("gulp-babel");
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
     return gulp.src('./src/*.js')
+        .pipe(babel())
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify({ preserveComments: "license" }))
         .pipe(gulp.dest('./build'))
@@ -18,8 +20,20 @@ gulp.task('scripts', function() {
 // Lint Task
 gulp.task('lint', function() {
     return gulp.src('./src/*.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'));
+        .pipe(eslint({
+            'rules': {
+                'quotes': [1, 'double', {'avoidEscape': true}],
+                'semi': [2, 'always'],
+                'eqeqeq': [1, 'smart'],
+                'strict': [2, 'safe'], 
+                'no-redeclare': 2
+            },
+            envs: [
+                'browser',
+                'es6'
+            ]
+        }))
+        .pipe(eslint.format())
 });
 
 // CSS task

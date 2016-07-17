@@ -127,7 +127,7 @@
     	stringRootNote; // Guitar string currently analysed
 
     	try {
-    		for (var i = 0; i < tab.length; i++) {
+    		for (let i = 0; i < tab.length; i++) {
     			// It's not a fret number
     			if (isNaN(tab[i])) {
     				notes.push("x");
@@ -154,7 +154,7 @@
 
     	try {
     		// For each string
-    		for (var i = 0; i < this.tuning.length; i++) {
+    		for (let i = 0; i < this.tuning.length; i++) {
 
     			// Add a new root/formula entry
     			rawFormulas.push({
@@ -166,7 +166,7 @@
     			if (!notes[i] || notes[i] == "x") continue;
 
     			// For each note in the chord
-    			for (var j = 0; j < notes.length; j++) {
+    			for (let j = 0; j < notes.length; j++) {
 
     				// Skip if it is not a note (x or undefined)
     				if (!notes[j] || notes[j] == "x") continue;
@@ -193,7 +193,7 @@
 
       // 3 - Remove duplicates and invalid formulas
 
-    	for (var i = 0; i < rawFormulas.length; i++) {
+    	for (let i = 0; i < rawFormulas.length; i++) {
 
     		if (rawFormulas[i].root === "") continue;	// If there's no root, do not keep the formula
     		roots.push(rawFormulas[i].root);	// Store the root
@@ -212,10 +212,10 @@
     	matches = [];
 
     	try {
-    		for (var i = 0; i < MDL_CHORD_FORMULAS.length; i++) {
+    		for (let i = 0; i < MDL_CHORD_FORMULAS.length; i++) {
     			dictionary = MDL_CHORD_FORMULAS[i].integer;
 
-    			for (var j = 0; j < intFormulas.length; j++) {
+    			for (let j = 0; j < intFormulas.length; j++) {
     				regex = new RegExp("^"+intFormulas[j]+"$", "g");
     				// Record the match if the root has been identified
     				if (dictionary.match(regex) && roots[j]) {
@@ -290,7 +290,7 @@
 
       // 2 - Identify chord's notes
       // NOTE: Doesn't work with formulas containing integers > 9
-    	for (var i = 1; i < chordFormula.length; i++) {
+    	for (let i = 1; i < chordFormula.length; i++) {
     		var index = parseInt(chordFormula[i]) + parseInt(rootIndex);
     		if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
     		chordNotes.push(MDL_A_SCALE[index]);
@@ -316,7 +316,7 @@
     	for (string = 0; string < this.tuning.length; string++) {
     		// For each potential note on this string
     		var chordPoolLength = chordPool.length;
-    		for (var i = 0; i < tabPool[string].length; i++) {
+    		for (let i = 0; i < tabPool[string].length; i++) {
     			if(chordPool[i]) {
     				for (var chordIndex = 0; chordIndex < chordPoolLength; chordIndex++) {
     					if(i === 0  ) {
@@ -358,7 +358,7 @@
       		  && (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
 
       			// For each note of the chord
-      			for (var i = 0; i < chordPool[iChord].length; i++) {
+      			for (let i = 0; i < chordPool[iChord].length; i++) {
       				if (!isNaN(chordPool[iChord][i])) {
         				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
 
@@ -464,7 +464,7 @@
 
     	// exclude non-played strings from the chord notation
     	var notes = [];
-    	for (var i = 0; i < frets.length; i++) {
+    	for (let i = 0; i < frets.length; i++) {
     		if (isNaN(frets[i]) === false) notes.push(frets[i]);
     	}
 
@@ -600,7 +600,7 @@
       var tabArray = [];
       if (tab.length <= tuning.length) return tab.split("");
       else if (tab.length == tuning.length * 2) {
-        for (var i = 0; i < tab.length; i++) {
+        for (let i = 0; i < tab.length; i++) {
            if (!(i % 2)) tabArray.push(tab.slice(i, i+2));
         }
         return tabArray;
@@ -608,7 +608,7 @@
       else if (tab.length > tuning.length) {
         if (arrayFind(tab.split(""), "max") > 1) {
           // NOTE: Split after each caracter from [2-9]
-          for (var i = 0; i < tab.length; i++) {
+          for (let i = 0; i < tab.length; i++) {
             if (tab.charAt(i).search(/[x02-9]/i) != -1
               || (tab.charAt(i) == 1 && tab.charAt(i+1).search(/x/i) != -1))
             {
@@ -637,7 +637,7 @@
         return tuning.toUpperCase().split("");
       } else if (containSharps.test(tuning)) {
         tuning = tuning.toUpperCase();
-        for (var i = 0; i < tuning.length; i++) {
+        for (let i = 0; i < tuning.length; i++) {
           if (tuning.charAt(i) != "#") {
             if (tuning.charAt(i+1) != "#") tuningArray.push(tuning.slice(i, i+1));
             else {
@@ -698,7 +698,7 @@
     function searchInObject(obj, keyword) {
         if(typeof obj === "object") {
           if(typeof keyword == "string") keyword = keyword.toLowerCase();
-          for (var i = 0; i < obj.length; i++) {
+          for (let i = 0; i < obj.length; i++) {
             for (var key in obj[i]) {
               if (obj[i][key] == keyword) return obj[i];
               else if(typeof obj[i][key] == "string") {
@@ -728,7 +728,7 @@
           result = Math.min.apply(Math, arr);
           if(!isNaN(result)) return result;
           else {
-            for (var i = 0; i < arr.length; i++) {
+            for (let i = 0; i < arr.length; i++) {
               if (isNaN(arr[i])) continue;
               else {
                 if (isNaN(result)) {
@@ -746,7 +746,7 @@
           result = Math.max.apply(Math, arr);
           if(!isNaN(result)) return result;
           else {
-            for (var i = 0; i < arr.length; i++) {
+            for (let i = 0; i < arr.length; i++) {
               if (isNaN(arr[i])) continue;
               else {
                 if (isNaN(result)) {
