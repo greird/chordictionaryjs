@@ -163,13 +163,17 @@
     			});
 
     			// Skip string if it is not played (x or undefined)
-    			if (!notes[i] || notes[i] == "x") continue;
+    			if (!notes[i] || notes[i].toLowerCase() === "x") {
+            continue;
+          }
 
     			// For each note in the chord
     			for (let j = 0; j < notes.length; j++) {
 
     				// Skip if it is not a note (x or undefined)
-    				if (!notes[j] || notes[j] == "x") continue;
+    				if (!notes[j] || notes[j].toLowerCase() === "x") {
+              continue;
+            }
 
     				// Calculate interval between notes and the potential root
     				let interval = MDL_A_SCALE.indexOf(notes[j]) - MDL_A_SCALE.indexOf(notes[i]);
@@ -298,9 +302,10 @@
 
     	// Find the position of theses notes on the fretboard and store it in tabPool
     	let tabPool = [],
-    	 fretPosition;
+    	 fretPosition, 
+       string = 0;
 
-    	for (let string = 0; string < this.tuning.length; string++) {
+    	for (string = 0; string < this.tuning.length; string++) {
     		tabPool[string] = [];
     		tabPool[string].push("x");
     		for (let note = 0; note < chordNotes.length; note++) {
@@ -338,8 +343,8 @@
     	}
 
       // 4 - Post processing to remove invalid chords from the pool and sort them by categories
+      let validChords = [];
       try {
-      	let validChords = [];
       	for (var iChord = offset; iChord < chordPool.length; iChord++) {
 
           // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
@@ -364,7 +369,7 @@
         				var noteIndex = chordPool[iChord][i] + MDL_A_SCALE.indexOf(this.tuning[i]);
 
                 // It's the root !
-                if (rootIndex == noteIndex) {
+                if (rootIndex === noteIndex) {
                   if (chordAnatomy.frettedNotes === 0) chordAnatomy.rootIsLowestNote = true;
                   if (chordPool[iChord][i] <= 4) chordAnatomy.rootBelow4thFret = true;
                   if (arrayFind(chordPool[iChord], "min") >= chordPool[iChord][i]) chordAnatomy.rootOnLowestFret = true;
@@ -384,7 +389,7 @@
 
                 // Check if there's any mutted string in the middle of the chord
                 if (i > 0 && i < chordPool[iChord].length - 1
-                  && ((chordPool[iChord][i+1] != "x" && chordPool[iChord][i-1] != "x")
+                  && ((chordPool[iChord][i+1] !== "x" && chordPool[iChord][i-1] !== "x")
                   || (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
                   chordAnatomy.splittedChord = true;
                 }
@@ -457,8 +462,11 @@
     	 fretsToDisplay = this.fretsToDisplay;
 
     	try {
-    		if (Chordictionary.isValidTab(tab)) frets = splitTab(tab);
-        else frets = [0,0,0,0,0,0];
+    		if (Chordictionary.isValidTab(tab)) {
+          frets = splitTab(tab);
+        } else {
+          frets = [0,0,0,0,0,0];
+        }
     	} catch (e) {
     		return false;
     	}
@@ -466,7 +474,9 @@
     	// exclude non-played strings from the chord notation
     	let notes = [];
     	for (let i = 0; i < frets.length; i++) {
-    		if (isNaN(frets[i]) === false) notes.push(frets[i]);
+    		if (isNaN(frets[i]) === false) {
+          notes.push(frets[i]);
+        }
     	}
 
     	// calculate the highest and lowest frets to display
@@ -475,16 +485,22 @@
 
     	// Make sure the graphic starts at the first fret when it is in range or move up the neck if necessary
     	let base = 1;
-    	if (highestFret >= fretsToDisplay) base = (lowestFret > 0 ? lowestFret : 1);
+    	if (highestFret >= fretsToDisplay) {
+        base = (lowestFret > 0 ? lowestFret : 1);
+      }
 
     	// base can be wrong in case of open strings, we're using the highest note to fix that
-    	if (base === 1 && highestFret > 5) base = highestFret - fretsToDisplay + 2;
+    	if (base === 1 && highestFret > 5) {
+        base = highestFret - fretsToDisplay + 2;
+      }
 
       // Enable auto-resize of the chord layout
       // FIXME: in case of open string, if tab doesn't fit in the layout it should throw an error but doesn't.
       try {
+
         if (fretsToDisplay === 0) {
           fretsToDisplay = highestFret - base + 2;
+
         } else if (highestFret - base + 1 > fretsToDisplay - 1) {
           fretsToDisplay = highestFret - base + 2;
           throw WORDING.croppedChordLayout;
@@ -499,24 +515,42 @@
 
     		let fretNumber = gtrFret + base - 1; // Fret number to be displayed
 
-    		if (base == 1 && gtrFret === 0) chordLayout += "<thead>";
-    		if (fretNumber % 2 && fretNumber > 0) chordLayout += '<tr><th class="fret-number">' + fretNumber + "</th>";
-    		else chordLayout += "<tr><th></th>"; // exclude fret number column
+    		if (base === 1 && gtrFret === 0) {
+          chordLayout += "<thead>";
+        }
+    		if (fretNumber % 2 && fretNumber > 0) {
+          chordLayout += '<tr><th class="fret-number">' + fretNumber + "</th>";
+        }	else {
+          chordLayout += "<tr><th></th>"; // exclude fret number column
+        }
 
     		// Generate 6 strings (cols) for the current fret
     		for (let gtrString = 0; gtrString < this.tuning.length; gtrString++) {
+          // TODO: the parseInt check should be done in splitTab(), thus this var declaration would be useless
+          let fretOnString = parseInt(frets[gtrString]);
+
     			if (gtrFret === 0) {
-    				if (frets[gtrString] === 0) chordLayout += '<th><div class="dot open"></div></th>';
-    				else chordLayout += "<th></th>";
-    			}
-    			else {
-    				if (frets[gtrString] == (base + gtrFret - 1)) chordLayout += '<td><div class="dot plain">'+ frets[gtrString] +"</div></td>";
-    				else chordLayout += "<td></td>";
+
+    				if (fretOnString === 0) {
+              chordLayout += '<th><div class="dot open"></div></th>';
+            } else {
+              chordLayout += "<th></th>";
+            }
+    			}	else {
+
+    				if (fretOnString === (base + gtrFret - 1)) {
+              chordLayout += '<td><div class="dot plain">'+ frets[gtrString] +"</div></td>";
+            }	else {
+              chordLayout += "<td></td>";
+            }
     			}
     		}
 
-    		if (base == 1 && gtrFret === 0) chordLayout += "<tr></thead>";
-    		else chordLayout += "</tr>";
+    		if (base === 1 && gtrFret === 0) {
+          chordLayout += "<tr></thead>";
+        }	else {
+          chordLayout += "</tr>";
+        }
 
     	}
     	chordLayout += '<caption align="bottom">' + name + "</caption>";
@@ -572,18 +606,31 @@
       let result, index, iNote, notesCount = {};
 
       for (let iFret = 0; iFret < tab.length; iFret++) {
-        if (isNaN(tab[iFret])) continue;
+
+        if (isNaN(tab[iFret])) {
+          continue;
+        }
         index = tab[iFret] + MDL_A_SCALE.indexOf(tuning[iFret]);
-        if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
+
+        if (index > (MDL_A_SCALE.length - 1)) {
+          index = index - MDL_A_SCALE.length;
+        }
+
         for (iNote = 0; iNote < chordNotes.length; iNote++) {
-          if (!notesCount[MDL_A_SCALE[index]]) notesCount[MDL_A_SCALE[index]] = 1;
-          else if (MDL_A_SCALE[index] == MDL_A_SCALE[iNote]) notesCount[MDL_A_SCALE[index]]++;
+
+          if (!notesCount[MDL_A_SCALE[index]]) {
+            notesCount[MDL_A_SCALE[index]] = 1;
+
+          } else if (MDL_A_SCALE[index] === MDL_A_SCALE[iNote]) {
+            notesCount[MDL_A_SCALE[index]]++;
+          }
         }
       }
       // If every note has appeared at least once, chord is valid
       for (iNote = 0; iNote < chordNotes.length; iNote++) {
-        if (chordNotes[iNote] in notesCount) result = true;
-        else {
+        if (chordNotes[iNote] in notesCount) {
+          result = true;
+        } else {
           result = false;
           break;
         }
@@ -597,32 +644,43 @@
      * @return {Array} | Containing each fret
     */
     function splitTab(tab, tuning) {
+      tab = tab.toLowerCase();
       tuning = tuning || "EADGBE";
-      let tabArray = [];
-      if (tab.length <= tuning.length) return tab.split("");
-      else if (tab.length == tuning.length * 2) {
+      let tabArray = []; 
+
+      if (tab.length <= tuning.length) {
+        return tab.split("");
+
+      } else if (tab.length === tuning.length * 2) {
+
         for (let i = 0; i < tab.length; i++) {
-           if (!(i % 2)) tabArray.push(tab.slice(i, i+2));
+          if (!(i % 2)) {
+            tabArray.push(tab.slice(i, i+2));
+          }
         }
         return tabArray;
-      }
-      else if (tab.length > tuning.length) {
+
+      } else if (tab.length > tuning.length) {
+
         if (arrayFind(tab.split(""), "max") > 1) {
           // NOTE: Split after each caracter from [2-9]
           for (let i = 0; i < tab.length; i++) {
-            if (tab.charAt(i).search(/[x02-9]/i) != -1
-              || (tab.charAt(i) == 1 && tab.charAt(i+1).search(/x/i) != -1))
-            {
+
+            if (tab.charAt(i).search(/[x02-9]/i) !== -1 || (tab.charAt(i) === 1 && tab.charAt(i+1).search(/x/i) !== -1)) {
               tabArray.push(tab.slice(i, i+1));
-            }
-            else if (tab.charAt(i+1).search(/x/i) == -1) {
+
+            } else if (tab.charAt(i+1).search(/x/i) === -1) {
               tabArray.push(tab.slice(i, i+2));
               i++;
             }
           }
           return tabArray;
-        } else throw WORDING.invalidTab;
-      } else return false;
+        } else {
+          throw WORDING.invalidTab;
+        }
+      } else {
+        return false;
+      }
     }
 
     /** Split tuning into notes
@@ -636,19 +694,26 @@
 
       if (noSharps.test(tuning)) {
         return tuning.toUpperCase().split("");
+
       } else if (containSharps.test(tuning)) {
         tuning = tuning.toUpperCase();
+
         for (let i = 0; i < tuning.length; i++) {
-          if (tuning.charAt(i) != "#") {
-            if (tuning.charAt(i+1) != "#") tuningArray.push(tuning.slice(i, i+1));
-            else {
+
+          if (tuning.charAt(i) !== "#") {
+
+            if (tuning.charAt(i+1) !== "#") {
+              tuningArray.push(tuning.slice(i, i+1));
+            } else {
               tuningArray.push(tuning.slice(i, i+2));
               i++;
             }
           }
         }
         return tuningArray;
-      } else throw WORDING.invalidTuning;
+      } else {
+        throw WORDING.invalidTuning;
+      }
     }
 
     /** Separates the chord root from the chord nature/quality;
@@ -660,10 +725,12 @@
         quality;
 
       try {
-        if(typeof(chordName) != "string") throw WORDING.invalidChordName;
-        else {
+        if(typeof(chordName) !== "string") {
+          throw WORDING.invalidChordName;
+        } else {
           let sharp = chordName.search("#");
-          if(sharp == -1) {
+
+          if (sharp === -1) {
             root = chordName.charAt(0);
             quality = chordName.slice(1);
           } else {
@@ -683,10 +750,11 @@
      * @return {Array} | An array with no duplicates;
     */
     function removeDuplicates(arr) {
-      if (!Array.isArray(arr)) throw arr + " is not an array.";
-      else {
+      if (!Array.isArray(arr)) {
+        throw arr + " is not an array.";
+      } else {
         return arr.filter(function(elem, index, self) {
-          return index == self.indexOf(elem);
+          return index === self.indexOf(elem);
         });
       }
     }
@@ -699,12 +767,22 @@
     */
     function searchInObject(obj, keyword) {
         if(typeof obj === "object") {
-          if(typeof keyword == "string") keyword = keyword.toLowerCase();
+          if(typeof keyword === "string") {
+            keyword = keyword.toLowerCase();
+          }
+
           for (let i = 0; i < obj.length; i++) {
+
             for (let key in obj[i]) {
-              if (obj[i][key] == keyword) return obj[i];
-              else if(typeof obj[i][key] == "string") {
-                if (obj[i][key].toLowerCase() == keyword) return obj[i];
+
+              if (obj[i][key] === keyword) {
+                return obj[i];
+
+              } else if(typeof obj[i][key] === "string") {
+
+                if (obj[i][key].toLowerCase() === keyword) {
+                  return obj[i];
+                }
               }
             }
           }
@@ -722,49 +800,72 @@
     function arrayFind(arr, what) {
       let result = false;
 
-      if (!Array.isArray(arr)) throw arr + " is not an array.";
-      if (typeof what === "undefined") throw "Missing parameter.";
+      if (!Array.isArray(arr)) {
+        throw arr + " is not an array.";
+      }
+      if (typeof what === "undefined") {
+         throw "Missing parameter.";
+      }
 
       switch (what) {
+
         case "min":
           result = Math.min.apply(Math, arr);
-          if(!isNaN(result)) return result;
-          else {
+
+          if(!isNaN(result)) {
+            return result;
+          } else {
+
             for (let i = 0; i < arr.length; i++) {
-              if (isNaN(arr[i])) continue;
-              else {
+
+              if (isNaN(arr[i])) {
+                continue;
+              } else {
                 if (isNaN(result)) {
                   result = arr[i];
                   continue;
                 } else {
-                  if (arr[i] < result) result = arr[i];
-                  else continue;
+                  if (arr[i] < result) {
+                    result = arr[i];
+                  } else {
+                    continue;
+                  }
                 }
               }
             }
           }
-        break;
+          break;
+
         case "max":
           result = Math.max.apply(Math, arr);
-          if(!isNaN(result)) return result;
-          else {
+
+          if(!isNaN(result)) {
+            return result;
+          } else {
+
             for (let i = 0; i < arr.length; i++) {
-              if (isNaN(arr[i])) continue;
-              else {
+
+              if (isNaN(arr[i])) {
+                continue;
+              } else {
                 if (isNaN(result)) {
                   result = arr[i];
                   continue;
                 } else {
-                  if (arr[i] > result) result = arr[i];
-                  else continue;
+                  if (arr[i] > result) {
+                    result = arr[i];
+                  } else {
+                    continue;
+                  }
                 }
               }
             }
           }
-        break;
+          break;
+
         default:
           result = occurrences(arr.join(""), what);
-        break;
+          break;
       }
 
       return result;
@@ -779,7 +880,10 @@
     function occurrences(string, subString, allowOverlapping) {
         string += "";
         subString += "";
-        if (subString.length <= 0) return (string.length + 1);
+
+        if (subString.length <= 0) {
+          return (string.length + 1);
+        }
 
         let n = 0,
             pos = 0,
@@ -787,10 +891,13 @@
 
         while (true) {
             pos = string.indexOf(subString, pos);
+
             if (pos >= 0) {
                 ++n;
                 pos += step;
-            } else break;
+            } else {
+              break;
+            }
         }
         return n;
     }
@@ -800,15 +907,20 @@
      * @return {Object}
      */
     function countOccurences(array) {
+
       if (Array.isArray(array)) {
         let result = {};
+
         for(i = 0; i < array.length; ++i) {
+
             if(!result[array[i]])
                 result[array[i]] = 0;
             ++result[array[i]];
         }
         return result;
-      } else throw array + " is not an array.";
+      } else {
+        throw array + " is not an array.";
+      }
     }
 
     return Chordictionary;
@@ -816,6 +928,8 @@
 
   if (typeof(Chordictionary) === "undefined") {
     window.Chordictionary = define();
-  } else console.error("Chordictionary is already defined.");
+  } else {
+    console.error("Chordictionary is already defined.");
+  }
 
 })(window);
