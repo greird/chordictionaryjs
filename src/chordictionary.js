@@ -1,7 +1,7 @@
 /**Chordictionary v0.1.0-alpha.2, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 (function (window) {
 
-  'use strict';
+  "use strict";
   function define() {
 /**
  * CONSTANTS––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -158,7 +158,7 @@
 
     			// Add a new root/formula entry
     			rawFormulas.push({
-    				root:'',
+    				root:"",
     				formula:[]
     			});
 
@@ -282,7 +282,7 @@
     		} else throw WORDING.invalidChordName;
 
     		let chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
-    		chordFormula = chordInfo.integer.split('-');
+    		chordFormula = chordInfo.integer.split("-");
     	} catch (e) {
         results.error = WORDING.invalidChordName;
     		return results;
@@ -302,7 +302,7 @@
 
     	for (let string = 0; string < this.tuning.length; string++) {
     		tabPool[string] = [];
-    		tabPool[string].push('x');
+    		tabPool[string].push("x");
     		for (let note = 0; note < chordNotes.length; note++) {
     			fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(this.tuning[string]);
     			if (fretPosition < 0) fretPosition = MDL_A_SCALE.length + fretPosition;
@@ -404,8 +404,8 @@
               && chordAnatomy.rootIsLowestNote // FIXME: Prevent a standard D chord to be tagged
               && !chordAnatomy.splittedChord) {
               if (chordAnatomy.barredString >= 1) {
-                if (chordAnatomy.rootOnLowestFret) if (tags.indexOf('basic')) tags.push('basic');
-              } else if (tags.indexOf('basic')) tags.push('basic');
+                if (chordAnatomy.rootOnLowestFret) if (tags.indexOf("basic")) tags.push("basic");
+              } else if (tags.indexOf("basic")) tags.push("basic");
             }
 
             // Powerchord
@@ -415,7 +415,7 @@
               && chordAnatomy.rootIsLowestNote
               && chordAnatomy.rootOnLowestFret
               && !chordAnatomy.splittedChord
-              && !chordAnatomy.openString) if (tags.indexOf('powerchord')) tags.push('powerchord');
+              && !chordAnatomy.openString) if (tags.indexOf("powerchord")) tags.push("powerchord");
 
             // Bar chord
             // FIXME: chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret ==> Prevent some valid bar chords to be tagged..
@@ -424,7 +424,7 @@
               && chordAnatomy.barredString >= 1
               && chordAnatomy.noMuteAfterFirstNote
               && !chordAnatomy.splittedChord
-              && !chordAnatomy.openString) if (tags.indexOf('bar')) tags.push('bar');
+              && !chordAnatomy.openString) if (tags.indexOf("bar")) tags.push("bar");
 
             // Apply the tags
             if (tags.length) validChords[chordId].tag = tags;
@@ -499,30 +499,30 @@
 
     		let fretNumber = gtrFret + base - 1; // Fret number to be displayed
 
-    		if (base == 1 && gtrFret === 0) chordLayout += '<thead>';
-    		if (fretNumber % 2 && fretNumber > 0) chordLayout += '<tr><th class="fret-number">' + fretNumber + '</th>';
-    		else chordLayout += '<tr><th></th>'; // exclude fret number column
+    		if (base == 1 && gtrFret === 0) chordLayout += "<thead>";
+    		if (fretNumber % 2 && fretNumber > 0) chordLayout += '<tr><th class="fret-number">' + fretNumber + "</th>";
+    		else chordLayout += "<tr><th></th>"; // exclude fret number column
 
     		// Generate 6 strings (cols) for the current fret
     		for (let gtrString = 0; gtrString < this.tuning.length; gtrString++) {
     			if (gtrFret === 0) {
     				if (frets[gtrString] === 0) chordLayout += '<th><div class="dot open"></div></th>';
-    				else chordLayout += '<th></th>';
+    				else chordLayout += "<th></th>";
     			}
     			else {
-    				if (frets[gtrString] == (base + gtrFret - 1)) chordLayout += '<td><div class="dot plain">'+ frets[gtrString] +'</div></td>';
-    				else chordLayout += '<td></td>';
+    				if (frets[gtrString] == (base + gtrFret - 1)) chordLayout += '<td><div class="dot plain">'+ frets[gtrString] +"</div></td>";
+    				else chordLayout += "<td></td>";
     			}
     		}
 
-    		if (base == 1 && gtrFret === 0) chordLayout += '<tr></thead>';
-    		else chordLayout += '</tr>';
+    		if (base == 1 && gtrFret === 0) chordLayout += "<tr></thead>";
+    		else chordLayout += "</tr>";
 
     	}
-    	chordLayout += '<caption align="bottom">' + name + '</caption>';
-    	chordLayout += '</table>';
+    	chordLayout += '<caption align="bottom">' + name + "</caption>";
+    	chordLayout += "</table>";
 
-    	//console.log(frets + ' => base: ' + base + ' => highest fret: ' + highestFret);
+    	//console.log(frets + " => base: " + base + " => highest fret: " + highestFret);
 
     	return chordLayout;
     };
@@ -710,7 +710,7 @@
           }
           throw "Couldn't find " + keyword + " in " + obj;
         } else {
-          throw obj +' is not an object.';
+          throw obj +" is not an object.";
         }
     }
 
@@ -723,7 +723,7 @@
       let result = false;
 
       if (!Array.isArray(arr)) throw arr + " is not an array.";
-      if (typeof what === 'undefined') throw "Missing parameter.";
+      if (typeof what === "undefined") throw "Missing parameter.";
 
       switch (what) {
         case "min":
@@ -814,7 +814,7 @@
     return Chordictionary;
   }
 
-  if (typeof(Chordictionary) === 'undefined') {
+  if (typeof(Chordictionary) === "undefined") {
     window.Chordictionary = define();
   } else console.error("Chordictionary is already defined.");
 
