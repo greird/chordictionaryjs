@@ -10,7 +10,7 @@
     /**
      * @const {Object} | Wordings (mostly displayed on error)
     */
-    var WORDING = {
+    const WORDING = {
       croppedChordLayout: "Number of frets does not allow full display of the chord.",
       failedToConvertTabIntoNotes: "Could not convert the tab into notes.",
       failedToCalculateFormula: "Could not calculate the formulas.",
@@ -25,7 +25,7 @@
      * Helps us identify the interval between each notes.
      * e.g: if A is the Root (1), then B is the third (3) and bD the fifth (5).
     */
-    var MDL_A_SCALE = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
+    const MDL_A_SCALE = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
 
     /**
      * @const {Object} | Formulas, names and suffix for each chord quality
@@ -33,7 +33,7 @@
      * To keep our formulas in a numeric format, we're using the integer notation
      * https://en.wikipedia.org/wiki/Pitch_class#Integer_notation
     */
-    var MDL_CHORD_FORMULAS = [
+    const MDL_CHORD_FORMULAS = [
     	// Major
     	{formula:"1-3-5", 				integer:"0-4-7", 			   name:"Major", 												suffix:""					},
     	{formula:"1-5", 					integer:"0-7", 			     name:"Power chord", 									suffix:"5"				},
@@ -100,7 +100,7 @@
     */
     Chordictionary.Instrument.prototype.getChordInfo = function(tab) {
 
-    	var notes = [],	// Notes that compose the chord.
+    	let notes = [],	// Notes that compose the chord.
     	intFormulas = [],	// Formulas of the chord in integer notation.
     	roots = [],	// Potential roots for the chord.
     	results = { // Will contain every chord information to be returned
@@ -123,7 +123,7 @@
 
       // 1 - Convert the tab into notes
 
-    	var index,  		// Position of the note in the scale
+    	let index,  		// Position of the note in the scale
     	stringRootNote; // Guitar string currently analysed
 
     	try {
@@ -150,7 +150,7 @@
 
       // 2 - Calculate interval between each note and get the formulas
 
-    	var rawFormulas = [];	// Will contain calculated formulas for each potential roots
+    	let rawFormulas = [];	// Will contain calculated formulas for each potential roots
 
     	try {
     		// For each string
@@ -172,7 +172,7 @@
     				if (!notes[j] || notes[j] == "x") continue;
 
     				// Calculate interval between notes and the potential root
-    				var interval = MDL_A_SCALE.indexOf(notes[j]) - MDL_A_SCALE.indexOf(notes[i]);
+    				let interval = MDL_A_SCALE.indexOf(notes[j]) - MDL_A_SCALE.indexOf(notes[i]);
 
     				// When an octave is reached (0), the numbers begin again at 12
     				if (interval < 0) {
@@ -199,14 +199,14 @@
     		roots.push(rawFormulas[i].root);	// Store the root
     		rawFormulas[i].formula.sort(function(a,b){return a-b;});
 
-    		var unique = removeDuplicates(rawFormulas[i].formula);
+    		let unique = removeDuplicates(rawFormulas[i].formula);
 
     		intFormulas.push(unique.join("-"));	// Store clean formulas in new array
     	}
 
       // 4 - Search the chordFormulas dictionary for a match
 
-    	var dictionary,
+    	let dictionary,
     	formulas = [],
     	regex,
     	matches = [];
@@ -227,7 +227,7 @@
 
     		if (formulas.length > 0) {
     			if (formulas.length > 1) {
-    				var uniqueformulas = removeDuplicates(formulas);
+    				let uniqueformulas = removeDuplicates(formulas);
     				results.formula = uniqueformulas;
     			} else {
     				results.formula = formulas;
@@ -242,7 +242,7 @@
       // 5 - Remove duplicates and return a list of found chords
 
     	if (matches.length > 1) {
-    		var uniqueMatches = removeDuplicates(matches);
+    		let uniqueMatches = removeDuplicates(matches);
     		results.name = uniqueMatches;
     	} else {
     		results.name = matches;
@@ -260,7 +260,7 @@
 
       offset = offset || 0;
 
-    	var	chordNotes = [],	// Will contain the generated chord notes, starting with the root
+    	let	chordNotes = [],	// Will contain the generated chord notes, starting with the root
       chordType,	// Type of chord (Min, Maj, Dom7, etc.)
       chordFormula = [],
       rootNote,	// Root note of the chord
@@ -281,7 +281,7 @@
           rootIndex = MDL_A_SCALE.indexOf(rootNote);
     		} else throw WORDING.invalidChordName;
 
-    		var chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
+    		let chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
     		chordFormula = chordInfo.integer.split('-');
     	} catch (e) {
         results.error = WORDING.invalidChordName;
@@ -291,18 +291,19 @@
       // 2 - Identify chord's notes
       // NOTE: Doesn't work with formulas containing integers > 9
     	for (let i = 1; i < chordFormula.length; i++) {
-    		var index = parseInt(chordFormula[i]) + parseInt(rootIndex);
+    		let index = parseInt(chordFormula[i]) + parseInt(rootIndex);
     		if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
     		chordNotes.push(MDL_A_SCALE[index]);
     	}
 
     	// Find the position of theses notes on the fretboard and store it in tabPool
-    	var tabPool = [];
-    	var fretPosition;
-    	for (var string = 0; string < this.tuning.length; string++) {
+    	let tabPool = [],
+    	 fretPosition;
+
+    	for (let string = 0; string < this.tuning.length; string++) {
     		tabPool[string] = [];
     		tabPool[string].push('x');
-    		for (var note = 0; note < chordNotes.length; note++) {
+    		for (let note = 0; note < chordNotes.length; note++) {
     			fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(this.tuning[string]);
     			if (fretPosition < 0) fretPosition = MDL_A_SCALE.length + fretPosition;
     			tabPool[string].push(fretPosition);
@@ -311,19 +312,19 @@
     	}
 
       // 3 - Combine the tabs from tabPool and store store the result in chordPool
-    	var chordPool = [];
+    	let chordPool = [];
     	// For each string
     	for (string = 0; string < this.tuning.length; string++) {
     		// For each potential note on this string
     		var chordPoolLength = chordPool.length;
     		for (let i = 0; i < tabPool[string].length; i++) {
     			if(chordPool[i]) {
-    				for (var chordIndex = 0; chordIndex < chordPoolLength; chordIndex++) {
+    				for (let chordIndex = 0; chordIndex < chordPoolLength; chordIndex++) {
     					if(i === 0  ) {
     						chordPool[chordIndex].push(tabPool[string][i]);
     					}	else {
     						// On the next loop, duplicate every entry and replace the last value by the new one
-    						var tempChord = chordPool[chordIndex].slice(0);
+    						let tempChord = chordPool[chordIndex].slice(0);
     						tempChord.pop();
     						tempChord.push(tabPool[string][i]);
     						chordPool.push(tempChord);
@@ -338,7 +339,7 @@
 
       // 4 - Post processing to remove invalid chords from the pool and sort them by categories
       try {
-      	var validChords = [];
+      	let validChords = [];
       	for (var iChord = offset; iChord < chordPool.length; iChord++) {
 
           // Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
@@ -393,8 +394,8 @@
             // Sort and filter the chords according to the previously defined criterias
             // TODO: Refactoring needed here !! There's probably a faster way to do this..
 
-            var chordId = validChords.length;
-            var tags = [];
+            let chordId = validChords.length;
+            let tags = [];
             validChords.push({tab: chordPool[iChord], tag:[]});
 
             // Basic chord
@@ -451,9 +452,9 @@
     */
     Chordictionary.Instrument.prototype.getChordLayout = function(name, tab) {
 
-    	var frets,	// used guitar frets for this chord
-    	chordLayout,	// will contain the chord layout in html
-    	fretsToDisplay = this.fretsToDisplay;
+    	let frets,	// used guitar frets for this chord
+    	 chordLayout,	// will contain the chord layout in html
+    	 fretsToDisplay = this.fretsToDisplay;
 
     	try {
     		if (Chordictionary.isValidTab(tab)) frets = splitTab(tab);
@@ -463,17 +464,17 @@
     	}
 
     	// exclude non-played strings from the chord notation
-    	var notes = [];
+    	let notes = [];
     	for (let i = 0; i < frets.length; i++) {
     		if (isNaN(frets[i]) === false) notes.push(frets[i]);
     	}
 
     	// calculate the highest and lowest frets to display
-    	var highestFret = Math.abs(Math.max.apply(Math, notes));
-      var lowestFret =  Math.abs(Math.min.apply(Math, notes));
+    	let highestFret = Math.abs(Math.max.apply(Math, notes));
+      let lowestFret =  Math.abs(Math.min.apply(Math, notes));
 
     	// Make sure the graphic starts at the first fret when it is in range or move up the neck if necessary
-    	var base = 1;
+    	let base = 1;
     	if (highestFret >= fretsToDisplay) base = (lowestFret > 0 ? lowestFret : 1);
 
     	// base can be wrong in case of open strings, we're using the highest note to fix that
@@ -494,16 +495,16 @@
 
     	chordLayout = '<table class="chord">';
     	// Generate guitar frets (rows)
-    	for (var gtrFret = 0; gtrFret < fretsToDisplay; gtrFret++) {
+    	for (let gtrFret = 0; gtrFret < fretsToDisplay; gtrFret++) {
 
-    		var fretNumber = gtrFret + base - 1; // Fret number to be displayed
+    		let fretNumber = gtrFret + base - 1; // Fret number to be displayed
 
     		if (base == 1 && gtrFret === 0) chordLayout += '<thead>';
     		if (fretNumber % 2 && fretNumber > 0) chordLayout += '<tr><th class="fret-number">' + fretNumber + '</th>';
     		else chordLayout += '<tr><th></th>'; // exclude fret number column
 
     		// Generate 6 strings (cols) for the current fret
-    		for (var gtrString = 0; gtrString < this.tuning.length; gtrString++) {
+    		for (let gtrString = 0; gtrString < this.tuning.length; gtrString++) {
     			if (gtrFret === 0) {
     				if (frets[gtrString] === 0) chordLayout += '<th><div class="dot open"></div></th>';
     				else chordLayout += '<th></th>';
@@ -531,7 +532,7 @@
     * @return {Boolean}
     */
     Chordictionary.isValidTab = function(tab) {
-      var pattern = new RegExp("^[x0-9]*$", "i");
+      let pattern = new RegExp("^[x0-9]*$", "i");
       if (pattern.test(tab)) {
         return true;
       } else {
@@ -544,7 +545,7 @@
      * @return {Boolean}
     */
     Chordictionary.isValidTuning = function(tuning) {
-      var pattern = new RegExp("^[#a-g]+$", "i");
+      let pattern = new RegExp("^[#a-g]+$", "i");
       if (pattern.test(tuning)) {
         return true;
       } else {
@@ -568,9 +569,9 @@
       // TODO: make it work with tabs and notes
       // TODO: add param to check for triads, open strings, etc.
 
-      var result, index, iNote, notesCount = {};
+      let result, index, iNote, notesCount = {};
 
-      for (var iFret = 0; iFret < tab.length; iFret++) {
+      for (let iFret = 0; iFret < tab.length; iFret++) {
         if (isNaN(tab[iFret])) continue;
         index = tab[iFret] + MDL_A_SCALE.indexOf(tuning[iFret]);
         if (index > (MDL_A_SCALE.length - 1)) index = index - MDL_A_SCALE.length;
@@ -597,7 +598,7 @@
     */
     function splitTab(tab, tuning) {
       tuning = tuning || "EADGBE";
-      var tabArray = [];
+      let tabArray = [];
       if (tab.length <= tuning.length) return tab.split("");
       else if (tab.length == tuning.length * 2) {
         for (let i = 0; i < tab.length; i++) {
@@ -629,9 +630,9 @@
      * @return {Array} | Containing each note
     */
     function splitTuning(tuning) {
-      var tuningArray = [];
-      var noSharps = new RegExp("^[a-g]+$", "i");
-      var containSharps = new RegExp("^[#a-g]+$", "i");
+      let tuningArray = [],
+        noSharps = new RegExp("^[a-g]+$", "i"),
+        containSharps = new RegExp("^[#a-g]+$", "i");
 
       if (noSharps.test(tuning)) {
         return tuning.toUpperCase().split("");
@@ -655,12 +656,13 @@
      * @return {Array} | Containing the chord root [0] and the chord quality [1];
     */
     function splitChordName(chordName) {
-      var root;
-      var quality;
+      let root, 
+        quality;
+
       try {
         if(typeof(chordName) != "string") throw WORDING.invalidChordName;
         else {
-          var sharp = chordName.search("#");
+          let sharp = chordName.search("#");
           if(sharp == -1) {
             root = chordName.charAt(0);
             quality = chordName.slice(1);
@@ -699,7 +701,7 @@
         if(typeof obj === "object") {
           if(typeof keyword == "string") keyword = keyword.toLowerCase();
           for (let i = 0; i < obj.length; i++) {
-            for (var key in obj[i]) {
+            for (let key in obj[i]) {
               if (obj[i][key] == keyword) return obj[i];
               else if(typeof obj[i][key] == "string") {
                 if (obj[i][key].toLowerCase() == keyword) return obj[i];
@@ -718,7 +720,7 @@
      * @param {String} what | Required | "min" or "max" or a keyword to search for
     */
     function arrayFind(arr, what) {
-      var result = false;
+      let result = false;
 
       if (!Array.isArray(arr)) throw arr + " is not an array.";
       if (typeof what === 'undefined') throw "Missing parameter.";
@@ -779,7 +781,7 @@
         subString += "";
         if (subString.length <= 0) return (string.length + 1);
 
-        var n = 0,
+        let n = 0,
             pos = 0,
             step = allowOverlapping ? 1 : subString.length;
 
@@ -799,7 +801,7 @@
      */
     function countOccurences(array) {
       if (Array.isArray(array)) {
-        var result = {};
+        let result = {};
         for(i = 0; i < array.length; ++i) {
             if(!result[array[i]])
                 result[array[i]] = 0;
