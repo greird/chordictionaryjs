@@ -941,5 +941,4 @@
 	} else {
 		console.error("Chordictionary is already defined.");
 	}
-
 })(window);
