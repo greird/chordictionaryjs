@@ -28,7 +28,9 @@ gulp.task('lint', function() {
                 'strict': [2, 'safe'], 
                 'no-redeclare': 2, 
                 'no-lonely-if': 1, 
-                'one-var-declaration-per-line': [1, "initializations"]
+                'one-var-declaration-per-line': [1, "initializations"],
+                'brace-style': [1, "1tbs", { "allowSingleLine": false }],
+                'indent': [1, "tab", { "VariableDeclarator": 1, "SwitchCase": 1 }]
             },
             envs: [
                 'browser',
