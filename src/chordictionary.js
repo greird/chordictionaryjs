@@ -289,9 +289,9 @@
 					splittedChord: false,
 					openString: true
 				},	
-				// FIXME: This doesn't work at all !!
+				// FIXME: This doesn't work at all !! Is a powerchord a valid chord ??
 				powerchord: {
-					//frettedNotes: [2, 3],
+					frettedNotes: [2, 3],
 					rootIsLowestNote: true,
 					rootOnLowestFret: true,
 					splittedChord: false,
@@ -301,7 +301,7 @@
 				bar: {
 					rootIsLowestNote: true,
 					rootOnLowestFret: true,
-					//barredString: [4, 6],
+					barredString: [3, 6],
 					noMuteAfterFirstNote: true,
 					splittedChord: false,
 					openString: false
@@ -396,7 +396,7 @@
 							let min = model[statement][0],
 								max = model[statement][1];
 
-							if (source[statement] <= min || source[statement] >= max) {
+							if (source[statement] < min || source[statement] > max) {
 								return false;
 							}
 
@@ -413,23 +413,37 @@
 			try {
 				for (var iChord = offset; iChord < chordPool.length; iChord++) {
 
-					// Here are all the criterias to check in order to sort the chord list by basic chords, triads, powerchords, "barrés", etc.
-					let chordAnatomy = { };
-
 					// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
 					if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
 						&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
 
-						chordAnatomy.splittedChord = false;
-						chordAnatomy.openString = false;
-						chordAnatomy.frettedNotes = 0;
+						let chordAnatomy = {
+								openString: false,
+								frettedNotes: 0
+							},
+							stringTab = chordPool[iChord].join(""),
+							splittedChordPattern = /[0-9]+[x]+[0-9]+/gi,
+							muteAfterFirstNotePattern = /[0-9]+[x]+/gi;
+
+						// Check if there's any mutted string in the middle of the chord
+						if (splittedChordPattern.test(stringTab)) {
+							chordAnatomy.splittedChord = true;
+						} else {
+							chordAnatomy.splittedChord = false;
+						}
+
+						// Check if there's any mutted string after the first note
+						if (muteAfterFirstNotePattern.test(stringTab)) {
+							chordAnatomy.noMuteAfterFirstNote = false;
+						} else {
+							chordAnatomy.noMuteAfterFirstNote = true;
+						}
 
 						// For each note of the chord
 						for (let i = 0; i < chordPool[iChord].length; i++) {
 							let noteFret = chordPool[iChord][i];
 
 							if (!isNaN(noteFret)) {
-
 								let noteIndex = noteFret + MDL_A_SCALE.indexOf(this.tuning[i]);
 								
 								if (noteFret === 0) chordAnatomy.openString = true;
@@ -443,34 +457,14 @@
 									chordAnatomy.rootOnLowestFret = (arrayFind(chordPool[iChord], "min") >= noteFret) ? true : false;
 								}
 
-								// FIXME: not reliable. Has to be compare to the first note index, not i.
-								if (chordPool[iChord].lastIndexOf("x") < i) {
-									chordAnatomy.noMuteAfterFirstNote = true;
-								} else {
-									chordAnatomy.noMuteAfterFirstNote = false;
-								}
-
-								
-								// FIXME: This code prevents basic chords from being tagged
-
 								// Check for consecutive fretted notes
 								if ((noteFret > 0 && i < chordPool[iChord].length - 1 && noteFret === chordPool[iChord][i-1])
 									|| arrayFind(chordPool[iChord], noteFret) >= 3) {
 									chordAnatomy.barredString = !isNaN(chordAnatomy.barredString) ? (chordAnatomy.barredString + 1) : 1;
 								}
 
-								// FIXME: frettedNotes is not reliable.
 								chordAnatomy.frettedNotes++;
-								//chordAnatomy.frettedNotes = !isNaN(chordAnatomy.frettedNotes) ? (chordAnatomy.frettedNotes + 1) : 1;
-								
-
-							// Check if there's any mutted string in the middle of the chord
-							} else if ((i > 0 && i < chordPool[iChord].length - 1)
-								&& ((chordPool[iChord][i+1] !== "x" && chordPool[iChord][i-1] !== "x")
-								|| (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
-								chordAnatomy.splittedChord = true;
 							}
-
 						}
 
 						// Sort and filter the chords according to the previously defined criterias
@@ -654,33 +648,32 @@
 			// TODO: add param to check for triads, open strings, etc.
 
 			let result, 
-				index, 
-				iNote, 
+				index,
 				notesCount = {};
 
-			for (let iFret = 0; iFret < tab.length; iFret++) {
+			for (let i = 0; i < tab.length; i++) {
 
-				if (isNaN(tab[iFret])) {
+				if (isNaN(tab[i])) {
 					continue;
 				}
-				index = tab[iFret] + MDL_A_SCALE.indexOf(tuning[iFret]);
+				index = tab[i] + MDL_A_SCALE.indexOf(tuning[i]);
 
 				if (index > (MDL_A_SCALE.length - 1)) {
 					index = index - MDL_A_SCALE.length;
 				}
 
-				for (iNote = 0; iNote < chordNotes.length; iNote++) {
+				for (let j = 0; j < chordNotes.length; j++) {
 
 					if (!notesCount[MDL_A_SCALE[index]]) {
 						notesCount[MDL_A_SCALE[index]] = 1;
-					} else if (MDL_A_SCALE[index] === MDL_A_SCALE[iNote]) {
+					} else if (MDL_A_SCALE[index] === MDL_A_SCALE[j]) {
 						notesCount[MDL_A_SCALE[index]]++;
 					}
 				}
 			}
 			// If every note has appeared at least once, chord is valid
-			for (iNote = 0; iNote < chordNotes.length; iNote++) {
-				if (chordNotes[iNote] in notesCount) {
+			for (let i = 0; i < chordNotes.length; i++) {
+				if (chordNotes[i] in notesCount) {
 					result = true;
 				} else {
 					result = false;
