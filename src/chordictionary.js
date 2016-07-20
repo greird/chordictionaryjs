@@ -269,6 +269,7 @@
 
 			let	chordNotes = [],	// Will contain the generated chord notes, starting with the root
 				chordType,	// Type of chord (Min, Maj, Dom7, etc.)
+				chordInfo,
 				chordFormula = [],
 				rootNote,	// Root note of the chord
 				rootIndex,
@@ -277,6 +278,35 @@
 					chordList: [],
 					offset: 0
 				};
+
+			// We define a chord "anatomy" for each type of chord we want to recognize
+			const CHORD_TYPE = {
+				// FIXME: rootIsLowestNote prevents a standard D chord to be tagged
+				basic: {
+					rootBelow4thFret: true,
+					noMuteAfterFirstNote: true,
+					rootIsLowestNote: true,
+					splittedChord: false,
+					openString: true
+				},	
+				// FIXME: This doesn't work at all !!
+				powerchord: {
+					//frettedNotes: [2, 3],
+					rootIsLowestNote: true,
+					rootOnLowestFret: true,
+					splittedChord: false,
+					openString: false
+				},	
+				// FIXME: chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret ==> Prevent some valid bar chords to be tagged..
+				bar: {
+					rootIsLowestNote: true,
+					rootOnLowestFret: true,
+					//barredString: [4, 6],
+					noMuteAfterFirstNote: true,
+					splittedChord: false,
+					openString: false
+				}
+			};
 
 			// 1 - Fetch the right chord formula from the dictionary
 			try {
@@ -290,7 +320,7 @@
 					throw WORDING.invalidChordName;
 				}
 
-				let chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
+				chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
 				chordFormula = chordInfo.integer.split("-");
 			} catch (e) {
 				results.error = WORDING.invalidChordName;
@@ -356,59 +386,27 @@
 
 			let validChords = [];
 
-			// We define a chord "anatomy" for each type of chord we want to recognize
-			const CHORD_TYPE = {
-					// FIXME: rootIsLowestNote prevents a standard D chord to be tagged
-					basic: {
-						rootBelow4thFret: true,
-						noMuteAfterFirstNote: true,
-						rootIsLowestNote: true,
-						splittedChord: false,
-						openString: true
-					},	
-					// FIXME: This doesn't work at all !!
-					powerchord: {
-						noMuteAfterFirstNote: false,
-						frettedNotes: [2, 3],
-						rootIsLowestNote: true,
-						rootOnLowestFret: true,
-						splittedChord: false,
-						openString: false
-					},	
-					// FIXME: chordAnatomy.rootIsLowestNote && chordAnatomy.rootOnLowestFret ==> Prevent some valid bar chords to be tagged..
-					bar: {
-						rootIsLowestNote: true,
-						rootOnLowestFret: true,
-						barredString: [1, 100],
-						noMuteAfterFirstNote: true,
-						splittedChord: false,
-						openString: false
-					}
-				};
-
 			let haveSameAnatomy = (model, source) => {
 
 				for (let statement in model) {
 
 					if (source.hasOwnProperty(statement)) {
-						if (typeof(model[statement]) === "array") {
+
+						if (typeof(model[statement]) === "object") {
 							let min = model[statement][0],
 								max = model[statement][1];
 
-							if (source[statement] < min || source[statement] > max) {
+							if (source[statement] <= min || source[statement] >= max) {
 								return false;
 							}
-							console.log(source[statement] + " in " + model[statement]);
+
 						} else if (source[statement] !==  model[statement]) {
 							return false;
 						}
 					} else {
-						console.log("No such property : " + statement + " in the source: ");
-						console.log(source);
 						return false;
 					}
 				}
-
 				return true;
 			};
 
@@ -423,31 +421,37 @@
 						&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
 
 						chordAnatomy.splittedChord = false;
+						chordAnatomy.openString = false;
+						chordAnatomy.frettedNotes = 0;
 
 						// For each note of the chord
 						for (let i = 0; i < chordPool[iChord].length; i++) {
 							let noteFret = chordPool[iChord][i];
 
 							if (!isNaN(noteFret)) {
+
 								let noteIndex = noteFret + MDL_A_SCALE.indexOf(this.tuning[i]);
 								
 								if (noteFret === 0) chordAnatomy.openString = true;
 
 								// It's the root !
 								if (rootIndex === noteIndex) {
-									chordAnatomy.rootIsLowestNote = chordAnatomy.frettedNotes ? false : true;
+									if (chordAnatomy.frettedNotes === 0) {
+										chordAnatomy.rootIsLowestNote = true;
+									}
 									chordAnatomy.rootBelow4thFret = (noteFret <= 4) ? true : false;
 									chordAnatomy.rootOnLowestFret = (arrayFind(chordPool[iChord], "min") >= noteFret) ? true : false;
 								}
 
+								// FIXME: not reliable. Has to be compare to the first note index, not i.
 								if (chordPool[iChord].lastIndexOf("x") < i) {
 									chordAnatomy.noMuteAfterFirstNote = true;
 								} else {
 									chordAnatomy.noMuteAfterFirstNote = false;
 								}
 
-								/*
-								* FIXME: This code prevents basic chords from being tagged
+								
+								// FIXME: This code prevents basic chords from being tagged
 
 								// Check for consecutive fretted notes
 								if ((noteFret > 0 && i < chordPool[iChord].length - 1 && noteFret === chordPool[iChord][i-1])
@@ -455,8 +459,10 @@
 									chordAnatomy.barredString = !isNaN(chordAnatomy.barredString) ? (chordAnatomy.barredString + 1) : 1;
 								}
 
-								chordAnatomy.frettedNotes = !isNaN(chordAnatomy.frettedNotes) ? (chordAnatomy.frettedNotes + 1) : 1;
-								*/
+								// FIXME: frettedNotes is not reliable.
+								chordAnatomy.frettedNotes++;
+								//chordAnatomy.frettedNotes = !isNaN(chordAnatomy.frettedNotes) ? (chordAnatomy.frettedNotes + 1) : 1;
+								
 
 							// Check if there's any mutted string in the middle of the chord
 							} else if ((i > 0 && i < chordPool[iChord].length - 1)
@@ -464,40 +470,23 @@
 								|| (chordPool[iChord].lastIndexOf("x") > 0 && chordPool[iChord].lastIndexOf("x") < chordPool[iChord].length - 1))) {
 								chordAnatomy.splittedChord = true;
 							}
+
 						}
 
 						// Sort and filter the chords according to the previously defined criterias
-						// TODO: Refactoring needed here !! There's probably a faster way to do this..
 
-						let chordId = validChords.length;
-						let tags = [];
-						validChords.push({tab: chordPool[iChord], tag:[]});
+						let thisChord = {
+							tab: chordPool[iChord], 
+							tag:[]
+						};
 
-						// Basic chord
-						if (haveSameAnatomy(CHORD_TYPE.basic, chordAnatomy)) {
-							if (chordAnatomy.barredString >= 1) {
-								if (chordAnatomy.rootOnLowestFret) if (tags.indexOf("basic")) tags.push("basic");
-							} else if (tags.indexOf("basic")) tags.push("basic");
-						}
-
-						// Powerchord
-						if (haveSameAnatomy(CHORD_TYPE.powerchord, chordAnatomy)) {
-							if (tags.indexOf("powerchord")) {
-								tags.push("powerchord");
+						Object.getOwnPropertyNames(CHORD_TYPE).forEach((type, index) => {
+							if (haveSameAnatomy(CHORD_TYPE[type], chordAnatomy) && thisChord.tag.indexOf(type)) {
+								thisChord.tag.push(type);
 							}
-						}
+						});
 
-						// Bar chord
-						if (haveSameAnatomy(CHORD_TYPE.bar, chordAnatomy)) {
-							if (tags.indexOf("bar")) {
-								tags.push("bar");
-							}
-						}
-
-						// Apply the tags
-						if (tags.length) {
-							validChords[chordId].tag = tags;
-						}
+						validChords.push(thisChord); // Add the chord to the list
 					}
 
 					// If limit is reached, stop the loop and store the current index
