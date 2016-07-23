@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
-    return gulp.src('./src/*.js')
+    return gulp.src('./src/chordictionary.js')
         .pipe(babel())
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify({ preserveComments: "license" }))
@@ -20,23 +20,7 @@ gulp.task('scripts', function() {
 // Lint Task
 gulp.task('lint', function() {
     return gulp.src('./src/*.js')
-        .pipe(eslint({
-            'rules': {
-                'quotes': [1, 'double', {'avoidEscape': true}],
-                'semi': [2, 'always'],
-                'eqeqeq': [1, 'smart'],
-                'strict': [2, 'safe'], 
-                'no-redeclare': 2, 
-                'no-lonely-if': 1, 
-                'one-var-declaration-per-line': [1, "initializations"],
-                'brace-style': [1, "1tbs", { "allowSingleLine": false }],
-                'indent': [1, "tab", { "VariableDeclarator": 1, "SwitchCase": 1 }]
-            },
-            envs: [
-                'browser',
-                'es6'
-            ]
-        }))
+        .pipe(eslint())
         .pipe(eslint.format())
 });
 

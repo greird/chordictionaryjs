@@ -27,6 +27,27 @@
   "babel": {
     "presets": [ "es2015" ]
   },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "env": {
+     "browser": true,
+     "es6": true
+    },
+    "rules": {
+      "quotes": [1, "double", {"avoidEscape": true}],
+      "semi": [2, "always"],
+      "eqeqeq": [1, "smart"],
+      "strict": [2, "safe"], 
+      "no-redeclare": 2, 
+      "no-lonely-if": 1, 
+      "one-var-declaration-per-line": [1, "initializations"],
+      "brace-style": [1, "1tbs", { "allowSingleLine": false }],
+      "indent": [1, "tab", { "VariableDeclarator": 1, "SwitchCase": 1 }]
+    }
+  },
   "dependencies": {},
   "devDependencies": {
     "babel-preset-es2015": "^6.9.0",
