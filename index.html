@@ -85,12 +85,7 @@
         <script>
         for (var key in chordsList) {
           document.write('<strong>' + key + ' => </strong>');
-          if (key === 'chordList') {
-            document.write('// too many objects<br />');
-          } else {
-            document.write(chordsList[key] + '<br />');
-          }
-
+          document.write(chordsList[key] + '<br />');
         }
         </script>
       </div>
