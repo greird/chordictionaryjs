@@ -284,7 +284,6 @@
 						splittedChord: false,
 						openString: true
 					},	
-					// FIXME: This doesn't work at all !! Is a powerchord a valid chord ??
 					powerchord: {
 						frettedNotes: [2, 3],
 						rootIsLowestNote: true,
@@ -479,7 +478,7 @@
 						}
 
 						// If limit is reached, stop the loop and store the current index
-						if (limit > 0 && limit < chordPool[iChord].length && validChords.length >= limit) {
+						if (limit > 0 && limit < chordPool[iChord].length && validChords.length === limit) {
 							offset = iChord + 1;
 							break;
 						}

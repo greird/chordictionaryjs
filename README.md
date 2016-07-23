@@ -202,9 +202,9 @@ myInstrument.getChordsList("G", 4);
 	error: "",
 	chordList: [
 		{ tab: [3,2,0,0,0,3], tag: ['basic'] },
-		{ tab: [3,2,0,4,0,3], tag: ['basic'] },
 		{ tab: [3,2,0,0,3,3], tag: ['basic'] },
-		{ tab: [3,5,5,4,3,3], tag: ['basic', 'bar'] },
+		{ tab: [3,5,5,4,3,3], tag: ['bar'] },
+		{ tab: [x, 10, 12, 12, 12, 10], tag: ['bar'] },
 		],
 	offset: 29927
 }

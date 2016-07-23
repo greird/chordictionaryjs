@@ -85,11 +85,26 @@
         <script>
         for (var key in chordsList) {
           document.write('<strong>' + key + ' => </strong>');
-          document.write(chordsList[key] + '<br />');
+          if (key === 'chordList') {
+            chordsList[key].forEach( function(element, index) {
+              if (chordsList.chordList[index].tag.length) {
+                document.write('<strong>' + chordsList.chordList[index].tab + ' ' + chordsList.chordList[index].tag + '</strong> <br />');
+              } else {
+                document.write(chordsList.chordList[index].tab + '<br />');
+              }
+              
+            });  
+          } else {
+            document.write(chordsList[key] + '<br />');
+          }
+
         }
         </script>
       </div>
     </div>
+    <h4 class="subtitle">
+    Most common placements for these chords
+    </h4>
     <script>
     for (var i in chordsList.chordList) {
       var tagList = "";
