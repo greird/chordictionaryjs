@@ -33,32 +33,32 @@ Results may vary depending on your instrument's tuning and number of strings.
 - Powerchord (5)
 - Suspended fourth (sus4)
 - Suspended second (sus2)
+- Augmented (aug)
 - Sixth (6)
+- Minor sixth (m6)
+- Minor, flat sixth (mb6)
+- Major sixth (maj6)
 - Seventh & Dominant seventh (7)
 - Minor seventh (m7)
+- Minor seventh, flat fifth (m7b5)
 - Major seventh (maj7)
-- Minor, flat sixth (mb6)
 
 ##### Not supported yet
-- Minor sixth (m6) - recognized but wrong formula displayed
-- Minor seventh, flat fifth (m7b5) - recognized but wrong formula displayed
 - Sixth, added ninth (6/9)
+- Minor sixth, added ninth (m6/9)
 - Added ninth(add9)
 - Major ninth (maj9)
+- Minor ninth (m9)
+- Minor, added ninth (m(add9))
 - Major seventh, sharp eleventh (maj7#11)
 - Major thirteen (maj13)
+- Diminished (dim)
 
 ##### To be checked
-- Major sixth (maj6)
-- Minor, added ninth (m(add9))
-- Minor sixth, added ninth (m6/9)
 - Minor, major seventh (m(maj7))
-- Minor ninth (m9)
 - Minor ninth, major seventh (m9(maj7))
 - Minor eleventh (m9b5)
 - Minor thirteen (m13)
-- Augmented (aug)
-- Diminished (dim)
 - other ?
 
 ***
