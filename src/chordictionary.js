@@ -35,8 +35,6 @@
 		* https://en.wikipedia.org/wiki/Pitch_class#Integer_notation
 		*/
 		const MDL_CHORD_FORMULAS = [			
-			{formula:"1", 				integer:"0", 			  	name:"Single note", 					suffix:""			},
-			{formula:"1-5", 			integer:"0-7", 			    name:"Power chord", 					suffix:"5"			},
 			{formula:"1-3-5",			integer:"0-4-7", 			name:"Major", 							suffix:""			},
 			{formula:"1-3-5#", 			integer:"0-4-8", 			name:"Augmented", 						suffix:"aug"		},
 			{formula:"1-3-b5", 			integer:"0-4-6",    		name:"Diminished", 						suffix:"dim"		},
@@ -63,7 +61,9 @@
 			{formula:"1-b3-b5-b7-9", 	integer:"0-3-7-10-14", 		name:"Minor eleventh", 					suffix:"m9b5"		},
 			{formula:"1-b3-5-b7-9-11-13",integer:"0-3-7-10-14-17-21",name:"Minor thirteen", 				suffix:"m13"		},
 			{formula:"1-3-5-7-#11", 	integer:"0-4-7-11-18", 	 	name:"Major seventh, sharp eleventh",	suffix:"maj7#11"	},
-			{formula:"1-3-5-7-9-13", 	integer:"0-4-7-11-14-21",	name:"Major thirteen", 					suffix:"Maj13"		}
+			{formula:"1-3-5-7-9-13", 	integer:"0-4-7-11-14-21",	name:"Major thirteen", 					suffix:"Maj13"		},
+			{formula:"1", 				integer:"0", 			  	name:"Single note", 					suffix:""			},
+			{formula:"1-5", 			integer:"0-7", 			    name:"Power chord", 					suffix:"5"			}
 		];
 
 /**
@@ -357,7 +357,7 @@
 				// For each string
 				for (string = 0; string < this.tuning.length; string++) {
 					// For each potential note on this string
-					var chordPoolLength = chordPool.length;
+					let chordPoolLength = chordPool.length;
 					for (let i = 0; i < tabPool[string].length; i++) {
 						if(chordPool[i]) {
 							for (let chordIndex = 0; chordIndex < chordPoolLength; chordIndex++) {
@@ -406,7 +406,7 @@
 				};
 
 				try {
-					for (var iChord = offset; iChord < chordPool.length; iChord++) {
+					for (let iChord = offset; iChord < chordPool.length; iChord++) {
 
 						// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
 						if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
