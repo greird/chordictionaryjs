@@ -72,10 +72,10 @@ Include [`chordictionary.min.js`](https://raw.githubusercontent.com/greird/chord
 
 ### Define your instrument
 
-The first thing you will need to do is to define your instrument.
+The first thing you will need to do is to define your instrument. You do this by creating a new instance of Chordictionary.
 
 ```javascript
-Chordictionary.Instrument(tuning, fretNumber, fretsToDisplay, maxSpan)
+Chordictionary (tuning, fretNumber, fretsToDisplay, maxSpan)
 /**
 * @param {String} tuning | Required | The instrument tuning in standard letter notation (e.g.: "EADGBE")
 * @param {Int} fretNumber | Required | The instrument's number of frets.
@@ -86,7 +86,7 @@ Chordictionary.Instrument(tuning, fretNumber, fretsToDisplay, maxSpan)
 
 For instance, if you're an electric guitar player, you may define your instrument as follow.
 
-`var myInstrument = new Chordictionary.Instrument('EADGBE', 24, 7, 4);`
+`var myInstrument = new Chordictionary('EADGBE', 24, 7, 4);`
 
 Here I've define a guitar in standard tuning "EADGBE" (from the lowest to highest string). It has a total of 24 frets.
 I want the graphic representation to display 7 frets.
@@ -136,21 +136,21 @@ However, an SVG version of this could be more scalable.
 
 ### Check if tab or tuning is valid
 
-`Chordictionary.isValidTab(tab)` and `Chordictionary.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
+`myInstrument.isValidTab(tab)` and `myInstrument.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
 Note that these functions are completely unrelated to your instrument instance.
 
 ```javascript
 // Usage
 
-Chordictionary.isValidTab("x32010");
+myInstrument.isValidTab("x32010");
 // Return
 True // Will be interpreted as ['x','3','2','0','1','0']
 
-Chordictionary.isValidTab("911111099");
+myInstrument.isValidTab("911111099");
 // Return
 True // Will be interpreted as ['9','11','11','10','9','9']
 
-Chordictionary.isValidTuning("E#A#D#G#B#E#");
+myInstrument.isValidTuning("E#A#D#G#B#E#");
 // Return
 True // Will be interpreted as ['E#','A#','D#','G#','B#','E#']
 ```
