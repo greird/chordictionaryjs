@@ -31,14 +31,18 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 			"7": "1-3-5-b7",
 			"m7": "1-b3-5-b7",
 			"maj7": "1-3-5-7",
+			"mmaj7": "1-b3-5-7",
 			"mb6": "1-b3-5-b6",
 			"m6": "1-b3-5-6",
 			"m6/9": "1-b3-5-6-9",
 			"m7b5": "1-b3-b5-b7",
 			"maj9": "1-3-5-7-9",
 			"m9": "1-b3-5-b7-9",
+			"m9b5": "1-b3-b5-b7-9",
+			"m9maj7": "1-b3-5-7-9",
 			"maj7#11": "1-3-5-7-#11",
-			"maj13": "1-3-5-7-9-13"
+			"maj13": "1-3-5-7-9-13",
+			"m13": "1-b3-5-b7-9-11-13"
 		},
 		chords = [
 		// Major
@@ -79,15 +83,21 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		['x32110', ["Caug", "Eaug", "G#aug"], 'xCEG#CE', formula.aug],
 		['032110', ["Eaug", "Caug", "G#aug"], 'ECEG#CE', formula.aug],
 		['4321xx', ["G#aug", "Caug", "Eaug"], 'G#CEG#xx', formula.aug],
-		/*
-		** TEST TO BE ADDED ******************************
-		- Minor, major seventh (m(maj7))
-		- Minor ninth, major seventh (m9(maj7))
-		- Minor eleventh (m9b5)
-		- Minor thirteen (m13)
-		*/
+		// Minor, major seventh (m(maj7))
+		['x31003', 'Cm(maj7)', 'xCD#GBG', formula.mmaj7],
+		['8109888', 'Cm(maj7)', 'CGBD#GC', formula.mmaj7],
+		['x35443', 'Cm(maj7)', 'xCGBD#G', formula.mmaj7],
 		/*
 		** NOT SUPPORTED YET ******************************
+		// Minor thirteen (m13)
+		['x11233', 'Cm13', 'xA#D#ADG', formula.m13],
+		['81088108', 'Cm13', 'CGA#D#AC', formula.m13],
+		// Minor eleventh (m9b5)
+		['89881110', 'Cm9b5', 'CF#A#D#A#D', formula.m9b5],
+		// Minor ninth, major seventh (m9(maj7))
+		['x65433', 'Cm9(maj7)', 'xD#GBDG', formula.m9maj7],
+		['x3143x', 'Cm9(maj7)', 'xCD#BDx', formula.m9maj7],
+		['81098810', 'Cm9(maj7)', 'CGBD#GD', formula.m9maj7],
 		// Diminished (dim)
 		['x3454x', 'Cdim', 'xCF#CD#x', formula.dim],
 		['89108xx', 'Cdim', 'CF#CD#xx', formula.dim],
