@@ -164,10 +164,12 @@ git clone https://github.com/greird/chordictionaryjs.git
 npm install
 ```
 
+If it has been installed correctly you should be able to launch ```npm test``` and see that every tests passed. 
+
 The only file to edit is `/src/chordictionary.js`.
 
-To run some unit tests on your modifications, type `Gulp test` or go to `/_testfiles/test_dev.html`.  
-You may need to edit or add new tests in `/_testfiles/test.js`.  
+To run some unit tests, type `Gulp test` or go to `/_tests`. (Note that this will only test compiled code from the /build directory.)
+You may need to edit or add new tests in `/_tests/test.js`.  
 I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 
 Finally, type `Gulp build` to compile the content of `/src` into `/build`.  

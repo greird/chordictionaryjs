@@ -4,7 +4,7 @@
   "description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
   "main": "/build/chordictionary.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",

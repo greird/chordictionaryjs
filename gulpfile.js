@@ -34,11 +34,7 @@ gulp.task('css', function () {
 
 // Test Tasks
 gulp.task('test', function() {
-    return gulp.src('./_testfiles/test_dev.html') // check the src file
-        .pipe(qunit());
-});
-gulp.task('testbuild', function() {
-    return gulp.src('./_testfiles/test_build.html') // check the builded file
+    return gulp.src('./_tests/index.html') // check the src file
         .pipe(qunit());
 });
 
@@ -49,7 +45,7 @@ gulp.task('testbuild', function() {
 
  // Build task
  gulp.task('build', function() {
-   gulp.start('css', 'lint', 'scripts', 'testbuild');
+   gulp.start('css', 'lint', 'scripts', 'test');
  });
 
 // Watch
