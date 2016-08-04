@@ -33,33 +33,30 @@ Results may vary depending on your instrument's tuning and number of strings.
 - Powerchord (5)
 - Suspended fourth (sus4)
 - Suspended second (sus2)
+- Augmented (aug)
 - Sixth (6)
+- Minor sixth (m6)
+- Minor, flat sixth (mb6)
+- Major sixth (maj6)
 - Seventh & Dominant seventh (7)
 - Minor seventh (m7)
+- Minor seventh, flat fifth (m7b5)
 - Major seventh (maj7)
-- Minor, flat sixth (mb6)
+- Minor, major seventh (m(maj7))
 
 ##### Not supported yet
-- Minor sixth (m6) - recognized but wrong formula displayed
-- Minor seventh, flat fifth (m7b5) - recognized but wrong formula displayed
 - Sixth, added ninth (6/9)
+- Minor sixth, added ninth (m6/9)
 - Added ninth(add9)
 - Major ninth (maj9)
-- Major seventh, sharp eleventh (maj7#11)
-- Major thirteen (maj13)
-
-##### To be checked
-- Major sixth (maj6)
-- Minor, added ninth (m(add9))
-- Minor sixth, added ninth (m6/9)
-- Minor, major seventh (m(maj7))
 - Minor ninth (m9)
+- Minor, added ninth (m(add9))
 - Minor ninth, major seventh (m9(maj7))
 - Minor eleventh (m9b5)
+- Major seventh, sharp eleventh (maj7#11)
+- Major thirteen (maj13)
 - Minor thirteen (m13)
-- Augmented (aug)
 - Diminished (dim)
-- other ?
 
 ***
 
@@ -72,10 +69,10 @@ Include [`chordictionary.min.js`](https://raw.githubusercontent.com/greird/chord
 
 ### Define your instrument
 
-The first thing you will need to do is to define your instrument.
+The first thing you will need to do is to define your instrument. You do this by creating a new instance of Chordictionary.
 
 ```javascript
-Chordictionary.Instrument(tuning, fretNumber, fretsToDisplay, maxSpan)
+Chordictionary (tuning, fretNumber, fretsToDisplay, maxSpan)
 /**
 * @param {String} tuning | Required | The instrument tuning in standard letter notation (e.g.: "EADGBE")
 * @param {Int} fretNumber | Required | The instrument's number of frets.
@@ -86,7 +83,7 @@ Chordictionary.Instrument(tuning, fretNumber, fretsToDisplay, maxSpan)
 
 For instance, if you're an electric guitar player, you may define your instrument as follow.
 
-`var myInstrument = new Chordictionary.Instrument('EADGBE', 24, 7, 4);`
+`var myInstrument = new Chordictionary('EADGBE', 24, 7, 4);`
 
 Here I've define a guitar in standard tuning "EADGBE" (from the lowest to highest string). It has a total of 24 frets.
 I want the graphic representation to display 7 frets.
@@ -136,21 +133,21 @@ However, an SVG version of this could be more scalable.
 
 ### Check if tab or tuning is valid
 
-`Chordictionary.isValidTab(tab)` and `Chordictionary.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
+`myInstrument.isValidTab(tab)` and `myInstrument.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
 Note that these functions are completely unrelated to your instrument instance.
 
 ```javascript
 // Usage
 
-Chordictionary.isValidTab("x32010");
+myInstrument.isValidTab("x32010");
 // Return
 True // Will be interpreted as ['x','3','2','0','1','0']
 
-Chordictionary.isValidTab("911111099");
+myInstrument.isValidTab("911111099");
 // Return
 True // Will be interpreted as ['9','11','11','10','9','9']
 
-Chordictionary.isValidTuning("E#A#D#G#B#E#");
+myInstrument.isValidTuning("E#A#D#G#B#E#");
 // Return
 True // Will be interpreted as ['E#','A#','D#','G#','B#','E#']
 ```
@@ -167,10 +164,12 @@ git clone https://github.com/greird/chordictionaryjs.git
 npm install
 ```
 
+If it has been installed correctly you should be able to launch ```npm test``` and see that every tests passed. 
+
 The only file to edit is `/src/chordictionary.js`.
 
-To run some unit tests on your modifications, type `Gulp test` or go to `/_testfiles/test_dev.html`.  
-You may need to edit or add new tests in `/_testfiles/test.js`.  
+To run some unit tests, type `Gulp test` or go to `/_tests`. (Note that this will only test compiled code from the /build directory.)
+You may need to edit or add new tests in `/_tests/test.js`.  
 I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 
 Finally, type `Gulp build` to compile the content of `/src` into `/build`.  
@@ -202,9 +201,9 @@ myInstrument.getChordsList("G", 4);
 	error: "",
 	chordList: [
 		{ tab: [3,2,0,0,0,3], tag: ['basic'] },
-		{ tab: [3,2,0,4,0,3], tag: ['basic'] },
 		{ tab: [3,2,0,0,3,3], tag: ['basic'] },
-		{ tab: [3,5,5,4,3,3], tag: ['basic', 'bar'] },
+		{ tab: [3,5,5,4,3,3], tag: ['bar'] },
+		{ tab: [x, 10, 12, 12, 12, 10], tag: ['bar'] },
 		],
 	offset: 29927
 }

@@ -17,7 +17,7 @@
       <h1 class="title">Instrument definition</h1>
     </div>
     <h2 class="subtitle">
-      var guitar = new Chordictionary.Instrument('EADGBE', 24, 5, 4);
+      var guitar = new Chordictionary('EADGBE', 24, 5, 4);
     </h2>
     <div class="message">
       <div class="message-header">
@@ -25,7 +25,7 @@
       </div>
       <div class="message-body">
         <script>
-        var guitar = new Chordictionary.Instrument('EADGBE', 24, 5, 4);
+        var guitar = new Chordictionary('EADGBE', 24, 5, 4);
         for (var key in guitar) {
           if (key === "getChordInfo" || key === "getChordsList" || key === "getChordLayout") {
             document.write('<strong>' + key + ' => </strong> function <br />');
@@ -86,7 +86,14 @@
         for (var key in chordsList) {
           document.write('<strong>' + key + ' => </strong>');
           if (key === 'chordList') {
-            document.write('// too many objects<br />');
+            chordsList[key].forEach( function(element, index) {
+              if (chordsList.chordList[index].tag.length) {
+                document.write('<strong>' + chordsList.chordList[index].tab + ' ' + chordsList.chordList[index].tag + '</strong> <br />');
+              } else {
+                document.write(chordsList.chordList[index].tab + '<br />');
+              }
+              
+            });  
           } else {
             document.write(chordsList[key] + '<br />');
           }
@@ -95,6 +102,9 @@
         </script>
       </div>
     </div>
+    <h4 class="subtitle">
+    Most common placements for these chords
+    </h4>
     <script>
     for (var i in chordsList.chordList) {
       var tagList = "";
@@ -110,7 +120,7 @@
     }
     </script>
     <div style="clear:both; height:20px;"></div>
-    <a class="button is-primary">Show unrecognized chords</a>
+    <!--<a class="button is-primary">Show unrecognized chords</a>-->
   </div>
 </section>
 
@@ -120,7 +130,7 @@
       <h1 class="title">Tab notation validation</h1>
     </div>
     <h2 class="subtitle">
-      Chordictionary.isValidTab("x32010")
+      guitar.isValidTab("x32010")
     </h2>
     <div class="message">
       <div class="message-header">
@@ -128,7 +138,7 @@
       </div>
       <div class="message-body">
         <script>
-        document.write(Chordictionary.isValidTab("x32010")+'<br />');
+        document.write(guitar.isValidTab("x32010")+'<br />');
         </script>
       </div>
     </div>
@@ -141,7 +151,7 @@
       <h1 class="title">Tuning notation validation</h1>
     </div>
     <h2 class="subtitle">
-      Chordictionary.isValidTuning("E#A#D#G#B#E#")
+      guitar.isValidTuning("E#A#D#G#B#E#")
     </h2>
     <div class="message">
       <div class="message-header">
@@ -149,7 +159,7 @@
       </div>
       <div class="message-body">
         <script>
-        document.write(Chordictionary.isValidTuning("E#A#D#G#B#E#")+'<br />');
+        document.write(guitar.isValidTuning("E#A#D#G#B#E#")+'<br />');
         </script>
       </div>
     </div>

@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
-    return gulp.src('./src/*.js')
+    return gulp.src('./src/chordictionary.js')
         .pipe(babel())
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify({ preserveComments: "license" }))
@@ -20,21 +20,7 @@ gulp.task('scripts', function() {
 // Lint Task
 gulp.task('lint', function() {
     return gulp.src('./src/*.js')
-        .pipe(eslint({
-            'rules': {
-                'quotes': [1, 'double', {'avoidEscape': true}],
-                'semi': [2, 'always'],
-                'eqeqeq': [1, 'smart'],
-                'strict': [2, 'safe'], 
-                'no-redeclare': 2, 
-                'no-lonely-if': 1, 
-                'one-var-declaration-per-line': [1, "initializations"]
-            },
-            envs: [
-                'browser',
-                'es6'
-            ]
-        }))
+        .pipe(eslint())
         .pipe(eslint.format())
 });
 
@@ -48,11 +34,7 @@ gulp.task('css', function () {
 
 // Test Tasks
 gulp.task('test', function() {
-    return gulp.src('./_testfiles/test_dev.html') // check the src file
-        .pipe(qunit());
-});
-gulp.task('testbuild', function() {
-    return gulp.src('./_testfiles/test_build.html') // check the builded file
+    return gulp.src('./_tests/index.html') // check the src file
         .pipe(qunit());
 });
 
@@ -63,7 +45,7 @@ gulp.task('testbuild', function() {
 
  // Build task
  gulp.task('build', function() {
-   gulp.start('css', 'lint', 'scripts', 'testbuild');
+   gulp.start('css', 'lint', 'scripts', 'test');
  });
 
 // Watch

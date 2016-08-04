@@ -4,7 +4,7 @@
   "description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
   "main": "/build/chordictionary.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,26 @@
   "homepage": "https://www.chordictionaryjs.com",
   "babel": {
     "presets": [ "es2015" ]
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6
+    },
+    "env": {
+     "browser": true,
+     "es6": true
+    },
+    "rules": {
+      "quotes": [1, "double", {"avoidEscape": true}],
+      "semi": [2, "always"],
+      "eqeqeq": [1, "smart"],
+      "strict": [2, "safe"], 
+      "no-redeclare": 2, 
+      "no-lonely-if": 1, 
+      "one-var-declaration-per-line": [1, "initializations"],
+      "brace-style": [1, "1tbs", { "allowSingleLine": false }],
+      "indent": [1, "tab", { "VariableDeclarator": 1, "SwitchCase": 1 }]
+    }
   },
   "dependencies": {},
   "devDependencies": {
