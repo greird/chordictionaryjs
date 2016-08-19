@@ -24,7 +24,7 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 			"sus4": "1-4-5",
 			"sus2": "1-2-5",
 			"add9": "1-3-5-9",
-			"madd9": "1-3-5-b9",
+			"madd9": "1-b3-5-9",
 			"6": "1-3-6",
 			"6/9": "1-3-5-6-9",
 			"maj6": "1-3-5-6",
@@ -87,6 +87,22 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		['x31003', 'Cm(maj7)', 'xCD#GBG', formula.mmaj7],
 		['8109888', 'Cm(maj7)', 'CGBD#GC', formula.mmaj7],
 		['x35443', 'Cm(maj7)', 'xCGBD#G', formula.mmaj7],
+		// Minor added ninth
+		['x31033', 'Cm(add9)', 'xCD#GDG', formula.madd9],
+		['x6x788', 'Cm(add9)', 'xD#xDGC', formula.madd9],
+		// Add9
+		['xx109810', "Cadd9", 'xxCEGD', formula.add9],
+		['x32030', "Cadd9", 'xCEGDE', formula.add9],
+
+		// Minor ninth, major seventh (m9(maj7))
+		['x65433', 'Cm9(maj7)', 'xD#GBDG', formula.m9maj7],
+		['x3143x', 'Cm9(maj7)', 'xCD#BDx', formula.m9maj7],
+		['81098810', 'Cm9(maj7)', 'CGBD#GD', formula.m9maj7],
+		// 6/9 (6 added 9)
+		['xx1091010', 'C6/9', 'xxCEAD', formula['6/9']],
+		['x1212121312', 'C6/9', 'xADGCE', formula['6/9']],
+		// Major 13
+		['330200', "Cmaj13", 'GCDABE', formula.maj13],
 		/*		
 		** NOT SUPPORTED YET ******************************
 		// Minor thirteen (m13)
@@ -94,10 +110,6 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		['81088108', 'Cm13', 'CGA#D#AC', formula.m13],
 		// Minor eleventh (m9b5)
 		['89881110', 'Cm9b5', 'CF#A#D#A#D', formula.m9b5],
-		// Minor ninth, major seventh (m9(maj7))
-		['x65433', 'Cm9(maj7)', 'xD#GBDG', formula.m9maj7],
-		['x3143x', 'Cm9(maj7)', 'xCD#BDx', formula.m9maj7],
-		['81098810', 'Cm9(maj7)', 'CGBD#GD', formula.m9maj7],
 		// Diminished (dim)
 		['x3454x', 'Cdim', 'xCF#CD#x', formula.dim],
 		['89108xx', 'Cdim', 'CF#CD#xx', formula.dim],
@@ -107,15 +119,6 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		// Minor sixth, added ninth (m6/9)
 		['xx1233', 'Cm6/9', 'xxD#ADG', formula['m6/9']],
 		['xx7889', 'Cm6/9', 'xxAD#GC#', formula['m6/9']],
-		// Minor added ninth
-		['x31033', 'Cm(add9)', 'xCD#GDG', formula.madd9],
-		['x6x788', 'Cm(add9)', 'xD#xDGC', formula.madd9],
-		// Add9
-		['xx109810', "Cadd9", 'xxCEGD', formula.add9],
-		['x32030', "Cadd9", 'xCEGDE', formula.add9],
-		// 6/9 (6 added 9)
-		['xx1091010', 'C6/9', 'xxCEAD', formula['6/9']],
-		['x1212121312', 'C6/9', 'xADGCE', formula['6/9']],
 		// Major 9
 		['x3243x', "Cmaj9", 'xCEBDx', formula.maj9],
 		['x35433', "Cmaj9", 'xCGBDG', formula.maj9],
@@ -123,8 +126,6 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		['x02100', "Amaj9", 'xAEG#BE', formula.maj9],
 		// maj7#11
 		['x32002', "Cmaj7#11", 'xCEGBF#', formula["maj7#11"]],
-		// Major 13
-		['330200', "Cmaj13", 'GCDABE', formula.maj13],
 		*/
 	];
 

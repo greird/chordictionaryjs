@@ -43,18 +43,18 @@ Results may vary depending on your instrument's tuning and number of strings.
 - Minor seventh, flat fifth (m7b5)
 - Major seventh (maj7)
 - Minor, major seventh (m(maj7))
+- Minor, added ninth (m(add9))
+- Added ninth(add9)
+- Major thirteen (maj13)
 
 ##### Not supported yet
 - Sixth, added ninth (6/9)
 - Minor sixth, added ninth (m6/9)
-- Added ninth(add9)
 - Major ninth (maj9)
 - Minor ninth (m9)
-- Minor, added ninth (m(add9))
 - Minor ninth, major seventh (m9(maj7))
 - Minor eleventh (m9b5)
 - Major seventh, sharp eleventh (maj7#11)
-- Major thirteen (maj13)
 - Minor thirteen (m13)
 - Diminished (dim)
 
