@@ -26,7 +26,9 @@ It converts common chord tab notation, such as `x32010`, into its graphical repr
 ## List of supported chords
 
 Note that tests have been run through guitar standard tuning only (EADGBE). 
-Results may vary depending on your instrument's tuning and number of strings.
+Results may vary depending on your instrument's tuning and number of strings. 
+
+The current matching system is very strict. Your tab won't match any chord unless it has all the requested notes. For instance, an m9(maj7) chord without a fifth won't be recognized.
 
 ##### Supported
 - Minor (min)
@@ -46,15 +48,16 @@ Results may vary depending on your instrument's tuning and number of strings.
 - Minor, major seventh (m(maj7))
 - Minor, added ninth (m(add9))
 - Added ninth(add9)
+- Sixth, added ninth (6/9)
+- Minor sixth, added ninth (m6/9)
+- Minor ninth, major seventh (m9(maj7))
+- Minor eleventh (m9b5)
 - Major thirteen (maj13)
 
 ##### Not supported yet
-- Sixth, added ninth (6/9)
-- Minor sixth, added ninth (m6/9)
+
 - Major ninth (maj9)
 - Minor ninth (m9)
-- Minor ninth, major seventh (m9(maj7))
-- Minor eleventh (m9b5)
 - Major seventh, sharp eleventh (maj7#11)
 - Minor thirteen (m13)
 - Diminished (dim)
