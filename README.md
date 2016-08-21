@@ -6,6 +6,7 @@ ChordictionaryJS
 [![David](https://img.shields.io/david/dev/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
 [![GitHub issues](https://img.shields.io/github/issues/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/issues)
 [![Build Status](https://travis-ci.org/greird/chordictionaryjs.svg?branch=master)](https://travis-ci.org/greird/chordictionaryjs)
+[![Gitter](https://badges.gitter.im/chordictionaryjs/Lobby.svg)](https://gitter.im/chordictionaryjs/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 A dependency-free javascript library for dynamic chord recognition/generation for any fretted instrument.
 It converts common chord tab notation, such as `x32010`, into its graphical representation, recognizes the chord and returns its real name and composition.
