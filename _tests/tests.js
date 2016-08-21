@@ -19,7 +19,7 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 			"min": "1-b3-5",
 			"maj": "1-3-5",
 			"power": "1-5",
-			"dim": "1-3-b5",
+			"dim": "1-b3-b5",
 			"aug": "1-3-5#",
 			"sus4": "1-4-5",
 			"sus2": "1-2-5",
@@ -106,6 +106,10 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		['89881110', 'Cm9b5', 'CF#A#D#A#D', formula.m9b5],
 		// Major 13
 		['330200', "Cmaj13", 'GCDABE', formula.maj13],
+
+		// Diminished (dim)
+		['x3454x', 'Cdim', 'xCF#CD#x', formula.dim],
+		['89108xx', 'Cdim', 'CF#CD#xx', formula.dim],
 		/*		
 		** NOT SUPPORTED YET ******************************
 		// Minor ninth, major seventh (m9(maj7)) SKIPPED NOTES
@@ -113,20 +117,19 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		['x3143x', 'Cm9(maj7)', 'xCD#BDx', formula.m9maj7], // no fifth
 		// 6/9 (6 added 9) SKIPPED NOTES
 		['xx1091010', 'C6/9', 'xxCEAD', formula['6/9']], // no fifth
-		// Minor thirteen (m13)
-		['x11233', 'Cm13', 'xA#D#ADG', formula.m13],
+		// Minor thirteen (m13) TO BE CHECKED WITH 7 STRINGS
+		['x11233', 'Cm13', 'xA#D#ADG', formula.m13], // no root
 		['81088108', 'Cm13', 'CGA#D#AC', formula.m13],
-		// Diminished (dim)
-		['x3454x', 'Cdim', 'xCF#CD#x', formula.dim],
-		['89108xx', 'Cdim', 'CF#CD#xx', formula.dim],
 		// Minor ninth (m9)
-		['x3133x', 'Cm9', 'xCD#A#Dx', formula.m9],
-		['8687xx', 'Cm9', 'CD#A#Dxx', formula.m9],
-		// Minor sixth, added ninth (m6/9)
-		['xx1233', 'Cm6/9', 'xxD#ADG', formula['m6/9']],
-		['xx7889', 'Cm6/9', 'xxAD#GC#', formula['m6/9']],
+		['81088810', 'Cm9', 'CD#A#Dxx', formula.m9],
+		// Minor ninth (m9) SKIPPED NOTES
+		['x3133x', 'Cm9', 'xCD#A#Dx', formula.m9], // no fifth
+		['8687xx', 'Cm9', 'CD#A#Dxx', formula.m9], // no fifth
+		// Minor sixth, added ninth (m6/9) SKIPPED NOTES
+		['xx1233', 'Cm6/9', 'xxD#ADG', formula['m6/9']], // no root
+		['xx7889', 'Cm6/9', 'xxAD#GC#', formula['m6/9']], // no root
 		// Major 9
-		['x3243x', "Cmaj9", 'xCEBDx', formula.maj9],
+		['x3243x', "Cmaj9", 'xCEBDx', formula.maj9], // no fifth
 		['x35433', "Cmaj9", 'xCGBDG', formula.maj9],
 		['xx10121210', "Cmaj9", 'xxCGBD', formula.maj9],
 		['x02100', "Amaj9", 'xAEG#BE', formula.maj9],

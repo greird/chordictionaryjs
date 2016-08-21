@@ -37,6 +37,7 @@ The current matching system is very strict. Your tab won't match any chord unles
 - Suspended fourth (sus4)
 - Suspended second (sus2)
 - Augmented (aug)
+- Diminished (dim)
 - Sixth (6)
 - Minor sixth (m6)
 - Minor, flat sixth (mb6)
@@ -55,12 +56,10 @@ The current matching system is very strict. Your tab won't match any chord unles
 - Major thirteen (maj13)
 
 ##### Not supported yet
-
 - Major ninth (maj9)
 - Minor ninth (m9)
 - Major seventh, sharp eleventh (maj7#11)
 - Minor thirteen (m13)
-- Diminished (dim)
 
 ***
 
