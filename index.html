@@ -25,14 +25,14 @@
       </div>
       <div class="message-body">
         <script>
-        var guitar = new Chordictionary('EADGBE', 24, 5, 4);
-        for (var key in guitar) {
-          if (key === "getChordInfo" || key === "getChordsList" || key === "getChordLayout") {
-            document.write('<strong>' + key + ' => </strong> function <br />');
-            continue;
+          var guitar = new Chordictionary('EADGBE', 24, 5, 4);
+          for (var key in guitar) {
+            if (key === "getChordInfo" || key === "getChordsList" || key === "getChordLayout") {
+              document.write('<strong>' + key + ' => </strong> function <br />');
+              continue;
+            }
+            document.write('<strong>' + key + ' => </strong>' + guitar[key] + '<br />');
           }
-          document.write('<strong>' + key + ' => </strong>' + guitar[key] + '<br />');
-        }
         </script>
       </div>
     </div>
@@ -53,10 +53,10 @@
       </div>
       <div class="message-body">
         <script>
-        var chordInfo = guitar.getChordInfo("131211");
-        for (var key in chordInfo) {
-          document.write('<strong>' + key + ' => </strong>' + chordInfo[key] + '<br />');
-        }
+          var chordInfo = guitar.getChordInfo("131211");
+          for (var key in chordInfo) {
+            document.write('<strong>' + key + ' => </strong>' + chordInfo[key] + '<br />');
+          }
         </script>
       </div>
     </div>
@@ -73,8 +73,8 @@
     </h2>
     <h3 class="subtitle">
       <script>
-      var chordsList = guitar.getChordsList("G");
-      document.write(chordsList.chordList.length + " chords found.");
+        var chordsList = guitar.getChordsList("G");
+        document.write(chordsList.chordList.length + " chords found.");
       </script>
     </h2>
     <div class="message">
@@ -83,41 +83,41 @@
       </div>
       <div class="message-body">
         <script>
-        for (var key in chordsList) {
-          document.write('<strong>' + key + ' => </strong>');
-          if (key === 'chordList') {
-            chordsList[key].forEach( function(element, index) {
-              if (chordsList.chordList[index].tag.length) {
-                document.write('<strong>' + chordsList.chordList[index].tab + ' ' + chordsList.chordList[index].tag + '</strong> <br />');
-              } else {
-                document.write(chordsList.chordList[index].tab + '<br />');
-              }
-              
-            });  
-          } else {
-            document.write(chordsList[key] + '<br />');
-          }
+          for (var key in chordsList) {
+            document.write('<strong>' + key + ' => </strong>');
+            if (key === 'chordList') {
+              chordsList[key].forEach( function(element, index) {
+                if (chordsList.chordList[index].tag.length) {
+                  document.write('<strong>' + chordsList.chordList[index].tab + ' ' + chordsList.chordList[index].tag + '</strong> <br />');
+                } else {
+                  document.write(chordsList.chordList[index].tab + '<br />');
+                }
+                
+              });  
+            } else {
+              document.write(chordsList[key] + '<br />');
+            }
 
-        }
+          }
         </script>
       </div>
     </div>
     <h4 class="subtitle">
-    Most common placements for these chords
+      Most common placements for these chords
     </h4>
     <script>
-    for (var i in chordsList.chordList) {
-      var tagList = "";
-      if (chordsList.chordList[i].tag.length) {
-        document.write('<div id="chord" style="margin-right: 20px;float:left;">');
-        for (var tag in chordsList.chordList[i].tag) {
-          if (tagList != "") tagList += ',' + chordsList.chordList[i].tag[tag];
-          else tagList = chordsList.chordList[i].tag[tag];
+      for (var i in chordsList.chordList) {
+        var tagList = "";
+        if (chordsList.chordList[i].tag.length) {
+          document.write('<div id="chord" style="margin-right: 20px;float:left;">');
+          for (var tag in chordsList.chordList[i].tag) {
+            if (tagList != "") tagList += ',' + chordsList.chordList[i].tag[tag];
+            else tagList = chordsList.chordList[i].tag[tag];
+          }
+          document.write(guitar.getChordLayout(tagList, chordsList.chordList[i].tab.join('')));
+          document.write('</div>');
         }
-        document.write(guitar.getChordLayout(tagList, chordsList.chordList[i].tab.join('')));
-        document.write('</div>');
       }
-    }
     </script>
     <div style="clear:both; height:20px;"></div>
     <!--<a class="button is-primary">Show unrecognized chords</a>-->
@@ -138,7 +138,7 @@
       </div>
       <div class="message-body">
         <script>
-        document.write(guitar.isValidTab("x32010")+'<br />');
+          document.write(guitar.isValidTab("x32010")+'<br />');
         </script>
       </div>
     </div>
@@ -159,7 +159,7 @@
       </div>
       <div class="message-body">
         <script>
-        document.write(guitar.isValidTuning("E#A#D#G#B#E#")+'<br />');
+          document.write(guitar.isValidTuning("E#A#D#G#B#E#")+'<br />');
         </script>
       </div>
     </div>
@@ -176,7 +176,7 @@
     </h2>
     <div id="chord" style="margin-right: 20px;float:left;">
       <script>
-      document.write(guitar.getChordLayout("C", "x32010"));
+        document.write(guitar.getChordLayout("C", "x32010"));
       </script>
     </div>
     <div style="clear:both;"></div>
