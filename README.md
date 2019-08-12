@@ -171,18 +171,12 @@ If it has been installed correctly you should be able to launch ```npm test``` a
 
 The only file to edit is `/src/chordictionary.js`.
 
-To run some unit tests, type `Gulp test` or go to `/_tests`. (Note that this will only test compiled code from the /build directory.)
+To run some unit tests, type `gulp test` or go to `/_tests`. (Note that this will only test compiled code from the /build directory.)
 You may need to edit or add new tests in `/_tests/test.js`.  
 I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 
-Finally, type `Gulp build` to compile the content of `/src` into `/build`.  
-It will lint and minify your code before running the tests again on the final file.
-
-To convert ChordictionaryJS ES6 module to a IIFE script:
-```
-npm i --global rollup
-rollup src/chordictionary.js --file build/chordictionary_iife.js --format iife --name chordictionary
-```
+Finally, type `gulp build` to compile the content of `/src` into `/build`.  
+It will lint, minify, build 3 versions of the lib (ES6, CommonJS and IIFE) before running the tests again on the the IIFE version of the lib.
 
 ***
 
