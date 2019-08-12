@@ -68,7 +68,7 @@ The current matching system is very strict. Your tab won't match any chord unles
 
 You can choose between 3 diffent versions depending on your environment.
 
-### IIFE
+### IIFE - For usage in the browser with 0 dependicies
 
 Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via the usual HTML `<link>` and `<script>` tags.
 
@@ -77,13 +77,21 @@ Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird
 <script src="chordictionary_iife.min.js"></script>
 ```
 
-### ES6
+### CommonJS - For usage with Node.js
 
-Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via 
+Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via `require` syntax.
+
+```
+const chordictionary = require('chordictionary_commonjs.min.js');
+```
+
+### ES6 - for ES6 compatible apps
+
+Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via ES6 `import` syntax.
 
 Here is an exemple with a [Vue.JS](https://vuejs.org/) application.
 ```
-import './assets/css/chordictionary.min.css'
+import './assets/css/chordictionary.min.css';
 import * as chordictionary from './assets/js/chordictionary_es6.min.js';
 
 // To make it available throughout all your VueJS components
