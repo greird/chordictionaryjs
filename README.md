@@ -66,7 +66,33 @@ The current matching system is very strict. Your tab won't match any chord unles
 
 ## Setup
 
-Include [`chordictionary.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) to your project.
+You can choose between 3 diffent versions depending on your environment.
+
+### IIFE
+
+Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via the usual HTML `<link>` and `<script>` tags.
+
+```
+<link type="text/css" rel="stylesheet" href="chordictionary.min.css"/>
+<script src="chordictionary_iife.min.js"></script>
+```
+
+### ES6
+
+Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via 
+
+Here is an exemple with a [Vue.JS](https://vuejs.org/) application.
+```
+import './assets/css/chordictionary.min.css'
+import * as chordictionary from './assets/js/chordictionary_es6.min.js';
+
+// To make it available throughout all your VueJS components
+Vue.mixin({
+	methods: {
+		chordictionary: chordictionary
+	}
+})
+```
 
 ## How To
 
@@ -86,7 +112,7 @@ Chordictionary (tuning, fretNumber, fretsToDisplay, maxSpan)
 
 For instance, if you're an electric guitar player, you may define your instrument as follow.
 
-`var myInstrument = new Chordictionary('EADGBE', 24, 7, 4);`
+`var myInstrument = new chordicationary.Instrument('EADGBE', 24, 7, 4);`
 
 Here I've define a guitar in standard tuning "EADGBE" (from the lowest to highest string). It has a total of 24 frets.
 I want the graphic representation to display 7 frets.
