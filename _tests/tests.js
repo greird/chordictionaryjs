@@ -1,4 +1,4 @@
-var guitar = new Chordictionary('EADGBE', 24, 5, 4);
+var guitar = new chordictionary.Instrument('EADGBE', 24, 5, 4);
 
 QUnit.test("guitar.isValidTab()", function(assert) {
 	assert.ok(guitar.isValidTab("x32010") === true, "x32010 is a valid tab.");

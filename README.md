@@ -178,6 +178,12 @@ I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 Finally, type `Gulp build` to compile the content of `/src` into `/build`.  
 It will lint and minify your code before running the tests again on the final file.
 
+To convert ChordictionaryJS ES6 module to a IIFE script:
+```
+npm i --global rollup
+rollup src/chordictionary.js --file build/chordictionary_iife.js --format iife --name chordictionary
+```
+
 ***
 
 

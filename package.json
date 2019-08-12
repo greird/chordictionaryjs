@@ -1,95 +1,43 @@
 {
-  "name": "chordictionary",
-  "version": "0.1.0-alpha.2",
-  "description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
-  "main": "/build/chordictionary.min.js",
-  "scripts": {
-    "test": "gulp test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/greird/chordictionaryjs.git"
-  },
-  "keywords": [
-    "music",
-    "score",
-    "chord",
-    "note",
-    "guitar",
-    "instrument"
-  ],
-  "author": "Hubert Fauconnier <h.fauconnier@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/greird/chordictionaryjs/issues"
-  },
-  "homepage": "https://www.chordictionaryjs.com",
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
-  },
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 6
-    },
-    "env": {
-      "browser": true,
-      "es6": true
-    },
-    "rules": {
-      "quotes": [
-        1,
-        "double",
-        {
-          "avoidEscape": true
-        }
-      ],
-      "semi": [
-        2,
-        "always"
-      ],
-      "eqeqeq": [
-        1,
-        "smart"
-      ],
-      "strict": [
-        2,
-        "safe"
-      ],
-      "no-redeclare": 2,
-      "no-lonely-if": 1,
-      "one-var-declaration-per-line": [
-        1,
-        "initializations"
-      ],
-      "brace-style": [
-        1,
-        "1tbs",
-        {
-          "allowSingleLine": false
-        }
-      ],
-      "indent": [
-        1,
-        "tab",
-        {
-          "VariableDeclarator": 1,
-          "SwitchCase": 1
-        }
-      ]
-    }
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "babel-preset-es2015": "^6.9.0",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-concat": "^2.6.0",
-    "gulp-csso": "^2.0.0",
-    "gulp-eslint": "^3.0.1",
-    "gulp-qunit": "^1.4.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.2"
-  }
+	"name": "chordictionary",
+	"version": "0.1.0-alpha.2",
+	"description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
+	"main": "/build/chordictionary.min.js",
+	"scripts": {
+		"test": "gulp test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/greird/chordictionaryjs.git"
+	},
+	"keywords": [
+		"music",
+		"score",
+		"chord",
+		"note",
+		"guitar",
+		"instrument"
+	],
+	"author": "Hubert Fauconnier <h.fauconnier@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/greird/chordictionaryjs/issues"
+	},
+	"homepage": "https://www.chordictionaryjs.com",
+	"babel": {
+		"presets": [
+			"es2015"
+		]
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"gulp": "^3.9.1",
+		"gulp-babel": "^6.1.2",
+		"gulp-babel-minify": "^0.5.0",
+		"gulp-csso": "^2.0.0",
+		"gulp-eslint": "^3.0.1",
+		"gulp-qunit": "^1.4.0",
+		"gulp-rename": "^1.2.2",
+		"gulp-rollup": "^2.16.2"
+	}
 }
