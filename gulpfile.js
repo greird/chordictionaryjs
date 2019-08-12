@@ -39,7 +39,7 @@ gulp.task('test', function() {
 
 // Default task
 gulp.task('default', ['watch'], function() {
-	gulp.start('lint', 'scripts');
+	gulp.start('lint', 'scripts', 'css');
 });
 
  // Build task
