@@ -72,25 +72,34 @@ You can choose between 3 diffent versions depending on your environment.
 
 Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via the usual HTML `<link>` and `<script>` tags.
 
-```
+```HTML
 <link type="text/css" rel="stylesheet" href="chordictionary.min.css"/>
 <script src="chordictionary_iife.min.js"></script>
 ```
 
-### CommonJS - For usage with Node.js
+### CommonJS
 
-Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via `require` syntax.
+Download [`chordictionary_commonjs.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_commonjs.min.js) and add it to your project via the `require` syntax.
 
+Exemple using Node in the terminal:
+```JavaScript
+node
+> const chordictionary = require('./build/chordictionary_commonjs.min.js');
+> let instr = new chordictionary.Instrument('EADGBE', 24, 7, 4)
+> instr
+a {
+  tuning: [ 'E', 'A', 'D', 'G', 'B', 'E' ],
+  fretNumber: 24,
+  fretsToDisplay: 8,
+  maxSpan: 4 }
 ```
-const chordictionary = require('chordictionary_commonjs.min.js');
-```
 
-### ES6 - for ES6 compatible apps
+### ES6 module
 
-Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via ES6 `import` syntax.
+Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_es6.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via ES6 `import` syntax.
 
 Here is an exemple with a [Vue.JS](https://vuejs.org/) application.
-```
+```JavaScript
 import './assets/css/chordictionary.min.css';
 import * as chordictionary from './assets/js/chordictionary_es6.min.js';
 
@@ -209,7 +218,7 @@ To run some unit tests, type `npm test` or go to `/_tests`. (Note that tests are
 You may need to edit or add new tests in `/_tests/test.js`.  
 I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 
-Finally, type `gulp build` to compile the content of `/src` into `/build`.  
+Finally, type `gulp` to compile the content of `/src` into `/build`.  
 It will lint, minify, build 3 versions of the lib (ES6, CommonJS and IIFE) before running the tests again on the the IIFE version of the lib.
 
 ***
