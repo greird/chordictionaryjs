@@ -77,6 +77,11 @@ You can choose between 3 diffent versions depending on your environment.
 const chordictionary = require('chordictionary');
 ```
 
+For proper styling of the chords layout, you can use the css from the package and copy it to your project.
+```shell
+cp node_modules/chordictionary/build/chordictionary.min.css ./css/
+```
+
 ### 2. With a script tag (IIFE)
 
 Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via the usual HTML `<link>` and `<script>` tags.
