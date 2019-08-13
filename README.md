@@ -68,25 +68,32 @@ The current matching system is very strict. Your tab won't match any chord unles
 
 You can choose between 3 diffent versions depending on your environment.
 
-### IIFE - For usage in the browser with 0 dependicies
+### IIFE (in the Browser)
 
 Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via the usual HTML `<link>` and `<script>` tags.
 
 ```HTML
-<link type="text/css" rel="stylesheet" href="chordictionary.min.css"/>
-<script src="chordictionary_iife.min.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="chordictionary.min.css">
+</head>
+<body>
+  <script src="chordictionary_iife.min.js"></script>
+</body>
+</html>
 ```
 
-### CommonJS
+### CommonJS (in Node)
 
 Download [`chordictionary_commonjs.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_commonjs.min.js) and add it to your project via the `require` syntax.
 
 Exemple using Node in the terminal:
 ```JavaScript
-node
-> const chordictionary = require('./build/chordictionary_commonjs.min.js');
-> let instr = new chordictionary.Instrument('EADGBE', 24, 7, 4)
-> instr
+$ node
+$ > const chordictionary = require('./build/chordictionary_commonjs.min.js');
+$ > let instr = new chordictionary.Instrument('EADGBE', 24, 7, 4)
+$ > instr
 a {
   tuning: [ 'E', 'A', 'D', 'G', 'B', 'E' ],
   fretNumber: 24,
@@ -94,7 +101,7 @@ a {
   maxSpan: 4 }
 ```
 
-### ES6 module
+### ES6 module (in a ES6 compatible app)
 
 Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_es6.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via ES6 `import` syntax.
 
