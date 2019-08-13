@@ -205,7 +205,7 @@ If it has been installed correctly you should be able to launch ```npm test``` a
 
 The only file to edit is `/src/chordictionary.js`.
 
-To run some unit tests, type `gulp test` or go to `/_tests`. (Note that this will only test compiled code from the /build directory.)
+To run some unit tests, type `npm test` or go to `/_tests`. (Note that tests are run on the transpiled IIFE build `/build/chordictionary_iife.min.js`.)
 You may need to edit or add new tests in `/_tests/test.js`.  
 I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 
