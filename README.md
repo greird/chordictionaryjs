@@ -1,15 +1,16 @@
 ChordictionaryJS
 ======
 
-![status](https://img.shields.io/badge/version-alpha-blue.svg)
+![status](https://img.shields.io/badge/version-beta-blue.svg)
 [![David](https://img.shields.io/david/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
 [![David](https://img.shields.io/david/dev/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
 [![GitHub issues](https://img.shields.io/github/issues/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/issues)
 [![Build Status](https://travis-ci.org/greird/chordictionaryjs.svg?branch=master)](https://travis-ci.org/greird/chordictionaryjs)
-[![Gitter](https://badges.gitter.im/chordictionaryjs/Lobby.svg)](https://gitter.im/chordictionaryjs/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 A dependency-free javascript library for dynamic chord recognition/generation for any fretted instrument.
 It converts common chord tab notation, such as `x32010`, into its graphical representation, recognizes the chord and returns its real name and composition.
+
+For a demonstration of what can be done with this library, check out [chordictionary.com](http://www.chordictionary.com).
 
 **Please note this is work in progress and it is not 100% reliable yet.**
 
@@ -86,9 +87,8 @@ Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird
 
 ### CommonJS (in Node)
 
-Download [`chordictionary_commonjs.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_commonjs.min.js) and add it to your project via the `require` syntax.
+`npm install chordictionary`
 
-Exemple using Node in the terminal:
 ```JavaScript
 $ node
 $ > const chordictionary = require('./build/chordictionary_commonjs.min.js');
@@ -105,7 +105,8 @@ a {
 
 Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_es6.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via ES6 `import` syntax.
 
-Here is an exemple with a [Vue.JS](https://vuejs.org/) application.
+Here is an exemple instegration in a [Vue.JS](https://vuejs.org/) application.
+
 ```JavaScript
 import './assets/css/chordictionary.min.css';
 import * as chordictionary from './assets/js/chordictionary_es6.min.js';
@@ -125,7 +126,7 @@ Vue.mixin({
 The first thing you will need to do is to define your instrument. You do this by creating a new instance of Chordictionary.
 
 ```javascript
-Chordictionary (tuning, fretNumber, fretsToDisplay, maxSpan)
+Instrument (tuning, fretNumber, fretsToDisplay, maxSpan)
 /**
 * @param {String} tuning | Required | The instrument tuning in standard letter notation (e.g.: "EADGBE")
 * @param {Int} fretNumber | Required | The instrument's number of frets.
@@ -182,7 +183,7 @@ myInstrument.getChordLayout("C", "x32010");
 For the moment, the chord layout is built with table elements ("Tablature" is derived from the word "table" after all. :)).
 However, an SVG version of this could be more scalable.
 
-![alt text](http://git.hubertfauconnier.com/img/chord.png "")
+![](http://git.hubertfauconnier.com/img/chord.png "")
 
 ### Check if tab or tuning is valid
 
