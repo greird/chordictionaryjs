@@ -69,7 +69,15 @@ The current matching system is very strict. Your tab won't match any chord unles
 
 You can choose between 3 diffent versions depending on your environment.
 
-### IIFE (in the Browser)
+### 1. With NPM (CommonJS)
+
+`npm install chordictionary`
+
+```JavaScript
+const chordictionary = require('chordictionary');
+```
+
+### 2. With a script tag (IIFE)
 
 Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via the usual HTML `<link>` and `<script>` tags.
 
@@ -81,40 +89,11 @@ Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird
 </head>
 <body>
   <script src="chordictionary_iife.min.js"></script>
-  <script type="text/javascript">
-    var instr = new chordictionary.Instrument('EADGBE', 24, 5, 4);
-    console.log(instr);
-  </script>
 </body>
 </html>
 ```
-Should output the following the browser console.
-```JavaScript
-a {tuning: Array(6), fretNumber: 24, fretsToDisplay: 6, maxSpan: 4}
-  fretNumber: 24
-  fretsToDisplay: 6
-  maxSpan: 4
-  tuning: (6) ["E", "A", "D", "G", "B", "E"]
-  __proto__: Object
-```
 
-### CommonJS (in Node)
-
-`npm install chordictionary`
-
-```JavaScript
-$ node
-$ > const chordictionary = require('./build/chordictionary_commonjs.min.js');
-$ > let instr = new chordictionary.Instrument('EADGBE', 24, 7, 4)
-$ > instr
-a {
-  tuning: [ 'E', 'A', 'D', 'G', 'B', 'E' ],
-  fretNumber: 24,
-  fretsToDisplay: 8,
-  maxSpan: 4 }
-```
-
-### ES6 module (in a ES6 compatible app)
+### 3. As an ES6 module
 
 Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_es6.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via ES6 `import` syntax.
 
@@ -126,9 +105,9 @@ import * as chordictionary from './assets/js/chordictionary_es6.min.js';
 
 // To make it available throughout all your VueJS components
 Vue.mixin({
-	methods: {
-		chordictionary: chordictionary
-	}
+  methods: {
+    chordictionary: chordictionary
+  }
 })
 ```
 
