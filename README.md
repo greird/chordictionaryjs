@@ -81,8 +81,21 @@ Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird
 </head>
 <body>
   <script src="chordictionary_iife.min.js"></script>
+  <script type="text/javascript">
+    var instr = new chordictionary.Instrument('EADGBE', 24, 5, 4);
+    console.log(instr);
+  </script>
 </body>
 </html>
+```
+Should output the following the browser console.
+```JavaScript
+a {tuning: Array(6), fretNumber: 24, fretsToDisplay: 6, maxSpan: 4}
+  fretNumber: 24
+  fretsToDisplay: 6
+  maxSpan: 4
+  tuning: (6) ["E", "A", "D", "G", "B", "E"]
+  __proto__: Object
 ```
 
 ### CommonJS (in Node)
@@ -139,7 +152,7 @@ For instance, if you're an electric guitar player, you may define your instrumen
 
 `var myInstrument = new chordicationary.Instrument('EADGBE', 24, 7, 4);`
 
-Here I've define a guitar in standard tuning "EADGBE" (from the lowest to highest string). It has a total of 24 frets.
+Here I have defined a guitar in standard tuning "EADGBE" (from the lowest to highest string). It has a total of 24 frets.
 I want the graphic representation to display 7 frets.
 The maximum number of frets I can cover with my hand is 4 (Chordictionary will take this in consideration when generating chords).
 
