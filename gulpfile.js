@@ -14,7 +14,7 @@ const rollup = require('rollup');
 
 // Erase build directory
 function cleandist() {
-	return gulp.src(['build/*.*'], {read: false, allowEmpty: true})
+	return gulp.src(['build/*'], {read: false, allowEmpty: true})
 	.pipe(clean())
 }
 
@@ -25,43 +25,53 @@ function lint() {
 	.pipe(eslint.format())
 }
 
-//  Build ES6, CommonJS and IIFE modules
+//  Build ES6 module
 function build_es6() {
-	return gulp.src('./src/chordictionary.js')
+	return gulp.src('./src/*.js')
 	.pipe(minify({
 		ext: {
 			src:'.js',
-			min:'_es6.min.js'
+			min:'.min.js'
 		}, 
 		noSource: true
 	}))
-	.pipe(gulp.dest('./build'))
-}
-function build_commonjs() {
-	return gulp.src('./src/chordictionary.js')
-	.pipe(babel())
-	.pipe(rename('chordictionary_commonjs.min.js'))
-	.pipe(minify_babel())
-	.pipe(gulp.dest('./build'))
+	.pipe(gulp.dest('./build/es6/chordictionary'))
 }
 
-// transpile, minify and move IIFE script
-// Convert ES6 module to IIFE
-async function build_iife() {
+// Build CommonJS module
+async function build_commonjs() {
 	const bundle = await rollup.rollup({
-		input: './src/chordictionary.js'
+		input: './src/main.js'
 	});
 	await bundle.write({
-		file: './src/chordictionary_iife.js',
+		file: './tmp/chordictionary_cjs.js',
+		format: 'cjs',
+		name: 'chordictionary'
+	});
+	await gulp.src('./tmp/chordictionary_cjs.js', { allowEmpty: true })
+	.pipe(clean())
+	.pipe(babel())
+	.pipe(rename('chordictionary.min.js'))
+	.pipe(minify_babel())
+	.pipe(gulp.dest('./build/commonjs'))
+}
+
+// Build IIFE script
+async function build_iife() {
+	const bundle = await rollup.rollup({
+		input: './src/main.js'
+	});
+	await bundle.write({
+		file: './tmp/chordictionary_iife.js',
 		format: 'iife',
 		name: 'chordictionary'
 	});
-	await gulp.src('./src/chordictionary_iife.js', { allowEmpty: true })
+	await gulp.src('./tmp/chordictionary_iife.js', { allowEmpty: true })
 	.pipe(clean())
 	.pipe(babel())
-	.pipe(rename({ suffix: '.min' }))
+	.pipe(rename('chordictionary.min.js'))
 	.pipe(minify_babel())
-	.pipe(gulp.dest('./build'));
+	.pipe(gulp.dest('./build/iife'));
 }
 
 // CSS task

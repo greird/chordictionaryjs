@@ -82,9 +82,24 @@ For proper styling of the chords layout, you can use the css from the package an
 cp node_modules/chordictionary/build/chordictionary.min.css ./css/
 ```
 
+Exemple integration in an Vue.JS app:
+```JavaScript
+import './assets/css/chordictionary.min.css'
+import * as chordictionary from 'chordictionary';
+
+Vue.config.productionTip = false
+
+// To make it available throughout all Vue.JS components
+Vue.mixin({
+	methods: {
+		chordictionary: chordictionary
+	}
+})
+```
+
 ### 2. With a script tag (IIFE)
 
-Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_iife.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via the usual HTML `<link>` and `<script>` tags.
+Download [`/iife/chordictionary.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/iife/chordictionary.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via the usual HTML `<link>` and `<script>` tags.
 
 ```HTML
 <!DOCTYPE html>
@@ -100,20 +115,10 @@ Download [`chordictionary_iife.min.js`](https://raw.githubusercontent.com/greird
 
 ### 3. As an ES6 module
 
-Download [`chordictionary_es6.min.js`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary_es6.min.js) and [`chordictionary.min.css`](https://raw.githubusercontent.com/greird/chordictionaryjs/master/build/chordictionary.min.css) and add them to your project via ES6 `import` syntax.
-
-Here is an exemple instegration in a [Vue.JS](https://vuejs.org/) application.
+Finally, the raw ES6 module is also available in [`/es6`](https://github.com/greird/chordictionaryjs/tree/master/build/es6) and can be imported with the `import` syntax.
 
 ```JavaScript
-import './assets/css/chordictionary.min.css';
-import * as chordictionary from './assets/js/chordictionary_es6.min.js';
-
-// To make it available throughout all your VueJS components
-Vue.mixin({
-  methods: {
-    chordictionary: chordictionary
-  }
-})
+import * as chordictionary from './chordictionary/main.js';
 ```
 
 ## How To
