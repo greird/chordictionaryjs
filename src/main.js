@@ -2,8 +2,8 @@
 
 import { WORDING } from "./wordings";
 import { MDL_A_SCALE } from "./scales";
-import { MDL_CHORD_FORMULAS } from "./chords";
-import { splitTuning, splitChordName } from "./parser";
+import { MDL_CHORD_FORMULAS, isValidChord } from "./chords";
+import { splitTuning, splitChordName, splitTab } from "./parser";
 import { removeDuplicates, searchInObject, arrayFind, occurrences, countOccurences } from "./tools";
 
 class Instrument {
@@ -559,103 +559,6 @@ class Instrument {
 		} else {
 			throw WORDING.invalidTuning;
 		}
-	}
-}
-
-/**
-* PRIVATE FUNCTIONS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-* Theses functions can only be used inside the lib.
-*/
-/** Check if a chord tab correspond to the chord notes composition
-* @param {Array} tab | Required | The chord tab
-* @param {Array} chordNotes | Required | The chord notes
-* @param {Array} tuning | Required | The instrument tuning
-* @return {Boolean}
-*/
-function isValidChord(tab, chordNotes, tuning) {
-	// TODO: check if tab is valid
-	// TODO: check if notes is valid (valid tuning)
-	// TODO: make it work with tabs and notes
-	// TODO: add param to check for triads, open strings, etc.
-
-	let result, 
-		index,
-		notesCount = {};
-
-	for (let i = 0; i < tab.length; i++) {
-
-		if (isNaN(tab[i])) {
-			continue;
-		}
-		index = tab[i] + MDL_A_SCALE.indexOf(tuning[i]);
-
-		if (index > (MDL_A_SCALE.length - 1)) {
-			index = index - MDL_A_SCALE.length;
-		}
-
-		for (let j = 0; j < chordNotes.length; j++) {
-
-			if (!notesCount[MDL_A_SCALE[index]]) {
-				notesCount[MDL_A_SCALE[index]] = 1;
-			} else if (MDL_A_SCALE[index] === MDL_A_SCALE[j]) {
-				notesCount[MDL_A_SCALE[index]]++;
-			}
-		}
-	}
-	// If every note has appeared at least once, chord is valid
-	for (let i = 0; i < chordNotes.length; i++) {
-		if (chordNotes[i] in notesCount) {
-			result = true;
-		} else {
-			result = false;
-			break;
-		}
-	}
-	return result;
-}
-
-/** Split the tab into frets
-* @param {String} tab | Required | The tab to be splitted (e.g: "x32010" or "911111099");
-* @param {String} tuning | Optional | The tuning of the instrument (e.g: "EADGBE")
-* @return {Array} | Containing each fret
-*/
-function splitTab(tab, tuning) {
-	tab = tab.toLowerCase();
-	tuning = tuning || "EADGBE";
-
-	let tabArray = []; 
-
-	if (tab.length <= tuning.length) {
-		return tab.split("");
-	} else if (tab.length === tuning.length * 2) {
-
-		for (let i = 0; i < tab.length; i++) {
-			if (!(i % 2)) {
-				tabArray.push(tab.slice(i, i+2));
-			}
-		}
-		return tabArray;
-
-	} else if (tab.length > tuning.length) {
-
-		if (arrayFind(tab.split(""), "max") > 1) {
-			// NOTE: Split after each caracter from [2-9]
-			for (let i = 0; i < tab.length; i++) {
-
-				if (tab.charAt(i).search(/[x02-9]/i) !== -1 || (tab.charAt(i) === 1 && tab.charAt(i+1).search(/x/i) !== -1)) {
-					tabArray.push(tab.slice(i, i+1));
-
-				} else if (tab.charAt(i+1).search(/x/i) === -1) {
-					tabArray.push(tab.slice(i, i+2));
-					i++;
-				}
-			}
-			return tabArray;
-		} else {
-			throw WORDING.invalidTab;
-		}
-	} else {
-		return false;
 	}
 }
 

@@ -1,3 +1,5 @@
+import { MDL_A_SCALE } from "./scales";
+
 /**
 * @const {Object} | Formulas, names and suffix for each chord quality
 * Formulas will help us identify the quality of a chord and build any chord from scratch.
@@ -35,3 +37,51 @@ export const MDL_CHORD_FORMULAS = [
 	{ formula:"1", 				integer:"0", 			  	name:"Single note", 					suffix:""			},
 	{ formula:"1-5", 			integer:"0-7", 			    name:"Power chord", 					suffix:"5"			}
 ];
+
+/** Check if a chord tab correspond to the chord notes composition
+* @param {Array} tab | Required | The chord tab
+* @param {Array} chordNotes | Required | The chord notes
+* @param {Array} tuning | Required | The instrument tuning
+* @return {Boolean}
+*/
+export function isValidChord(tab, chordNotes, tuning) {
+	// TODO: check if tab is valid
+	// TODO: check if notes is valid (valid tuning)
+	// TODO: make it work with tabs and notes
+	// TODO: add param to check for triads, open strings, etc.
+
+	let result, 
+		index,
+		notesCount = {};
+
+	for (let i = 0; i < tab.length; i++) {
+
+		if (isNaN(tab[i])) {
+			continue;
+		}
+		index = tab[i] + MDL_A_SCALE.indexOf(tuning[i]);
+
+		if (index > (MDL_A_SCALE.length - 1)) {
+			index = index - MDL_A_SCALE.length;
+		}
+
+		for (let j = 0; j < chordNotes.length; j++) {
+
+			if (!notesCount[MDL_A_SCALE[index]]) {
+				notesCount[MDL_A_SCALE[index]] = 1;
+			} else if (MDL_A_SCALE[index] === MDL_A_SCALE[j]) {
+				notesCount[MDL_A_SCALE[index]]++;
+			}
+		}
+	}
+	// If every note has appeared at least once, chord is valid
+	for (let i = 0; i < chordNotes.length; i++) {
+		if (chordNotes[i] in notesCount) {
+			result = true;
+		} else {
+			result = false;
+			break;
+		}
+	}
+	return result;
+}
