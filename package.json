@@ -1,6 +1,6 @@
 {
 	"name": "chordictionary",
-	"version": "0.1.0-beta",
+	"version": "0.1.0-beta.1",
 	"description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
 	"main": "./build/chordictionary_commonjs.min.js",
 	"scripts": {
