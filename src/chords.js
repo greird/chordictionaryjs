@@ -1,4 +1,4 @@
-import { MDL_A_SCALE } from "./scales";
+import * as SCALE from "./scales";
 
 /**
 * @const {Object} | Formulas, names and suffix for each chord quality
@@ -6,7 +6,7 @@ import { MDL_A_SCALE } from "./scales";
 * To keep our formulas in a numeric format, we're using the integer notation
 * https://en.wikipedia.org/wiki/Pitch_class#Integer_notation
 */
-export const MDL_CHORD_FORMULAS = [			
+export const FORMULAS = [			
 	{ formula:"1-3-5",			integer:"0-4-7", 			name:"Major", 							suffix:""			},
 	{ formula:"1-3-5#", 		integer:"0-4-8", 			name:"Augmented", 						suffix:"aug"		},
 	{ formula:"1-b3-b5", 		integer:"0-3-6",    		name:"Diminished", 						suffix:"dim"		},
@@ -44,7 +44,7 @@ export const MDL_CHORD_FORMULAS = [
 * @param {Array} tuning | Required | The instrument tuning
 * @return {Boolean}
 */
-export function isValidChord(tab, chordNotes, tuning) {
+export function isValid(tab, chordNotes, tuning) {
 	// TODO: check if tab is valid
 	// TODO: check if notes is valid (valid tuning)
 	// TODO: make it work with tabs and notes
@@ -59,18 +59,18 @@ export function isValidChord(tab, chordNotes, tuning) {
 		if (isNaN(tab[i])) {
 			continue;
 		}
-		index = tab[i] + MDL_A_SCALE.indexOf(tuning[i]);
+		index = tab[i] + SCALE.A.indexOf(tuning[i]);
 
-		if (index > (MDL_A_SCALE.length - 1)) {
-			index = index - MDL_A_SCALE.length;
+		if (index > (SCALE.A.length - 1)) {
+			index = index - SCALE.A.length;
 		}
 
 		for (let j = 0; j < chordNotes.length; j++) {
 
-			if (!notesCount[MDL_A_SCALE[index]]) {
-				notesCount[MDL_A_SCALE[index]] = 1;
-			} else if (MDL_A_SCALE[index] === MDL_A_SCALE[j]) {
-				notesCount[MDL_A_SCALE[index]]++;
+			if (!notesCount[SCALE.A[index]]) {
+				notesCount[SCALE.A[index]] = 1;
+			} else if (SCALE.A[index] === SCALE.A[j]) {
+				notesCount[SCALE.A[index]]++;
 			}
 		}
 	}

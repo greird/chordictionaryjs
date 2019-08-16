@@ -1,14 +1,14 @@
 var guitar = new chordictionary.Instrument('EADGBE', 24, 5, 4);
 
-QUnit.test("guitar.isValidTab()", function(assert) {
-	assert.ok(guitar.isValidTab("x32010") === true, "x32010 is a valid tab.");
-	assert.ok(guitar.isValidTab("911111099") === true, "911111099 is a valid tab (['9','11','11','10','9','9']).");
+QUnit.test("chordictionary.isValidTab()", function(assert) {
+	assert.ok(chordictionary.isValidTab("x32010") === true, "x32010 is a valid tab.");
+	assert.ok(chordictionary.isValidTab("911111099") === true, "911111099 is a valid tab (['9','11','11','10','9','9']).");
 });
 
-QUnit.test("guitar.isValidTuning()", function(assert) {
-	assert.ok(guitar.isValidTuning("EADGBE") === true, "EADGBE is a valid tuning.");
-	assert.ok(guitar.isValidTuning("E#A#D#G#B#E#") === true, "E#A#D#G#B#E# is a valid tuning.");
-	assert.ok(guitar.isValidTuning("DA#DGA#D") === true, "DADGA#D is a valid tuning.");
+QUnit.test("chordictionary.isValidTuning()", function(assert) {
+	assert.ok(chordictionary.isValidTuning("EADGBE") === true, "EADGBE is a valid tuning.");
+	assert.ok(chordictionary.isValidTuning("E#A#D#G#B#E#") === true, "E#A#D#G#B#E# is a valid tuning.");
+	assert.ok(chordictionary.isValidTuning("DA#DGA#D") === true, "DADGA#D is a valid tuning.");
 });
 
 QUnit.test("guitar.getChordInfo()", function(assert) {

@@ -189,21 +189,21 @@ However, an SVG version of this could be more scalable.
 
 ### Check if tab or tuning is valid
 
-`myInstrument.isValidTab(tab)` and `myInstrument.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
+`chordictionary.isValidTab(tab)` and `chordictionary.isValidTuning(tuning)` will check the validity of a given tab notation or tuning and return True or False.
 Note that these functions are completely unrelated to your instrument instance.
 
 ```javascript
 // Usage
 
-myInstrument.isValidTab("x32010");
+chordictionary.isValidTab("x32010");
 // Return
 True // Will be interpreted as ['x','3','2','0','1','0']
 
-myInstrument.isValidTab("911111099");
+chordictionary.isValidTab("911111099");
 // Return
 True // Will be interpreted as ['9','11','11','10','9','9']
 
-myInstrument.isValidTuning("E#A#D#G#B#E#");
+chordictionary.isValidTuning("E#A#D#G#B#E#");
 // Return
 True // Will be interpreted as ['E#','A#','D#','G#','B#','E#']
 ```

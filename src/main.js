@@ -1,10 +1,12 @@
 /**Chordictionary v0.1.0-alpha.2, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
 
 import { WORDING } from "./wordings";
-import { MDL_A_SCALE } from "./scales";
-import { MDL_CHORD_FORMULAS, isValidChord } from "./chords";
-import { splitTuning, splitChordName, splitTab } from "./parser";
-import { removeDuplicates, searchInObject, arrayFind, occurrences, countOccurences } from "./tools";
+import * as SCALE from "./scales";
+import * as CHORD from "./chords";
+import * as TUNING from "./tuning";
+import * as TAB from "./tab";
+import * as PARSER from "./parser";
+import * as TOOLS from "./tools";
 
 class Instrument {
 
@@ -16,7 +18,7 @@ class Instrument {
 	*/
 	constructor (tuning, fretNumber, fretsToDisplay, maxSpan) {
 		try {
-			if(this.isValidTuning(tuning)) this.tuning = splitTuning(tuning);
+			if(TUNING.isValid(tuning)) this.tuning = PARSER.splitTuning(tuning);
 			this.fretNumber = fretNumber;
 			this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay + 1 : 0;
 			this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 4;
@@ -45,8 +47,8 @@ class Instrument {
 			};
 
 		try {
-			if (this.isValidTab(tab)) {
-				tab = splitTab(tab);
+			if (TAB.isValid(tab)) {
+				tab = PARSER.splitTab(tab);
 			}
 		} catch (e) {
 			results.error = e;
@@ -66,12 +68,12 @@ class Instrument {
 				} else {
 					// Convert the note to the given scale and get its position
 					stringRootNote = this.tuning[i];
-					index = parseInt(tab[i]) + MDL_A_SCALE.indexOf(stringRootNote);
+					index = parseInt(tab[i]) + SCALE.A.indexOf(stringRootNote);
 					// Store each notes names
-					if (index > (MDL_A_SCALE.length - 1)) {
-						index = index - MDL_A_SCALE.length;
+					if (index > (SCALE.A.length - 1)) {
+						index = index - SCALE.A.length;
 					}
-					notes.push(MDL_A_SCALE[index]);
+					notes.push(SCALE.A[index]);
 				}
 			}
 			results.notes = notes.join("");
@@ -106,11 +108,11 @@ class Instrument {
 					}
 
 					// Calculate interval between notes and the potential root
-					let interval = MDL_A_SCALE.indexOf(notes[j]) - MDL_A_SCALE.indexOf(notes[i]);
+					let interval = SCALE.A.indexOf(notes[j]) - SCALE.A.indexOf(notes[i]);
 
 					// When an octave is reached (0), the numbers begin again at 12
 					if (interval < 0) {
-						interval = (MDL_A_SCALE.length) + interval;
+						interval = (SCALE.A.length) + interval;
 					} else if (interval === 0) { 
 						// 0 is the root
 						rawFormulas[i].root = notes[j];
@@ -136,7 +138,7 @@ class Instrument {
 				return a-b;
 			});
 
-			let unique = removeDuplicates(rawFormulas[i].formula);
+			let unique = TOOLS.removeDuplicates(rawFormulas[i].formula);
 
 			intFormulas.push(unique.join("-"));	// Store clean formulas in new array
 		}
@@ -149,22 +151,22 @@ class Instrument {
 			matches = [];
 
 		try {
-			for (let i = 0; i < MDL_CHORD_FORMULAS.length; i++) {
-				dictionary = MDL_CHORD_FORMULAS[i].integer;
+			for (let i = 0; i < CHORD.FORMULAS.length; i++) {
+				dictionary = CHORD.FORMULAS[i].integer;
 
 				for (let j = 0; j < intFormulas.length; j++) {
 					regex = new RegExp("^"+intFormulas[j]+"$", "g");
 					// Record the match if the root has been identified
 					if (dictionary.match(regex) && roots[j]) {
-						matches.push(roots[j] + MDL_CHORD_FORMULAS[i].suffix);
-						formulas.push(MDL_CHORD_FORMULAS[i].formula);
+						matches.push(roots[j] + CHORD.FORMULAS[i].suffix);
+						formulas.push(CHORD.FORMULAS[i].formula);
 					}
 				}
 			}
 
 			if (formulas.length > 0) {
 				if (formulas.length > 1) {
-					let uniqueformulas = removeDuplicates(formulas);
+					let uniqueformulas = TOOLS.removeDuplicates(formulas);
 					results.formula = uniqueformulas;
 				} else {
 					results.formula = formulas;
@@ -180,7 +182,7 @@ class Instrument {
 		// 5 - Remove duplicates and return a list of found chords
 
 		if (matches.length > 1) {
-			let uniqueMatches = removeDuplicates(matches);
+			let uniqueMatches = TOOLS.removeDuplicates(matches);
 			results.name = uniqueMatches;
 		} else {
 			results.name = matches;
@@ -241,16 +243,16 @@ class Instrument {
 		// 1 - Fetch the right chord formula from the dictionary
 		try {
 			if (typeof(chordName) === "string") {
-				chordName = splitChordName(chordName);
+				chordName = PARSER.splitChordName(chordName);
 				rootNote = chordName[0];	// Root note of the chord
 				chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
 				chordNotes.push(rootNote);
-				rootIndex = MDL_A_SCALE.indexOf(rootNote);
+				rootIndex = SCALE.A.indexOf(rootNote);
 			} else {
 				throw WORDING.invalidChordName;
 			}
 
-			chordInfo = searchInObject(MDL_CHORD_FORMULAS, chordType);
+			chordInfo = TOOLS.searchInObject(CHORD.FORMULAS, chordType);
 			chordFormula = chordInfo.integer.split("-");
 		} catch (e) {
 			results.error = WORDING.invalidChordName;
@@ -261,10 +263,10 @@ class Instrument {
 		// NOTE: Doesn't work with formulas containing integers > 9
 		for (let i = 1; i < chordFormula.length; i++) {
 			let index = parseInt(chordFormula[i]) + parseInt(rootIndex);
-			if (index > (MDL_A_SCALE.length - 1)) {
-				index = index - MDL_A_SCALE.length;
+			if (index > (SCALE.A.length - 1)) {
+				index = index - SCALE.A.length;
 			}
-			chordNotes.push(MDL_A_SCALE[index]);
+			chordNotes.push(SCALE.A[index]);
 		}
 
 		// Find the position of theses notes on the fretboard and store it in tabPool
@@ -276,9 +278,9 @@ class Instrument {
 			tabPool[string] = [];
 			tabPool[string].push("x");
 			for (let note = 0; note < chordNotes.length; note++) {
-				fretPosition = MDL_A_SCALE.indexOf(chordNotes[note]) - MDL_A_SCALE.indexOf(this.tuning[string]);
+				fretPosition = SCALE.A.indexOf(chordNotes[note]) - SCALE.A.indexOf(this.tuning[string]);
 				if (fretPosition < 0) {
-					fretPosition = MDL_A_SCALE.length + fretPosition;
+					fretPosition = SCALE.A.length + fretPosition;
 				}
 				tabPool[string].push(fretPosition);
 				if (fretPosition + 12 < this.fretNumber) {
@@ -344,8 +346,8 @@ class Instrument {
 			for (let iChord = offset; iChord < chordPool.length; iChord++) {
 
 				// Only if the composition of the chord is right and if the gap between the highest and lowest fret of the chord is ok
-				if (isValidChord(chordPool[iChord], chordNotes, this.tuning)
-					&& (arrayFind(chordPool[iChord], "max") - arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
+				if (CHORD.isValid(chordPool[iChord], chordNotes, this.tuning)
+					&& (TOOLS.arrayFind(chordPool[iChord], "max") - TOOLS.arrayFind(chordPool[iChord], "min")) < this.maxSpan) {
 
 					let chordAnatomy = {
 							openString: false,
@@ -374,7 +376,7 @@ class Instrument {
 						let noteFret = chordPool[iChord][i];
 
 						if (!isNaN(noteFret)) {
-							let noteIndex = noteFret + MDL_A_SCALE.indexOf(this.tuning[i]);
+							let noteIndex = noteFret + SCALE.A.indexOf(this.tuning[i]);
 							
 							if (noteFret === 0) chordAnatomy.openString = true;
 
@@ -384,12 +386,12 @@ class Instrument {
 									chordAnatomy.rootIsLowestNote = true;
 								}
 								chordAnatomy.rootBelow4thFret = (noteFret <= 4) ? true : false;
-								chordAnatomy.rootOnLowestFret = (arrayFind(chordPool[iChord], "min") >= noteFret) ? true : false;
+								chordAnatomy.rootOnLowestFret = (TOOLS.arrayFind(chordPool[iChord], "min") >= noteFret) ? true : false;
 							}
 
 							// Check for consecutive fretted notes
 							if ((noteFret > 0 && i < chordPool[iChord].length - 1 && noteFret === chordPool[iChord][i-1])
-								|| arrayFind(chordPool[iChord], noteFret) >= 3) {
+								|| TOOLS.arrayFind(chordPool[iChord], noteFret) >= 3) {
 								chordAnatomy.barredString = !isNaN(chordAnatomy.barredString) ? (chordAnatomy.barredString + 1) : 1;
 							}
 
@@ -440,8 +442,8 @@ class Instrument {
 			fretsToDisplay = this.fretsToDisplay;
 
 		try {
-			if (this.isValidTab(tab)) {
-				frets = splitTab(tab);
+			if (TAB.isValid(tab)) {
+				frets = PARSER.splitTab(tab);
 			} else {
 				frets = [0,0,0,0,0,0];
 			}
@@ -504,7 +506,7 @@ class Instrument {
 
 			// Generate 6 strings (cols) for the current fret
 			for (let gtrString = 0; gtrString < this.tuning.length; gtrString++) {
-				// TODO: the parseInt check should be done in splitTab(), thus this var declaration would be useless
+				// TODO: the parseInt check should be done in PARSER.splitTab(), thus this var declaration would be useless
 				let fretOnString = parseInt(frets[gtrString]);
 
 				if (gtrFret === 0) {
@@ -534,32 +536,13 @@ class Instrument {
 
 		return chordLayout;
 	}
-
-	/** Return true if tab contains only digits or the letter x
-	* @param {String} tab | Required | The tab to check for validity
-	* @return {Boolean}
-	*/
-	isValidTab (tab) {
-		let pattern = new RegExp("^[x0-9]*$", "i");
-		if (pattern.test(tab)) {
-			return true;
-		} else {
-			throw WORDING.invalidTab;
-		}
-	}
-
-	/** Return true if tuning contains only letters from A to G
-	* @param {String} tuning | Required | The instrument tuning
-	* @return {Boolean}
-	*/
-	isValidTuning (tuning) {
-		let pattern = new RegExp("^[#a-g]+$", "i");
-		if (pattern.test(tuning)) {
-			return true;
-		} else {
-			throw WORDING.invalidTuning;
-		}
-	}
 }
 
-export { Instrument };
+const isValidTab = TAB.isValid 
+const isValidTuning = TUNING.isValid
+
+export { 
+	Instrument,
+	isValidTab, 
+	isValidTuning
+};
