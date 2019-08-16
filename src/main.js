@@ -56,26 +56,8 @@ class Instrument {
 		}
 
 		// 1 - Convert the tab into notes
-
-		let index,  		// Position of the note in the scale
-			stringRootNote; // Guitar string currently analysed
-
 		try {
-			for (let i = 0; i < tab.length; i++) {
-				// If it's not a fret number, else it IS a fret number
-				if (isNaN(tab[i])) {
-					notes.push("x");
-				} else {
-					// Convert the note to the given scale and get its position
-					stringRootNote = this.tuning[i];
-					index = parseInt(tab[i]) + SCALE.A.indexOf(stringRootNote);
-					// Store each notes names
-					if (index > (SCALE.A.length - 1)) {
-						index = index - SCALE.A.length;
-					}
-					notes.push(SCALE.A[index]);
-				}
-			}
+			notes = TAB.toNotes(tab, this.tuning);
 			results.notes = notes.join("");
 		} catch (e) {
 			results.error = WORDING.failedToConvertTabIntoNotes;
