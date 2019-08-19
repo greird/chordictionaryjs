@@ -18,7 +18,11 @@ class Instrument {
 	*/
 	constructor (tuning, fretNumber, fretsToDisplay, maxSpan) {
 		try {
-			if(TUNING.isValid(tuning)) this.tuning = PARSER.splitTuning(tuning);
+			if(TUNING.isValid(tuning)) {
+				this.tuning = PARSER.splitTuning(tuning);
+			} else {
+				throw WORDING.invalidTuning;
+			}
 			this.fretNumber = fretNumber;
 			this.fretsToDisplay = (!isNaN(fretsToDisplay)) ? fretsToDisplay + 1 : 0;
 			this.maxSpan = (!isNaN(maxSpan)) ? maxSpan : 4;
@@ -50,6 +54,8 @@ class Instrument {
 			if (TAB.isValid(tab)) {
 				tab = PARSER.splitTab(tab);
 				results.tab = tab;
+			} else {
+				throw WORDING.invalidTab;
 			}
 		} catch (e) {
 			results.error = e;

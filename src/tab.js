@@ -1,4 +1,3 @@
-import { WORDING } from "./wordings";
 import * as SCALE from "./scales";
 import { removeDuplicates } from "./tools";
 
@@ -11,7 +10,7 @@ export function isValid (tab) {
 	if (pattern.test(tab)) {
 		return true;
 	} else {
-		throw WORDING.invalidTab;
+		return false;
 	}
 }
 
