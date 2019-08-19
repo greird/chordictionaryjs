@@ -59,6 +59,7 @@ class Instrument {
 		// 1 - Convert the tab into notes
 		try {
 			notes = TAB.toNotes(tab, this.tuning);
+			results.notes = [...notes];
 		} catch (e) {
 			results.error = WORDING.failedToConvertTabIntoNotes;
 			return results;
@@ -101,7 +102,6 @@ class Instrument {
 		}
 
 		// 4 - Build the results object
-		results.notes = notes;
 
 		for (let r of matches) {
 
