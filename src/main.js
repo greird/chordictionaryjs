@@ -35,20 +35,21 @@ class Instrument {
 	*/
 	getChordInfo (tab) {
 		let notes = [],	// Notes that compose the chord.
-			intFormulas = [],	// Formulas of the chord in integer notation.
-			roots = [],	// Potential roots for the chord.
+			intervalsInt = [],	// Formulas of the chord in integer notation with root.
+			formulas = "", // simplified formula (e.g "1-3-5")
+			matches = [], // entries that match the formula in the dictionary
 			results = { // Will contain every chord information to be returned
 				"error": "",
-				"name": "",
-				"tab": tab,
+				"tab": [],
 				"notes": "",
-				"tuning": this.tuning.join(""),
-				"formula": ""
+				"tuning": this.tuning,
+				"chords": []
 			};
 
 		try {
 			if (TAB.isValid(tab)) {
 				tab = PARSER.splitTab(tab);
+				results.tab = tab;
 			}
 		} catch (e) {
 			results.error = e;
@@ -58,101 +59,39 @@ class Instrument {
 		// 1 - Convert the tab into notes
 		try {
 			notes = TAB.toNotes(tab, this.tuning);
-			results.notes = notes.join("");
 		} catch (e) {
 			results.error = WORDING.failedToConvertTabIntoNotes;
 			return results;
 		}
 
 		// 2 - Calculate interval between each note and get the formulas
-
-		let rawFormulas = [];	// Will contain calculated formulas for each potential roots
-
 		try {
-			// For each string
-			for (let i = 0; i < this.tuning.length; i++) {
-				// Add a new root/formula entry
-				rawFormulas.push({
-					root:"",
-					formula:[]
-				});
-
-				// Skip string if it is not played (x or undefined)
-				if (!notes[i] || notes[i].toLowerCase() === "x") {
-					continue;
-				}
-
-				// For each note in the chord
-				for (let j = 0; j < notes.length; j++) {
-					// Skip if it is not a note (x or undefined)
-					if (!notes[j] || notes[j].toLowerCase() === "x") {
-						continue;
-					}
-
-					// Calculate interval between notes and the potential root
-					let interval = SCALE.A.indexOf(notes[j]) - SCALE.A.indexOf(notes[i]);
-
-					// When an octave is reached (0), the numbers begin again at 12
-					if (interval < 0) {
-						interval = (SCALE.A.length) + interval;
-					} else if (interval === 0) { 
-						// 0 is the root
-						rawFormulas[i].root = notes[j];
-					}
-
-					// Store the formula
-					rawFormulas[i].formula.push(interval);
-				}
-			}
+			intervalsInt = TAB.getIntegerNotation(notes);
 		} catch (e) {
 			results.error = WORDING.failedToCalculateFormula;
+			return results;
 		}
 
-		// 3 - Remove duplicates and invalid formulas
+		formulas = intervalsInt.map(TAB.stripFormula);
 
-		for (let i = 0; i < rawFormulas.length; i++) {
-
-			if (rawFormulas[i].root === "") {
-				continue;	// If there's no root, do not keep the formula
-			}
-			roots.push(rawFormulas[i].root);	// Store the root
-			rawFormulas[i].formula.sort(function(a,b) {
-				return a-b;
-			});
-
-			let unique = TOOLS.removeDuplicates(rawFormulas[i].formula);
-
-			intFormulas.push(unique.join("-"));	// Store clean formulas in new array
-		}
-
-		// 4 - Search the chordFormulas dictionary for a match
-
-		let dictionary,
-			formulas = [],
-			regex,
-			matches = [];
+		// 3 - Search the formulas dictionary for a match
 
 		try {
-			for (let i = 0; i < CHORD.FORMULAS.length; i++) {
-				dictionary = CHORD.FORMULAS[i].integer;
-
-				for (let j = 0; j < intFormulas.length; j++) {
-					regex = new RegExp("^"+intFormulas[j]+"$", "g");
-					// Record the match if the root has been identified
-					if (dictionary.match(regex) && roots[j]) {
-						matches.push(roots[j] + CHORD.FORMULAS[i].suffix);
-						formulas.push(CHORD.FORMULAS[i].formula);
-					}
+			for (let i = 0; i < formulas.length; i++) {
+				let match = CHORD.find(formulas[i]);
+				if (match) {
+					matches.push({ 
+						"formula":match.formula, 
+						"integer":match.integer, 
+						"intervalsInt": [...intervalsInt][i],
+						"name":match.name, 
+						"suffix":match.suffix });
 				}
 			}
 
-			if (formulas.length > 0) {
-				if (formulas.length > 1) {
-					let uniqueformulas = TOOLS.removeDuplicates(formulas);
-					results.formula = uniqueformulas;
-				} else {
-					results.formula = formulas;
-				}
+			if (matches.length > 0) {
+				let duplicatesIndex = CHORD.dedupMatches(matches);
+				matches = matches.filter((currentValue, index) => !duplicatesIndex.includes(index));
 			} else {
 				throw WORDING.noMatch;
 			}
@@ -161,13 +100,22 @@ class Instrument {
 			return results;
 		}
 
-		// 5 - Remove duplicates and return a list of found chords
+		// 4 - Build the results object
+		results.notes = notes;
 
-		if (matches.length > 1) {
-			let uniqueMatches = TOOLS.removeDuplicates(matches);
-			results.name = uniqueMatches;
-		} else {
-			results.name = matches;
+		for (let r of matches) {
+
+			var root = notes[r.intervalsInt.indexOf(0)];
+
+			results.chords.push({
+				"name": root + r.suffix,
+				"pitch": root,
+				"formula": r.formula,
+				"intervals": [],
+				"intervalsInt": r.intervalsInt,
+				"quality": r.name,
+				"suffix": r.suffix
+			});
 		}
 		return results;
 	}
@@ -520,8 +468,8 @@ class Instrument {
 	}
 }
 
-const isValidTab = TAB.isValid 
-const isValidTuning = TUNING.isValid
+const isValidTab = TAB.isValid;
+const isValidTuning = TUNING.isValid;
 
 export { 
 	Instrument,

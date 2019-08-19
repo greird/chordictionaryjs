@@ -63,26 +63,25 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		['355333', ["Gmin", "A#6"], 'GDGA#DG', [formula.min, formula['6']]],
 		// Sus4 / Sus2
 		['x33563', ["Csus4", "Fsus2"], 'xCFCFG', [formula.sus4, formula.sus2]],
-		['x8101088', ["Csus4", "Fsus2"], 'xFCFGC', [formula.sus4, formula.sus2]],
+		['x8101088', ["Fsus2", "Csus4"], 'xFCFGC', [formula.sus2, formula.sus4]],
 		// Powerchord
 		['x355xx', 'C5', 'xCGCxx', formula.power],
 		// 7
 		['131211', 'F7', 'FCD#ACF', formula['7']],
 		['x35353', 'C7', 'xCGA#EG', formula['7']],
 		// Minor 7 or Major 6
-		['8x798x', ["Am7", "Cmaj6"], 'CxAEGx', [formula.m7, formula.maj6]],
-		['x35555', ["Am7", "Cmaj6"], 'xCGCEA', [formula.m7, formula.maj6]],
-		['133231', ["Dm7", "Fmaj6"], 'FCFADF', [formula.m7, formula.maj6]],
+		['8x798x', ["Cmaj6", "Am7"], 'CxAEGx', [formula.maj6, formula.m7]],
+		['x35555', ["Cmaj6", "Am7"], 'xCGCEA', [formula.maj6, formula.m7]],
+		['133231', ["Fmaj6", "Dm7"], 'FCFADF', [formula.maj6, formula.m7]],
 		// Major 7
 		['x32000', ["Cmaj7", "Emb6"], 'xCEGBE', [formula.maj7, formula.mb6]], 
 		['xx10987', ["Cmaj7", "Emb6"], 'xxCEGB', [formula.maj7, formula.mb6]], 
 		// Minor 6 or Minor 7b5
-		['xx5545', ["Am7b5", "Cm6"], 'xxGCD#A', [formula.m7b5, formula.m6]],
+		['xx5545', ["Cm6", "Am7b5"], 'xxGCD#A', [formula.m6, formula.m7b5]],
 		['8988xx', ["Cm7b5", "D#m6"], 'CF#A#D#xx', [formula.m7b5, formula.m6]],
 		// Augmented (aug)
-		['x32110', ["Caug", "Eaug", "G#aug"], 'xCEG#CE', formula.aug],
-		['032110', ["Eaug", "Caug", "G#aug"], 'ECEG#CE', formula.aug],
-		['4321xx', ["G#aug", "Caug", "Eaug"], 'G#CEG#xx', formula.aug],
+		['x32110', ["Caug", "Eaug", "G#aug"], 'xCEG#CE', [formula.aug, formula.aug, formula.aug]],
+		['032110', ["Eaug", "Caug", "G#aug"], 'ECEG#CE', [formula.aug, formula.aug, formula.aug]],
 		// Minor, major seventh (m(maj7))
 		['x31003', 'Cm(maj7)', 'xCD#GBG', formula.mmaj7],
 		['8109888', 'Cm(maj7)', 'CGBD#GC', formula.mmaj7],
@@ -139,25 +138,40 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 	];
 
 	for (var i = 0; i < chords.length; i++) {
-
-		// Check chord name(s)
-		if (chords[i][1].constructor === Array) {
-			assert.deepEqual(guitar.getChordInfo(chords[i][0]).name, chords[i][1], chords[i][0] + " is an " + chords[i][1] + " chord");
-		} else {
-			assert.equal(guitar.getChordInfo(chords[i][0]).name, chords[i][1], chords[i][0] + " is an " + chords[i][1] + " chord");
+		let results = guitar.getChordInfo(chords[i][0]);
+		let tab = ""
+		let notes = "";
+		let name = [];
+		let formula = [];
+		try {
+			tab = results.tab.join("");
+			notes = results.notes.join("");
+		} catch (e) {
+			console.log(e);
 		}
-
-		// Check chord formula(s)
-		if (chords[i][3].constructor === Array) {
-			assert.deepEqual(guitar.getChordInfo(chords[i][0]).formula, chords[i][3], chords[i][0] + " formula is " + chords[i][3]);
-		} else {
-			assert.equal(guitar.getChordInfo(chords[i][0]).formula, chords[i][3], chords[i][0] + " formula is " + chords[i][3]);
-		}
-
-		// Check chord notes
-		assert.equal(guitar.getChordInfo(chords[i][0]).notes, chords[i][2], chords[i][0] + " contains the following notes " + chords[i][2]);
 
 		// Check chord tab
-		assert.equal(guitar.getChordInfo(chords[i][0]).tab, chords[i][0], chords[i][0] + " tab is " + chords[i][0]);
+		assert.equal(tab, chords[i][0], chords[i][0] + " tab is " + chords[i][0]);
+
+		// Check chord notes
+		assert.equal(notes, chords[i][2], chords[i][0] + " contains the following notes " + chords[i][2]);
+		
+		for (let j = 0; j < results.chords.length; j++) {
+			name.push(results.chords[j].name);
+			formula.push(results.chords[j].formula);
+		}
+			// Check chord name(s)
+			if (chords[i][1].constructor === Array) {
+					assert.deepEqual(name, chords[i][1], chords[i][0] + " is an " + chords[i][1] + " chord");
+			} else {
+				assert.equal(name, chords[i][1], chords[i][0] + " is an " + chords[i][1] + " chord");
+			}
+
+			// Check chord formula(s)
+			if (chords[i][3].constructor === Array) {
+				assert.deepEqual(formula, chords[i][3], chords[i][0] + " formula is " + chords[i][3]);
+			} else {
+				assert.equal(formula, chords[i][3], chords[i][0] + " formula is " + chords[i][3]);
+			}
 	}
 });

@@ -85,3 +85,45 @@ export function isValid(tab, chordNotes, tuning) {
 	}
 	return result;
 }
+
+/** Find an integer formula "0-4-7" in the formula dictionary and return all available information
+* @param {String} intFormula | Required | The intFormula as a string ("0-4-7")
+* @return {Object}
+*/
+export function find(intFormula) {
+	let integers = intFormula.join("-"),
+		dictionary,
+		regex;
+
+	for (let i = 0; i < FORMULAS.length; i++) {
+		dictionary = FORMULAS[i].integer;
+
+		regex = new RegExp("^"+integers+"$", "g");
+
+		if (dictionary.match(regex)) {
+			return FORMULAS[i];
+		}
+	}
+
+	return false;
+}
+
+/** Find duplicated entries in the matches array based on the integer formula
+* @param {Array} matches | Required | The matches array generated in main.js
+* @return {Array} The indexes of the diplicated entries
+*/
+export function dedupMatches(matches) {
+	let haystack = [...matches];
+	let seen = [];
+	let duplicates = [];
+
+	for (let i = 0; i < haystack.length; i++) {
+		let needle = haystack[i].intervalsInt.join();
+		if (seen.includes(needle)) {
+			duplicates.push(i);
+		} else {
+			seen.push(needle);
+		}
+	}
+	return duplicates;
+}
