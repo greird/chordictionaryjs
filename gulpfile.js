@@ -6,7 +6,7 @@ const clean = require('gulp-clean');
 const eslint = require('gulp-eslint');
 const csso = require('gulp-csso');
 const rename = require('gulp-rename');
-const qunit = require('gulp-qunit');
+const qunit = require('node-qunit-phantomjs');
 const babel = require("gulp-babel");
 const minify_babel = require("gulp-babel-minify");
 const minify = require('gulp-minify');
@@ -83,9 +83,8 @@ function css() {
 }
 
 // Test Tasks
-function test() {
-	return gulp.src('./_tests/index.html') // check the src file
-	.pipe(qunit());
+async function test() {
+	await qunit('./_tests/index.html');
 }
 
 const build = gulp.series(cleandist, gulp.parallel(css, lint), gulp.parallel(build_es6, build_commonjs, build_iife));
