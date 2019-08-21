@@ -42,6 +42,7 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		"m9b5": "1-b3-b5-b7-9",
 		"m9maj7": "1-b3-5-7-9",
 		"maj7#11": "1-3-5-7-#11",
+		"7#11": "1-3-5-b7-#11",
 		"maj13": "1-3-5-7-9-13",
 		"m13": "1-b3-5-b7-9-11-13"
 	};
@@ -114,6 +115,8 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		["89108xx", ["Cdim"], "CF#CD#xx", [formula.dim]],
 		// maj7#11
 		["x32002", ["Cmaj7#11"], "xCEGBF#", [formula["maj7#11"]]],
+		// 7#11
+		["898988", ["C7#11"], "CF#A#EGC", [formula["7#11"]]],
 		/*		
 		** NOT SUPPORTED YET ******************************
 		// Minor ninth, major seventh (m9(maj7)) SKIPPED NOTES
