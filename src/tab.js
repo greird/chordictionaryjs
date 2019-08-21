@@ -74,7 +74,6 @@ export function getIntegerNotation(notes) {
 		// Store the formula inly if it has a root
 		if (formula.includes(0)) integers.push(formula);
 	}
-
 	return integers;
 }
 

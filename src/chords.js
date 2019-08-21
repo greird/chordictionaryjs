@@ -32,7 +32,7 @@ export const FORMULAS = [
 	{ formula:"1-b3-5-7-9", 	integer:"0-2-3-7-11", 		name:"Minor ninth, major seventh", 		suffix:"m9(maj7)"	},
 	{ formula:"1-b3-b5-b7-9", 	integer:"0-2-3-6-10", 		name:"Minor eleventh", 					suffix:"m9b5"		},
 	{ formula:"1-b3-5-b7-9-11-13",integer:"0-2-3-4-6-7-10",	name:"Minor thirteen", 					suffix:"m13"		},
-	{ formula:"1-3-5-7-#11", 	integer:"0-4-7-11-18", 	 	name:"Major seventh, sharp eleventh",	suffix:"maj7#11"	},
+	{ formula:"1-3-5-7-#11", 	integer:"0-4-6-7-11", 	 	name:"Major seventh, sharp eleventh",	suffix:"maj7#11"	},
 	{ formula:"1-3-5-7-9-13", 	integer:"0-2-4-7-9-11",		name:"Major thirteen", 					suffix:"maj13"		},
 	{ formula:"1", 				integer:"0", 			  	name:"Single note", 					suffix:""			},
 	{ formula:"1-5", 			integer:"0-7", 			    name:"Power chord", 					suffix:"5"			}

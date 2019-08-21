@@ -57,9 +57,9 @@ The current matching system is very strict. Your tab won't match any chord unles
 - Minor ninth, major seventh (m9(maj7))
 - Minor eleventh (m9b5)
 - Major thirteen (maj13)
+- Major seventh, sharp eleventh (maj7#11)
 
 ##### Not supported yet
-- Major seventh, sharp eleventh (maj7#11)
 - Minor thirteen (m13)
 
 ***
