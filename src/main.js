@@ -119,6 +119,7 @@ class Instrument {
 				"formula": r.formula,
 				"intervals": [],
 				"intervalsInt": r.intervalsInt,
+				"notes": [...notes],
 				"quality": r.name,
 				"suffix": r.suffix
 			});
@@ -367,11 +368,11 @@ class Instrument {
 	}
 
 	/** Converts a tab notation into its graphic representation
-	* @param {String} name | Optional | The chord name
 	* @param {String} tab | Required | The tab notation
+	* @param {Object} options | Optional | the easiest way is to pass a chord Object (e.g. getChordInfo("X32010").chords[0])
 	* @return {String}
 	*/
-	getChordLayout (name, tab) {
+	getChordLayout (tab, options) {
 
 		let frets,	// used guitar frets for this chord
 			chordLayout,	// will contain the chord layout in html
@@ -386,6 +387,9 @@ class Instrument {
 		} catch (e) {
 			return false;
 		}
+
+		let fretsLabel = options.notes ? options.notes : frets,	
+			chordLabel = options.name ? options.name : frets.join(" ");
 
 		// exclude non-played strings from the chord notation
 		let notes = [];
@@ -440,7 +444,7 @@ class Instrument {
 				chordLayout += "<tr><th></th>"; // exclude fret number column
 			}
 
-			// Generate 6 strings (cols) for the current fret
+			// Generate n strings (cols) for the current fret
 			for (let gtrString = 0; gtrString < this.tuning.length; gtrString++) {
 				// TODO: the parseInt check should be done in PARSER.splitTab(), thus this var declaration would be useless
 				let fretOnString = parseInt(frets[gtrString]);
@@ -453,7 +457,7 @@ class Instrument {
 						chordLayout += "<th></th>";
 					}
 				} else if (fretOnString === (base + gtrFret - 1)) {
-					chordLayout += '<td><div class="dot plain">'+ frets[gtrString] +"</div></td>";
+					chordLayout += '<td><div class="dot plain">'+ fretsLabel[gtrString] +"</div></td>";
 				} else {
 					chordLayout += "<td></td>";
 				}
@@ -465,7 +469,7 @@ class Instrument {
 				chordLayout += "</tr>";
 			}
 		}
-		chordLayout += '<caption align="bottom">' + name + "</caption>";
+		chordLayout += '<caption align="bottom">' + chordLabel + "</caption>";
 		chordLayout += "</table>";
 
 		//console.log(frets + " => base: " + base + " => highest fret: " + highestFret);
