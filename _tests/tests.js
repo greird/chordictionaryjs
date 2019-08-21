@@ -77,6 +77,10 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		// Major 7
 		["x32000", ["Cmaj7", "Emb6"], "xCEGBE", [formula.maj7, formula.mb6]], 
 		["xx10987", ["Cmaj7", "Emb6"], "xxCEGB", [formula.maj7, formula.mb6]], 
+		// Major 9
+		["102011", ["Fmaj9"], "FAEGCF", [formula.maj9]],
+		// Minor 9
+		["131113", ["Fm9"], "FCD#G#CG", [formula.m9]],
 		// Minor 6 or Minor 7b5
 		["xx5545", ["Cm6", "Am7b5"], "xxGCD#A", [formula.m6, formula.m7b5]],
 		["8988xx", ["Cm7b5", "D#m6"], "CF#A#D#xx", [formula.m7b5, formula.m6]],
@@ -110,6 +114,7 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		// Diminished (dim)
 		["x3454x", ["Cdim"], "xCF#CD#x", [formula.dim]],
 		["89108xx", ["Cdim"], "CF#CD#xx", [formula.dim]],
+
 		/*		
 		** NOT SUPPORTED YET ******************************
 		// Minor ninth, major seventh (m9(maj7)) SKIPPED NOTES
@@ -128,11 +133,12 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		// Minor sixth, added ninth (m6/9) SKIPPED NOTES
 		["xx1233", "Cm6/9", "xxD#ADG", formula["m6/9"]], // no root
 		["xx7889", "Cm6/9", "xxAD#GC#", formula["m6/9"]], // no root
-		// Major 9
-		["x3243x", "Cmaj9", "xCEBDx", formula.maj9], // no fifth
-		["x35433", "Cmaj9", "xCGBDG", formula.maj9],
-		["xx10121210", "Cmaj9", "xxCGBD", formula.maj9],
-		["x02100", "Amaj9", "xAEG#BE", formula.maj9],
+		// Major 9 SKIPPED NOTES
+		["x3243x", ["Cmaj9"], "xCEBDx", [formula.maj9]], // no fifth
+		["x35433", ["Cmaj9"], "xCGBDG", [formula.maj9]],
+		["xx10121210", ["Cmaj9"], "xxCGBD", [formula.maj9]],
+		["x02100", ["Amaj9"], "xAEG#BE", [formula.maj9]],
+		/*
 		// maj7#11
 		["x32002", "Cmaj7#11", "xCEGBF#", formula["maj7#11"]],
 		*/

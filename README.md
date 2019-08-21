@@ -48,6 +48,8 @@ The current matching system is very strict. Your tab won't match any chord unles
 - Minor seventh, flat fifth (m7b5)
 - Major seventh (maj7)
 - Minor, major seventh (m(maj7))
+- Major ninth (maj9) (Only if all notes are played 1-3-5-7-9)
+- Minor ninth (m9) (Only if all notes are played 1-3b-5-7b-9)
 - Minor, added ninth (m(add9))
 - Added ninth(add9)
 - Sixth, added ninth (6/9)
@@ -57,8 +59,6 @@ The current matching system is very strict. Your tab won't match any chord unles
 - Major thirteen (maj13)
 
 ##### Not supported yet
-- Major ninth (maj9)
-- Minor ninth (m9)
 - Major seventh, sharp eleventh (maj7#11)
 - Minor thirteen (m13)
 
