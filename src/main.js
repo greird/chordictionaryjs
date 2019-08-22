@@ -258,7 +258,7 @@ class Instrument {
 		let haveSameAnatomy = (model, source) => {
 
 			for (let statement in model) {
-				
+
 				if (Object.prototype.hasOwnProperty.call(source, statement)) {
 
 					if (typeof(model[statement]) === "object") {
@@ -377,6 +377,8 @@ class Instrument {
 		let frets,	// used guitar frets for this chord
 			chordLayout,	// will contain the chord layout in html
 			fretsToDisplay = this.fretsToDisplay;
+
+		options = (typeof options === "object") ? options : {};
 
 		try {
 			if (TAB.isValid(tab)) {
