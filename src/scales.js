@@ -31,6 +31,5 @@ export function getInterval(a, b) {
 * @return {Array} e.g. [1, 3, 5]
 */
 export function convertIntToDiatonic(intervals) {
-	console.log(intervals);
 	return intervals.map(x => (isNaN(x) || x === null) ? null : INTERVALS[x]);
 }

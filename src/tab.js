@@ -42,7 +42,8 @@ export function toNotes(tab, tuning) {
 	return notes;
 }
 
-/** Return all the possible formulas in integer notation for a given tab such as [X, 0, 4, 0, 4, 7]
+/** Return all the possible formulas in integer notation for a given tab such as [null, 0, 4, 0, 4, 7]
+* The integer formula is the list of semitones interval between the root and a given note.
 * @param {array} notes | Required | A list of all the notes of the chord (from lowest to highest note) 
 * @return {object}
 */
@@ -72,17 +73,19 @@ export function getSemitones(notes) {
 			formula.push(interval);
 		}
 		// Store the formula inly if it has a root
-		if (formula.includes(0)) semitones.push(formula);
+		if (formula.includes(0)) semitones.push(formula);
 	}
 	return semitones;
 }
 
-/** Return a simplified formula such as [0, 4, 7] from [X, 0, 4, 0, 4, 7]
-* @param {array} rawFormula | Required | The raw integer formula such as [X, 0, 4, 0, 4, 7]
+/** Return a simplified formula such as [0, 4, 7] from [null, 0, 4, 0, 4, 7]
+* @param {array} rawFormula | Required | The raw integer formula such as [null, 0, 4, 0, 4, 7]
 * @return {object}
 */
 export function stripFormula(array) {
 	let strippedFormula = [...array];
 	strippedFormula = strippedFormula.filter(interval => (!isNaN(interval) && interval != null));
-	return removeDuplicates(strippedFormula.sort(function(a,b) { return a-b; }));
+	return removeDuplicates(strippedFormula.sort(function(a,b) { 
+		return a-b; 
+	}));
 }

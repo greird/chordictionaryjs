@@ -155,7 +155,7 @@ export function countOccurences(array) {
 	if (Array.isArray(array)) {
 		let result = {};
 
-		for(i = 0; i < array.length; ++i) {
+		for(let i = 0; i < array.length; ++i) {
 
 			if(!result[array[i]])
 				result[array[i]] = 0;

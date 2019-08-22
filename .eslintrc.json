@@ -16,6 +16,7 @@
 		"no-lonely-if": 1,
 		"one-var-declaration-per-line": [1,	"initializations"],
 		"brace-style": [1, "1tbs", {"allowSingleLine": false}],
-		"indent": [1, "tab", {"VariableDeclarator": 1, "SwitchCase": 1}]
+		"indent": [1, "tab", {"VariableDeclarator": 1, "SwitchCase": 1}],
+		"no-constant-condition": [2, { "checkLoops": false }]
 	}
 }

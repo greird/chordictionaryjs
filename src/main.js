@@ -109,7 +109,7 @@ class Instrument {
 
 		// 4 - Build the results object
 
-		for (let r of matches) {
+		for (let r of matches) {
 
 			var root = notes[r.semitones.indexOf(0)];
 
@@ -258,8 +258,8 @@ class Instrument {
 		let haveSameAnatomy = (model, source) => {
 
 			for (let statement in model) {
-
-				if (source.hasOwnProperty(statement)) {
+				
+				if (Object.prototype.hasOwnProperty.call(source, statement)) {
 
 					if (typeof(model[statement]) === "object") {
 						let min = model[statement][0],
@@ -297,14 +297,14 @@ class Instrument {
 					// Check if there's any mutted string in the middle of the chord
 					if (splittedChordPattern.test(stringTab)) {
 						chordAnatomy.splittedChord = true;
-					} else {
+					} else {
 						chordAnatomy.splittedChord = false;
 					}
 
 					// Check if there's any mutted string after the first note
 					if (muteAfterFirstNotePattern.test(stringTab)) {
 						chordAnatomy.noMuteAfterFirstNote = false;
-					} else {
+					} else {
 						chordAnatomy.noMuteAfterFirstNote = true;
 					}
 
@@ -343,7 +343,7 @@ class Instrument {
 						tag:[]
 					};
 
-					Object.getOwnPropertyNames(CHORD_TYPE).forEach((type, index) => {
+					Object.getOwnPropertyNames(CHORD_TYPE).forEach((type) => {
 						if (haveSameAnatomy(CHORD_TYPE[type], chordAnatomy) && thisChord.tag.indexOf(type)) {
 							thisChord.tag.push(type);
 						}
