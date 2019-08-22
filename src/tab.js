@@ -46,8 +46,8 @@ export function toNotes(tab, tuning) {
 * @param {array} notes | Required | A list of all the notes of the chord (from lowest to highest note) 
 * @return {object}
 */
-export function getIntegerNotation(notes) {
-	let integers = [];	// Raw formulas for each potential roots
+export function getSemitones(notes) {
+	let semitones = [];	// Raw formulas for each potential roots
 
 	// For each string, consider a root and calculate intervals to get a formula
 	for (let i = 0; i < notes.length; i++) {
@@ -62,7 +62,7 @@ export function getIntegerNotation(notes) {
 		for (let j = 0; j < notes.length; j++) {
 			// if it is not a note, there's no interval, push "x"
 			if (!notes[j] || notes[j].toLowerCase() === "x") {
-				formula.push("x");
+				formula.push(null);
 				continue;
 			}
 
@@ -72,9 +72,9 @@ export function getIntegerNotation(notes) {
 			formula.push(interval);
 		}
 		// Store the formula inly if it has a root
-		if (formula.includes(0)) integers.push(formula);
+		if (formula.includes(0)) semitones.push(formula);
 	}
-	return integers;
+	return semitones;
 }
 
 /** Return a simplified formula such as [0, 4, 7] from [X, 0, 4, 0, 4, 7]
@@ -82,7 +82,7 @@ export function getIntegerNotation(notes) {
 * @return {object}
 */
 export function stripFormula(array) {
-	let strippedFormula = array.slice(0);
-	strippedFormula = strippedFormula.filter(interval => !isNaN(interval));
+	let strippedFormula = [...array];
+	strippedFormula = strippedFormula.filter(interval => (!isNaN(interval) && interval != null));
 	return removeDuplicates(strippedFormula.sort(function(a,b) { return a-b; }));
 }

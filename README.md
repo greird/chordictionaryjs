@@ -165,7 +165,7 @@ myInstrument.getChordInfo("xx5545");
 			pitch: "C",
 			formula: "1-b3-5-6",
 			intervals: [null, null, "P5", "P1", "m3", "M6"],
-			intervalsInt: ["x", "x", 7, 0, 3, 9],
+			semitones: [null, null, 7, 0, 3, 9],
 			notes: ["x", "x", "G", "C", "D#", "A"],
 			quality: "Minor sixth",
 			suffix: "m6"
@@ -175,7 +175,7 @@ myInstrument.getChordInfo("xx5545");
 			pitch: "A",
 			formula: "1-b3-b5-b7",
 			intervals: [null, null, "m7", "m3", "A4/d5", "P1"],
-			intervalsInt: ["x", "x", 10, 3, 6, 0],
+			semitones: [null, null, 10, 3, 6, 0],
 			notes: ["x", "x", "G", "C", "D#", "A"],
 			quality: "Minor seventh, flat fifth",
 			suffix: "m7b5"

@@ -72,14 +72,14 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		["131211", ["F7"], "FCD#ACF", [formula["7"]]],
 		["x35353", ["C7"], "xCGA#EG", [formula["7"]]],
 		// Minor 7 or Major 6
-		["8x798x", ["Cmaj6", "Am7"], "CxAEGx", [formula.maj6, formula.m7]],
-		["x35555", ["Cmaj6", "Am7"], "xCGCEA", [formula.maj6, formula.m7]],
-		["133231", ["Fmaj6", "Dm7"], "FCFADF", [formula.maj6, formula.m7]],
+		["8x798x", ["CMaj6", "Am7"], "CxAEGx", [formula.maj6, formula.m7]],
+		["x35555", ["CMaj6", "Am7"], "xCGCEA", [formula.maj6, formula.m7]],
+		["133231", ["FMaj6", "Dm7"], "FCFADF", [formula.maj6, formula.m7]],
 		// Major 7
-		["x32000", ["Cmaj7", "Emb6"], "xCEGBE", [formula.maj7, formula.mb6]], 
-		["xx10987", ["Cmaj7", "Emb6"], "xxCEGB", [formula.maj7, formula.mb6]], 
+		["x32000", ["CMaj7", "Emb6"], "xCEGBE", [formula.maj7, formula.mb6]], 
+		["xx10987", ["CMaj7", "Emb6"], "xxCEGB", [formula.maj7, formula.mb6]], 
 		// Major 9
-		["102011", ["Fmaj9"], "FAEGCF", [formula.maj9]],
+		["102011", ["FMaj9"], "FAEGCF", [formula.maj9]],
 		// Minor 9
 		["131113", ["Fm9"], "FCD#G#CG", [formula.m9]],
 		// Minor 6 or Minor 7b5
@@ -89,9 +89,9 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		["x32110", ["Caug", "Eaug", "G#aug"], "xCEG#CE", [formula.aug, formula.aug, formula.aug]],
 		["032110", ["Eaug", "Caug", "G#aug"], "ECEG#CE", [formula.aug, formula.aug, formula.aug]],
 		// Minor, major seventh (m(maj7))
-		["x31003", ["Cm(maj7)"], "xCD#GBG", [formula.mmaj7]],
-		["8109888", ["Cm(maj7)"], "CGBD#GC", [formula.mmaj7]],
-		["x35443", ["Cm(maj7)"], "xCGBD#G", [formula.mmaj7]],
+		["x31003", ["Cm(Maj7)"], "xCD#GBG", [formula.mmaj7]],
+		["8109888", ["Cm(Maj7)"], "CGBD#GC", [formula.mmaj7]],
+		["x35443", ["Cm(Maj7)"], "xCGBD#G", [formula.mmaj7]],
 		// Minor added ninth
 		["x31033", ["Cm(add9)"], "xCD#GDG", [formula.madd9]],
 		["x6x788", ["Cm(add9)"], "xD#xDGC", [formula.madd9]],
@@ -99,7 +99,7 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		["xx109810", ["Cadd9"], "xxCEGD", [formula.add9]],
 		["x32030", ["Cadd9"], "xCEGDE", [formula.add9]],
 		// Minor ninth, major seventh (m9(maj7))
-		["81098810", ["Cm9(maj7)"], "CGBD#GD", [formula.m9maj7]],
+		["81098810", ["Cm9(Maj7)"], "CGBD#GD", [formula.m9maj7]],
 		// 6/9 (6 added 9)
 		["x1212121312", ["C6/9"], "xADGCE", [formula["6/9"]]],
 		["x32233", ["C6/9"], "xCEADG", [formula["6/9"]]],
@@ -109,37 +109,37 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		// Minor eleventh (m9b5)
 		["89881110", ["Cm9b5"], "CF#A#D#A#D", [formula.m9b5]],
 		// Major 13
-		["330200", ["Cmaj13"], "GCDABE", [formula.maj13]],
+		["330200", ["CMaj13"], "GCDABE", [formula.maj13]],
 		// Diminished (dim)
 		["x3454x", ["Cdim"], "xCF#CD#x", [formula.dim]],
 		["89108xx", ["Cdim"], "CF#CD#xx", [formula.dim]],
 		// maj7#11
-		["x32002", ["Cmaj7#11"], "xCEGBF#", [formula["maj7#11"]]],
+		["x32002", ["CMaj7#11"], "xCEGBF#", [formula["maj7#11"]]],
 		// 7#11
 		["898988", ["C7#11"], "CF#A#EGC", [formula["7#11"]]],
 		/*		
-		** NOT SUPPORTED YET ******************************
-		// Minor ninth, major seventh (m9(maj7)) SKIPPED NOTES
+		** NOT SUPPORTED YET BECAUSE OF SKIPPED NOTES ********************
+		// Minor ninth, major seventh (m9(maj7))
 		["x65433", "Cm9(maj7)", "xD#GBDG", formula.m9maj7], // no root
 		["x3143x", "Cm9(maj7)", "xCD#BDx", formula.m9maj7], // no fifth
-		// 6/9 (6 added 9) SKIPPED NOTES
+		// 6/9 (6 added 9)
 		["xx1091010", "C6/9", "xxCEAD", formula["6/9"]], // no fifth
 		// Minor thirteen (m13) TO BE CHECKED WITH 7 STRINGS
 		["x11233", "Cm13", "xA#D#ADG", formula.m13], // no root
 		["81088108", "Cm13", "CGA#D#AC", formula.m13],
 		// Minor ninth (m9)
 		["81088810", "Cm9", "CD#A#Dxx", formula.m9],
-		// Minor ninth (m9) WITHOUT 5th
-		["x3133x", "Cm9", "xCD#A#Dx", formula.m9],
-		["8687xx", "Cm9", "CD#A#Dxx", formula.m9],
-		// Minor sixth, added ninth (m6/9) WITHOUT root
+		// Minor ninth (m9)
+		["x3133x", "Cm9", "xCD#A#Dx", formula.m9], // no 5th
+		["8687xx", "Cm9", "CD#A#Dxx", formula.m9], // no 5th
+		// Minor sixth, added ninth (m6/9)
 		["xx1233", "Cm6/9", "xxD#ADG", formula["m6/9"]], // no root
 		["xx7889", "Cm6/9", "xxAD#GC#", formula["m6/9"]], // no root
-		// Major 9 WITHOUT 5th
-		["x3243x", ["Cmaj9"], "xCEBDx", [formula.maj9]],
-		["x35433", ["Cmaj9"], "xCGBDG", [formula.maj9]],
-		["xx10121210", ["Cmaj9"], "xxCGBD", [formula.maj9]],
-		["x02100", ["Amaj9"], "xAEG#BE", [formula.maj9]],
+		// Major 9
+		["x3243x", ["Cmaj9"], "xCEBDx", [formula.maj9]], // no 5th
+		["x35433", ["Cmaj9"], "xCGBDG", [formula.maj9]], // no 5th
+		["xx10121210", ["Cmaj9"], "xxCGBD", [formula.maj9]], // no 5th
+		["x02100", ["Amaj9"], "xAEG#BE", [formula.maj9]], // no 5th
 		*/		
 	];
 

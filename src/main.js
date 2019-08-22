@@ -39,7 +39,7 @@ class Instrument {
 	*/
 	getChordInfo (tab) {
 		let notes = [],	// Notes that compose the chord.
-			intervalsInt = [],	// Formulas of the chord in integer notation with root.
+			semitones = [],	// Formulas of the chord in integer notation.
 			formulas = "", // simplified formula (e.g "1-3-5")
 			matches = [], // entries that match the formula in the dictionary
 			results = { // Will contain every chord information to be returned
@@ -73,13 +73,13 @@ class Instrument {
 
 		// 2 - Calculate interval between each note and get the formulas
 		try {
-			intervalsInt = TAB.getIntegerNotation(notes);
+			semitones = TAB.getSemitones(notes);
 		} catch (e) {
 			results.error = WORDING.failedToCalculateFormula;
 			return results;
 		}
 
-		formulas = intervalsInt.map(TAB.stripFormula);
+		formulas = semitones.map(TAB.stripFormula);
 
 		// 3 - Search the formulas dictionary for a match
 
@@ -90,7 +90,7 @@ class Instrument {
 					matches.push({ 
 						"formula":match.formula, 
 						"integer":match.integer, 
-						"intervalsInt": [...intervalsInt][i],
+						"semitones": [...semitones][i],
 						"name":match.name, 
 						"suffix":match.suffix });
 				}
@@ -111,14 +111,14 @@ class Instrument {
 
 		for (let r of matches) {
 
-			var root = notes[r.intervalsInt.indexOf(0)];
+			var root = notes[r.semitones.indexOf(0)];
 
 			results.chords.push({
 				"name": root + r.suffix,
 				"pitch": root,
 				"formula": r.formula,
-				"intervals": SCALE.convertIntToDiatonic(r.intervalsInt),
-				"intervalsInt": r.intervalsInt,
+				"intervals": SCALE.convertIntToDiatonic(r.semitones),
+				"semitones": r.semitones,
 				"notes": [...notes],
 				"quality": r.name,
 				"suffix": r.suffix
