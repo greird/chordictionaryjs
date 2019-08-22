@@ -6,7 +6,6 @@ const clean = require('gulp-clean');
 const eslint = require('gulp-eslint');
 const csso = require('gulp-csso');
 const rename = require('gulp-rename');
-const qunit = require('node-qunit-phantomjs');
 const babel = require("gulp-babel");
 const minify_babel = require("gulp-babel-minify");
 const minify = require('gulp-minify');
@@ -82,16 +81,10 @@ function css() {
 	.pipe(gulp.dest('./build'));
 }
 
-// Test Tasks
-async function test() {
-	await qunit('./_tests/index.html');
-}
-
 const build = gulp.series(cleandist, gulp.parallel(css, lint), gulp.parallel(build_es6, build_commonjs, build_iife));
 
 exports.lint = lint;
 exports.css = css;
 exports.clean = cleandist;
-exports.test = test;
 exports.build = build;
-exports.default = gulp.series(build, test);
+exports.default = build;

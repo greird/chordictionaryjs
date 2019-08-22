@@ -1,3 +1,5 @@
+const chordictionary = require('../build/commonjs/chordictionary.min.js');
+
 var guitar = new chordictionary.Instrument("EADGBE", 24, 5, 4);
 
 QUnit.test("chordictionary.isValidTab()", function(assert) {
@@ -149,7 +151,7 @@ QUnit.test("guitar.getChordInfo()", function(assert) {
 		// Check chord formula(s)
 		assert.deepEqual(results, chords[i], "getChordInfo(\"" + chords[i][0] + "\")");
 
-		document.getElementById("layouts").innerHTML += "<div style='width:140px;height:180px;margin:20px;float:left'>" + guitar.getChordLayout(chords[i][0], raw_results.chords[0]) + "</div>";
+		//document.getElementById("layouts").innerHTML += "<div style='width:140px;height:180px;margin:20px;float:left'>" + guitar.getChordLayout(chords[i][0], raw_results.chords[0]) + "</div>";
 	}
 });
 
