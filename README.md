@@ -159,11 +159,31 @@ myInstrument.getChordInfo("xx5545");
 // Will return an object
 {
 	error: "",
-	formula: ["1-b3-5-6", "1-b3-b5-b7"],
-	name: ["Cm6", "Am7b5"],
-	notes: "xxGCD#A",
-	tab: "xx5545",
-	tuning: "EADGBE"
+	chords: [
+		{
+			name: "Cm6",
+			pitch: "C",
+			formula: "1-b3-5-6",
+			intervals: [],
+			intervalsInt: ["x", "x", 7, 0, 3, 9],
+			notes: ["x", "x", "G", "C", "D#", "A"],
+			quality: "Minor sixth",
+			suffix: "m6"
+		},
+		{
+			name: "Am7b5",
+			pitch: "A",
+			formula: "1-b3-b5-b7",
+			intervals: [],
+			intervalsInt: ["x", "x", 10, 3, 6, 0],
+			notes: ["x", "x", "G", "C", "D#", "A"],
+			quality: "Minor seventh, flat fifth",
+			suffix: "m7b5"
+		}
+	],
+	notes: ["x", "x", "G", "C", "D#", "A"],
+	tab: ["x", "x", "5", "5", "4", "5"],
+	tuning: ["E", "A", "D", "G", "B", "E"]
 }
 ```
 
