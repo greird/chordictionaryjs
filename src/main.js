@@ -117,7 +117,7 @@ class Instrument {
 				"name": root + r.suffix,
 				"pitch": root,
 				"formula": r.formula,
-				"intervals": [],
+				"intervals": SCALE.convertIntToDiatonic(r.intervalsInt),
 				"intervalsInt": r.intervalsInt,
 				"notes": [...notes],
 				"quality": r.name,
