@@ -1,4 +1,4 @@
-/**Chordictionary v0.1.0-alpha.2, @license MIT, (c) 2016 Hubert Fauconnier + contributors*/
+/**Chordictionary v0.1.0-beta.2, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
 
 import { WORDING } from "./wordings";
 import * as SCALE from "./scales";

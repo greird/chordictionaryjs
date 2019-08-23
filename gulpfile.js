@@ -32,6 +32,7 @@ function build_es6() {
 			src:'.js',
 			min:'.min.js'
 		}, 
+		preserveComments: 'some',
 		noSource: true
 	}))
 	.pipe(gulp.dest('./build/es6/chordictionary'))

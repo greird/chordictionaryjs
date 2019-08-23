@@ -258,7 +258,7 @@ You can add new chords to be tested in `/_tests/chords.js` or edit the tests in 
 
 I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 
-To check the chord layout rendering you can open `/_tests/getchordlayout.html` and add new chords in `/_tests/test-getchordlayout.js`.
+To check the chord layout rendering you can open `/_tests/test-getchordlayout.html` and add new chords in `/_tests/test-getchordlayout.js`.
 
 Finally, type `gulp` to compile the content of `/src` into `/build`.  
 It will lint, minify and build 3 versions of the lib (ES6, CommonJS and IIFE).
