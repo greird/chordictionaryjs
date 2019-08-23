@@ -4,7 +4,7 @@
 	"description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
 	"main": "./build/commonjs/chordictionary.min.js",
 	"scripts": {
-		"test": "./node_modules/qunit/bin/qunit.js _tests/tests.js"
+		"test": "./node_modules/qunit/bin/qunit.js _tests/test-commonjs.js"
 	},
 	"repository": {
 		"type": "git",

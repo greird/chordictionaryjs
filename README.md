@@ -253,11 +253,12 @@ If it has been installed correctly you should be able to launch ```npm test``` a
 
 The only file to edit is `/src/chordictionary.js`.
 
-To run some unit tests, type `npm test`. Note that tests are run on the transpiled CommonJS build `/build/commonjs/chordictionary.min.js`.
-You may need to edit or add new tests in `/_tests/tests.js`.  
+To run some unit tests, type `npm test`. Note that tests are run only on the transpiled CommonJS build `/build/commonjs/chordictionary.min.js`.
+You can add new chords to be tested in `/_tests/chords.js` or edit the tests in `/_tests/test-commonjs.js`.
+
 I'm using the unit testing framework [QUnit](https://qunitjs.com/).
 
-To check the chord layout rendering you can open `_tests/getchordlayout.html` and add new chords in `_tests/test-getchordlayout.js`.
+To check the chord layout rendering you can open `/_tests/getchordlayout.html` and add new chords in `/_tests/test-getchordlayout.js`.
 
 Finally, type `gulp` to compile the content of `/src` into `/build`.  
 It will lint, minify and build 3 versions of the lib (ES6, CommonJS and IIFE).
