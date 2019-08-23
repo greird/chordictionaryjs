@@ -10,3 +10,22 @@ export function isValid (tuning) {
 		return false;
 	}
 }
+
+export const GET = {
+	guitar: {
+		standard: ["E", "A", "D", "G", "B", "E"],
+		drop_d: ["D", "A", "D", "G", "B", "E"],
+		d_modal: ["D", "A", "D", "G", "A", "D"],
+		open_g: ["G", "G", "D", "G", "B", "D"]
+	},
+	bass: {
+		standard: ["E", "A", "D", "G"],
+		drop_d: ["C", "A", "D", "G"]
+	},
+	ukulele: {
+		standard: ["G", "C", "E", "A"]
+	},
+	violin: {
+		standard: ["G", "D", "A", "E"]
+	}
+};

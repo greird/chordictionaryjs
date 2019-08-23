@@ -237,6 +237,16 @@ chordictionary.isValidTuning("E#A#D#G#B#E#");
 True // Will be interpreted as ['E#','A#','D#','G#','B#','E#']
 ```
 
+### Get a list of commonly used tunings
+
+`chordictionary.tuning` is a constant containing commonly used tuning for fretted instruments.
+
+```javascript
+// Usage
+let guitar_standard_tuning = chordictionary.tuning.guitar.standard;
+// guitar_standard_tuning === ["E", "A", "D", "G", "B", "E"]
+````
+
 ***
 
 

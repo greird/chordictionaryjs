@@ -482,9 +482,11 @@ class Instrument {
 
 const isValidTab = TAB.isValid;
 const isValidTuning = TUNING.isValid;
+const tuning = TUNING.GET;
 
 export { 
 	Instrument,
 	isValidTab, 
-	isValidTuning
+	isValidTuning,
+	tuning
 };

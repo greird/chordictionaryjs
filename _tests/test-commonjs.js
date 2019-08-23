@@ -1,7 +1,7 @@
 const chords = require("./chords.js").chords;
 const chordictionary = require('../build/commonjs/chordictionary.min.js');
 
-var guitar = new chordictionary.Instrument("EADGBE", 24, 5, 4);
+var guitar = new chordictionary.Instrument(chordictionary.tuning.guitar.standard.join(""), 24, 5, 4);
 
 QUnit.test("chordictionary.isValidTab()", function(assert) {
 	assert.ok(chordictionary.isValidTab("x32010") === true, "x32010 is a valid tab.");
@@ -14,6 +14,12 @@ QUnit.test("chordictionary.isValidTuning()", function(assert) {
 	assert.ok(chordictionary.isValidTuning("E#A#D#G#B#E#") === true, "E#A#D#G#B#E# is a valid tuning.");
 	assert.ok(chordictionary.isValidTuning("DA#DGA#D") === true, "DADGA#D is a valid tuning.");
 	assert.ok(chordictionary.isValidTuning("EADGB2") === false, "EADGB2 is not a valid tuning.");
+});
+
+QUnit.test("chordictionary.tuning", function(assert) {
+	assert.deepEqual(chordictionary.tuning.guitar.standard, ["E", "A", "D", "G", "B", "E"], 'Guitar standard tuning is EADGBE.');
+	assert.deepEqual(chordictionary.tuning.guitar.open_g, ["G", "G", "D", "G", "B", "D"], 'Guitar Open G tuning is GGDGBD.');
+	assert.deepEqual(chordictionary.tuning.bass.standard, ["E", "A", "D", "G"], 'Bass standard tuning is EADG.');
 });
 
 QUnit.test("guitar.getChordInfo() with " + chords.length + " chords", function(assert) {
