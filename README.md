@@ -2,8 +2,8 @@ ChordictionaryJS
 ======
 
 ![status](https://img.shields.io/badge/version-beta-blue.svg)
-[![David](https://img.shields.io/david/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
-[![David](https://img.shields.io/david/dev/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/blob/master/package.json)
+[![David](https://david-dm.org/greird/chordictionaryjs/status.svg)](https://david-dm.org/greird/chordictionaryjs)
+[![David](https://david-dm.org/greird/chordictionaryjs/dev-status.svg)](https://david-dm.org/greird/chordictionaryjs?type=dev)
 [![GitHub issues](https://img.shields.io/github/issues/greird/chordictionaryjs.svg?maxAge=86400)](https://github.com/greird/chordictionaryjs/issues)
 [![Build Status](https://travis-ci.org/greird/chordictionaryjs.svg?branch=master)](https://travis-ci.org/greird/chordictionaryjs)
 
