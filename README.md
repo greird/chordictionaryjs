@@ -18,6 +18,7 @@ For a demonstration of what can be done with this library, check out [chordictio
 - [List of supported chords](#list-of-supported-chords)
 - [Setup](#setup)
 - [Documentation](#documentation)
+- [Contributing](#contributing)
 - [What's next ?](#whats-next-)
 
 ***
@@ -121,6 +122,7 @@ Finally, the raw ES6 module is also available in [`/es6`](https://github.com/gre
 import * as chordictionary from './chordictionary/main.js';
 ```
 
+
 ## Documentation
 
 ### Define your instrument
@@ -213,7 +215,7 @@ myInstrument.getChordLayout(results.tab.join(""), results.chords[0]);
 For the moment, the chord layout is built with table elements ("Tablature" is derived from the word "table" after all. :)).
 However, an SVG version of this could be more scalable.
 
-![](http://git.hubertfauconnier.com/img/chord.png "")
+![](./docs/img/chord.png "")
 
 ### Check if tab or tuning is valid
 
@@ -245,6 +247,13 @@ True // Will be interpreted as ['E#','A#','D#','G#','B#','E#']
 let guitar_standard_tuning = chordictionary.tuning.guitar.standard;
 // guitar_standard_tuning === ["E", "A", "D", "G", "B", "E"]
 ````
+
+
+
+## Contributing
+
+Check out the [contributing guidelines](contributing.md).
+
 
 
 ## What's next ?
