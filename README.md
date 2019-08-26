@@ -252,7 +252,7 @@ let guitar_standard_tuning = chordictionary.tuning.guitar.standard;
 
 ## Contributing
 
-Check out the [contributing guidelines](./docs/contributing.md).
+Check out the [contributing guidelines](./docs/CONTRIBUTING.md).
 
 
 
