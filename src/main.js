@@ -6,7 +6,6 @@ import * as INTERVAL from "./interval";
 import * as CHORD from "./chords";
 import * as TUNING from "./tuning";
 import * as TAB from "./tab";
-import * as PARSER from "./parser";
 import * as TOOLS from "./tools";
 
 class Instrument {
@@ -20,7 +19,7 @@ class Instrument {
 	constructor (tuning, fretNumber, fretsToDisplay, maxSpan) {
 		try {
 			if(TUNING.isValid(tuning)) {
-				this.tuning = PARSER.splitTuning(tuning);
+				this.tuning = TUNING.parse(tuning);
 			} else {
 				throw WORDING.invalidTuning;
 			}
@@ -53,7 +52,7 @@ class Instrument {
 
 		try {
 			if (TAB.isValid(tab)) {
-				tab = PARSER.splitTab(tab);
+				tab = TAB.parse(tab);
 				results.tab = tab;
 			} else {
 				throw WORDING.invalidTab;
@@ -181,7 +180,7 @@ class Instrument {
 		// 1 - Fetch the right chord formula from the dictionary
 		try {
 			if (typeof(chordName) === "string") {
-				chordName = PARSER.splitChordName(chordName);
+				chordName = CHORD.parse(chordName);
 				rootNote = chordName[0];	// Root note of the chord
 				chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
 				chordNotes.push(rootNote);
@@ -383,7 +382,7 @@ class Instrument {
 
 		try {
 			if (TAB.isValid(tab)) {
-				frets = PARSER.splitTab(tab);
+				frets = TAB.parse(tab);
 			} else {
 				frets = [0,0,0,0,0,0];
 			}
@@ -449,7 +448,7 @@ class Instrument {
 
 			// Generate n strings (cols) for the current fret
 			for (let gtrString = 0; gtrString < this.tuning.length; gtrString++) {
-				// TODO: the parseInt check should be done in PARSER.splitTab(), thus this var declaration would be useless
+				// TODO: the parseInt check should be done in TAB.parse(), thus this var declaration would be useless
 				let fretOnString = parseInt(frets[gtrString]);
 
 				if (gtrFret === 0) {

@@ -1,4 +1,5 @@
 import { NOTES }from "./notes";
+import { WORDING } from "./wordings";
 
 /**
 * @const {Object} | Formulas, names and suffix for each chord quality
@@ -90,6 +91,34 @@ export function isValid(tab, chordNotes, tuning) {
 		}
 	}
 	return result;
+}
+
+/** Separates the chord root from the chord nature/quality;
+* @param {String} chordName | The chord name (e.g: Amin7);
+* @return {Array} | Containing the chord root [0] and the chord quality [1];
+*/
+export function parse(chordName) {
+	let root, 
+		quality;
+
+	try {
+		if(typeof(chordName) !== "string") {
+			throw WORDING.invalidChordName;
+		} else {
+			let sharp = chordName.search("#");
+
+			if (sharp === -1) {
+				root = chordName.charAt(0);
+				quality = chordName.slice(1);
+			} else {
+				root = chordName.slice(0, 2).toUpperCase();
+				quality = chordName.slice(2);
+			}
+			return [root, quality];
+		}
+	} catch (e) {
+		return false;
+	}
 }
 
 /** Find an integer formula "0-4-7" in the formula dictionary and return all available information
