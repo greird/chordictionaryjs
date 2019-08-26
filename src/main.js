@@ -1,7 +1,8 @@
 /**Chordictionary v0.1.0-beta.3, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
 
 import { WORDING } from "./wordings";
-import * as SCALE from "./scales";
+import { NOTES } from "./notes";
+import * as INTERVAL from "./interval";
 import * as CHORD from "./chords";
 import * as TUNING from "./tuning";
 import * as TAB from "./tab";
@@ -117,7 +118,7 @@ class Instrument {
 				"name": root + r.suffix,
 				"pitch": root,
 				"formula": r.formula,
-				"intervals": SCALE.convertIntToDiatonic(r.semitones),
+				"intervals": INTERVAL.convertToDiatonic(r.semitones),
 				"semitones": r.semitones,
 				"notes": [...notes],
 				"quality": r.name,
@@ -184,7 +185,7 @@ class Instrument {
 				rootNote = chordName[0];	// Root note of the chord
 				chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
 				chordNotes.push(rootNote);
-				rootIndex = SCALE.A.indexOf(rootNote);
+				rootIndex = NOTES.indexOf(rootNote);
 			} else {
 				throw WORDING.invalidChordName;
 			}
@@ -200,10 +201,10 @@ class Instrument {
 		// NOTE: Doesn't work with formulas containing integers > 9
 		for (let i = 1; i < chordFormula.length; i++) {
 			let index = parseInt(chordFormula[i]) + parseInt(rootIndex);
-			if (index > (SCALE.A.length - 1)) {
-				index = index - SCALE.A.length;
+			if (index > (NOTES.length - 1)) {
+				index = index - NOTES.length;
 			}
-			chordNotes.push(SCALE.A[index]);
+			chordNotes.push(NOTES[index]);
 		}
 
 		// Find the position of theses notes on the fretboard and store it in tabPool
@@ -215,9 +216,9 @@ class Instrument {
 			tabPool[string] = [];
 			tabPool[string].push("x");
 			for (let note = 0; note < chordNotes.length; note++) {
-				fretPosition = SCALE.A.indexOf(chordNotes[note]) - SCALE.A.indexOf(this.tuning[string]);
+				fretPosition = NOTES.indexOf(chordNotes[note]) - NOTES.indexOf(this.tuning[string]);
 				if (fretPosition < 0) {
-					fretPosition = SCALE.A.length + fretPosition;
+					fretPosition = NOTES.length + fretPosition;
 				}
 				tabPool[string].push(fretPosition);
 				if (fretPosition + 12 < this.fretNumber) {
@@ -313,7 +314,7 @@ class Instrument {
 						let noteFret = chordPool[iChord][i];
 
 						if (!isNaN(noteFret)) {
-							let noteIndex = noteFret + SCALE.A.indexOf(this.tuning[i]);
+							let noteIndex = noteFret + NOTES.indexOf(this.tuning[i]);
 							
 							if (noteFret === 0) chordAnatomy.openString = true;
 
@@ -483,10 +484,12 @@ class Instrument {
 const isValidTab = TAB.isValid;
 const isValidTuning = TUNING.isValid;
 const tuning = TUNING.GET;
+const notes = NOTES;
 
 export { 
 	Instrument,
 	isValidTab, 
 	isValidTuning,
-	tuning
+	tuning,
+	notes
 };

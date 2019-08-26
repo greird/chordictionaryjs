@@ -1,5 +1,6 @@
-import * as SCALE from "./scales";
+import { NOTES } from "./notes";
 import { removeDuplicates } from "./tools";
+import * as INTERVAL from "./interval";
 
 /** Return true if tab contains only digits or the letter x
 * @param {String} tab | Required | The tab to check for validity
@@ -31,12 +32,12 @@ export function toNotes(tab, tuning) {
 		} else {
 			// Convert the note to the given scale and get its position
 			stringRootNote = tuning[i];
-			index = parseInt(tab[i]) + SCALE.A.indexOf(stringRootNote);
+			index = parseInt(tab[i]) + NOTES.indexOf(stringRootNote);
 			// Store each notes names
-			if (index > (SCALE.A.length - 1)) {
-				index = index - SCALE.A.length;
+			if (index > (NOTES.length - 1)) {
+				index = index - NOTES.length;
 			}
-			notes.push(SCALE.A[index]);
+			notes.push(NOTES[index]);
 		}
 	}
 	return notes;
@@ -67,7 +68,7 @@ export function getSemitones(notes) {
 				continue;
 			}
 
-			let interval = SCALE.getInterval(notes[i], notes[j]);
+			let interval = INTERVAL.get(notes[i], notes[j]);
 
 			// Store the formula
 			formula.push(interval);

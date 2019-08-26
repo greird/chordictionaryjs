@@ -1,4 +1,4 @@
-import * as SCALE from "./scales";
+import { NOTES }from "./notes";
 
 /**
 * @const {Object} | Formulas, names and suffix for each chord quality
@@ -65,18 +65,18 @@ export function isValid(tab, chordNotes, tuning) {
 		if (isNaN(tab[i])) {
 			continue;
 		}
-		index = tab[i] + SCALE.A.indexOf(tuning[i]);
+		index = tab[i] + NOTES.indexOf(tuning[i]);
 
-		if (index > (SCALE.A.length - 1)) {
-			index = index - SCALE.A.length;
+		if (index > (NOTES.length - 1)) {
+			index = index - NOTES.length;
 		}
 
 		for (let j = 0; j < chordNotes.length; j++) {
 
-			if (!notesCount[SCALE.A[index]]) {
-				notesCount[SCALE.A[index]] = 1;
-			} else if (SCALE.A[index] === SCALE.A[j]) {
-				notesCount[SCALE.A[index]]++;
+			if (!notesCount[NOTES[index]]) {
+				notesCount[NOTES[index]] = 1;
+			} else if (NOTES[index] === NOTES[j]) {
+				notesCount[NOTES[index]]++;
 			}
 		}
 	}

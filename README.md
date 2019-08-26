@@ -248,6 +248,17 @@ let guitar_standard_tuning = chordictionary.tuning.guitar.standard;
 // guitar_standard_tuning === ["E", "A", "D", "G", "B", "E"]
 ````
 
+### Get a list of all the notes
+
+`chordictionary.notes` is a constant containing all 12 notes in a chromatic scale starting with A.
+It can be used to check if a note is valid or not.
+
+```javascript
+// Usage
+chordictionary.notes.includes("A") // Returns True as A is a valid note
+chordictionary.notes.includes("B#") // Returns False as B# doesn't exist
+````
+
 
 
 ## Contributing

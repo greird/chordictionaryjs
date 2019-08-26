@@ -1,9 +1,4 @@
-/**
-* @const {Array} | Notes in a major scale in "A".
-* Helps us identify the interval between each notes.
-* e.g: if A is the Root (1), then B is the third (3) and bD the fifth (5).
-*/
-export const A = ["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"];
+import { NOTES } from "./notes";
 
 /**
 * @const {Array} | List of diatonic intervals
@@ -17,11 +12,11 @@ export const INTERVALS = ["P1", "m2", "M2", "m3", "M3", "P4", "A4/d5", "P5", "m6
 * @param {String} b | Required | another note
 * @return {int}	The number of semi-tones between the two notes
 */
-export function getInterval(a, b) {
-	let interval = A.indexOf(b) - A.indexOf(a);
+export function get(a, b) {
+	let interval = NOTES.indexOf(b) - NOTES.indexOf(a);
 	// When an octave is reached (0), the numbers begin again at 12
 	if (interval < 0) {
-		interval = (A.length) + interval;
+		interval = (NOTES.length) + interval;
 	}
 	return interval;
 }
@@ -30,6 +25,6 @@ export function getInterval(a, b) {
 * @param {Array} intervals | Required | The integer intervals as an array e.g. [0, 4, 7]
 * @return {Array} e.g. [1, 3, 5]
 */
-export function convertIntToDiatonic(intervals) {
+export function convertToDiatonic(intervals) {
 	return intervals.map(x => (isNaN(x) || x === null) ? null : INTERVALS[x]);
 }
