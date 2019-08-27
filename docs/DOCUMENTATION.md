@@ -3,14 +3,14 @@
 ## Table of Contents
 1. [Setup](#setup)
 	1. [with npm](#with-npm)
-	1. [with a \<script> tag](#with-a-script-tag)
+	1. [with a \<script\> tag](#with-a-script-tag)
     1. [as an es6 module](#as-an-es6-module)
 1. [Introduction](#introduction)
 1. [Methods](#methods)
 	1. [Instrument](#instrument)
     	1. [getChordInfo](#getchordinfo) 
         1. [getChordLayout](#getchordlayout)
-        1. [getChordsList](#getchordlist) <small>**experimental**</small>
+        1. [getChordsList](#getchordslist) <small>**experimental**</small>
 	1. [Helpers](#helpers)
     	1. [isValidTab, isValidTuning, isValidChord](#isvalidtab-isvalidtuning-isvalidchord)
         1. [parseTab, parseTuning, parseChord](#parsetab-parsetuning-parsechord)
@@ -287,7 +287,7 @@ chordictionary.parseChord("Cmin7"); // ["C", "min7"]
 ```
 
 
-#### <span style="color:#00458f">tunings</span>
+#### <span style="color:#00458f">tuning</span>
 
 A constant containing commonly used tuning for fretted instruments.
 
