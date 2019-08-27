@@ -2,6 +2,7 @@
 const formula = {
 	"min": "1-b3-5",
 	"maj": "1-3-5",
+	"add4": "1-3-4-5",
 	"power": "1-5",
 	"dim": "1-b3-b5",
 	"aug": "1-3-5#",
@@ -26,6 +27,7 @@ const formula = {
 	"m9maj7": "1-b3-5-7-9",
 	"maj7#11": "1-3-5-7-#11",
 	"7#11": "1-3-5-b7-#11",
+	"maj11": "1-3-5-7-9-11",
 	"maj13": "1-3-5-7-9-13",
 	"m13": "1-b3-5-b7-9-11-13"
 };
@@ -47,6 +49,9 @@ exports.chords = [
 	["022000", ["Emin", "G6"], "EBEGBE", [formula.min, formula["6"]]], 
 	["133111", ["Fmin", "G#6"], "FCFG#CF", [formula.min, formula["6"]]], 
 	["355333", ["Gmin", "A#6"], "GDGA#DG", [formula.min, formula["6"]]],
+	// add4
+	["x55775", ["Dadd4"], "xDGDF#A", [formula.add4]],
+	["101012111010", ["Dadd4"], "DGDF#AD", [formula.add4]],
 	// Sus4 / Sus2
 	["x33563", ["Csus4", "Fsus2"], "xCFCFG", [formula.sus4, formula.sus2]],
 	["x8101088", ["Fsus2", "Csus4"], "xFCFGC", [formula.sus2, formula.sus4]],
@@ -101,7 +106,10 @@ exports.chords = [
 	["x32002", ["CMaj7#11"], "xCEGBF#", [formula["maj7#11"]]],
 	// 7#11
 	["898988", ["C7#11"], "CF#A#EGC", [formula["7#11"]]],
-	/*		
+	// Maj11
+	["x1211131010", ["AMaj11"], "xAC#G#AD", [formula.maj11]],
+	["x32001", ["CMaj11"], "xCEGBF", [formula.maj11]],
+	/*
 	** NOT SUPPORTED YET BECAUSE OF SKIPPED NOTES ********************
 	// Minor ninth, major seventh (m9(maj7))
 	["x65433", "Cm9(maj7)", "xD#GBDG", formula.m9maj7], // no root
@@ -124,5 +132,7 @@ exports.chords = [
 	["x35433", ["Cmaj9"], "xCGBDG", [formula.maj9]], // no 5th
 	["xx10121210", ["Cmaj9"], "xxCGBD", [formula.maj9]], // no 5th
 	["x02100", ["Amaj9"], "xAEG#BE", [formula.maj9]], // no 5th
+	//Dadd9(add4)
+	https://www.cyberfret.com/guitar-chords/one-of-the-cool-chords-dadd9add4/
 	*/		
 	];

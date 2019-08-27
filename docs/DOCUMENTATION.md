@@ -327,30 +327,55 @@ Results may vary depending on your instrument's tuning and its number of strings
 The current matching system is very strict. Your tab won't match any chord unless it has all the requested notes. For instance, an m9(maj7) chord without a fifth won't be recognized.
 
 #### The following chords have been tested
-- Minor (min)
-- Major (maj)
-- Powerchord (5)
-- Suspended fourth (sus4)
-- Suspended second (sus2)
-- Augmented (aug)
-- Diminished (dim)
-- Sixth (6)
-- Minor sixth (m6)
-- Minor, flat sixth (mb6)
-- Major sixth (maj6)
-- Seventh & Dominant seventh (7)
-- Minor seventh (m7)
-- Minor seventh, flat fifth (m7b5)
-- Major seventh (maj7)
-- Minor, major seventh (m(maj7))
-- Major ninth (maj9)
-- Minor ninth (m9)
-- Minor, added ninth (m(add9))
-- Added ninth(add9)
-- Sixth, added ninth (6/9)
-- Minor sixth, added ninth (m6/9)
-- Minor ninth, major seventh (m9(maj7))
-- Minor eleventh (m9b5)
-- Major thirteen (maj13)
-- Seventh, sharp eleventh (7#11)
-- Major seventh, sharp eleventh (maj7#11)
+- A
+- B
+- C
+- D
+- E
+- F
+- G
+- Amin / C6
+- Bmin / D6
+- Cmin / D#6
+- Dmin / F6
+- Emin / G6
+- Fmin / G#6
+- Gmin / A#6
+- Dadd4
+- Dadd4
+- Csus4 / Fsus2
+- Fsus2 / Csus4
+- C5
+- F7
+- C7
+- CMaj6 / Am7
+- CMaj6 / Am7
+- FMaj6 / Dm7
+- CMaj7 / Emb6
+- CMaj7 / Emb6
+- FMaj9
+- Fm9
+- Cm6 / Am7b5
+- Cm7b5 / D#m6
+- Caug / Eaug / G#aug
+- Eaug / Caug / G#aug
+- Cm(Maj7)
+- Cm(Maj7)
+- Cm(Maj7)
+- Cm(add9)
+- Cm(add9)
+- Cadd9
+- Cadd9
+- Cm9(Maj7)
+- C6/9
+- C6/9
+- C6/9
+- Cm6/9
+- Cm9b5
+- CMaj13
+- Cdim
+- Cdim
+- CMaj7#11
+- C7#11
+- AMaj11
+- CMaj11
