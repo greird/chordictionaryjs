@@ -482,6 +482,9 @@ class Instrument {
 
 const isValidTab = TAB.isValid;
 const isValidTuning = TUNING.isValid;
+const parseTuning = TUNING.parse;
+const parseTab = TAB.parse;
+const parseChord = CHORD.parse;
 const tuning = TUNING.GET;
 const notes = NOTES;
 
@@ -489,6 +492,9 @@ export {
 	Instrument,
 	isValidTab, 
 	isValidTuning,
+	parseTuning,
+	parseTab,
+	parseChord,
 	tuning,
 	notes
 };

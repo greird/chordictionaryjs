@@ -1,5 +1,3 @@
-import { WORDING } from "./wordings";
-
 /** Return true if tuning contains only letters from A to G
 * @param {String} tuning | Required | The instrument tuning
 * @return {Boolean}
@@ -42,13 +40,14 @@ export function parse(tuning) {
 		}
 		return tuningArray;
 	} else {
-		throw WORDING.invalidTuning;
+		return false;
 	}
 }
 
 export const GET = {
 	guitar: {
 		standard: ["E", "A", "D", "G", "B", "E"],
+		halfstepdown: ["D#", "G#", "C#", "F#", "A#", "D#"],
 		drop_d: ["D", "A", "D", "G", "B", "E"],
 		d_modal: ["D", "A", "D", "G", "A", "D"],
 		open_g: ["G", "G", "D", "G", "B", "D"]
