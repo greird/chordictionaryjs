@@ -223,20 +223,24 @@ However, an SVG version of this could be more scalable.
 Note that these functions are completely unrelated to your instrument instance.
 
 ```javascript
-// Usage
-
-chordictionary.isValidTab("x32010");
-// Return
-True // Will be interpreted as ['x','3','2','0','1','0']
-
-chordictionary.isValidTab("911111099");
-// Return
-True // Will be interpreted as ['9','11','11','10','9','9']
-
-chordictionary.isValidTuning("E#A#D#G#B#E#");
-// Return
-True // Will be interpreted as ['E#','A#','D#','G#','B#','E#']
+chordictionary.isValidTab("x32010"); // True
+chordictionary.isValidTab("911111099"); // True
+chordictionary.isValidTuning("E#A#D#G#B#E#"); // True
 ```
+
+### Parse a tab, tuning or chord name
+
+- `parseTab` breaks a string into a list of frets. 
+- `parseTuning` breaks a string into a list of notes.
+- `parseChord` extracts the root and the chord quality from a string.
+
+
+```Javascript
+chordictionary.parseTab("x32010"); // ["x", "3", "2", "0", "1", "0"]
+chordictionary.parseTuning("D#G#C#F#A#D#"); // ["D#", "G#", "C#", "F#", "A#", "D#"]
+chordictionary.parseChord("Cmin7"); // ["C", "min7"]
+```
+
 
 ### Get a list of commonly used tunings
 
