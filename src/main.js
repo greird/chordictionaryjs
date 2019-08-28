@@ -1,11 +1,11 @@
-/**Chordictionary v0.1.0-beta.2, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
+/**Chordictionary v0.1.0-beta.3, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
 
 import { WORDING } from "./wordings";
-import * as SCALE from "./scales";
+import { NOTES } from "./notes";
+import * as INTERVAL from "./interval";
 import * as CHORD from "./chords";
 import * as TUNING from "./tuning";
 import * as TAB from "./tab";
-import * as PARSER from "./parser";
 import * as TOOLS from "./tools";
 
 class Instrument {
@@ -19,7 +19,7 @@ class Instrument {
 	constructor (tuning, fretNumber, fretsToDisplay, maxSpan) {
 		try {
 			if(TUNING.isValid(tuning)) {
-				this.tuning = PARSER.splitTuning(tuning);
+				this.tuning = TUNING.parse(tuning);
 			} else {
 				throw WORDING.invalidTuning;
 			}
@@ -52,7 +52,7 @@ class Instrument {
 
 		try {
 			if (TAB.isValid(tab)) {
-				tab = PARSER.splitTab(tab);
+				tab = TAB.parse(tab);
 				results.tab = tab;
 			} else {
 				throw WORDING.invalidTab;
@@ -117,7 +117,7 @@ class Instrument {
 				"name": root + r.suffix,
 				"pitch": root,
 				"formula": r.formula,
-				"intervals": SCALE.convertIntToDiatonic(r.semitones),
+				"intervals": INTERVAL.convertToDiatonic(r.semitones),
 				"semitones": r.semitones,
 				"notes": [...notes],
 				"quality": r.name,
@@ -180,11 +180,11 @@ class Instrument {
 		// 1 - Fetch the right chord formula from the dictionary
 		try {
 			if (typeof(chordName) === "string") {
-				chordName = PARSER.splitChordName(chordName);
+				chordName = CHORD.parse(chordName);
 				rootNote = chordName[0];	// Root note of the chord
 				chordType = chordName[1];	// Type of chord (Min, Maj, Dom7, etc.)
 				chordNotes.push(rootNote);
-				rootIndex = SCALE.A.indexOf(rootNote);
+				rootIndex = NOTES.indexOf(rootNote);
 			} else {
 				throw WORDING.invalidChordName;
 			}
@@ -200,10 +200,10 @@ class Instrument {
 		// NOTE: Doesn't work with formulas containing integers > 9
 		for (let i = 1; i < chordFormula.length; i++) {
 			let index = parseInt(chordFormula[i]) + parseInt(rootIndex);
-			if (index > (SCALE.A.length - 1)) {
-				index = index - SCALE.A.length;
+			if (index > (NOTES.length - 1)) {
+				index = index - NOTES.length;
 			}
-			chordNotes.push(SCALE.A[index]);
+			chordNotes.push(NOTES[index]);
 		}
 
 		// Find the position of theses notes on the fretboard and store it in tabPool
@@ -215,9 +215,9 @@ class Instrument {
 			tabPool[string] = [];
 			tabPool[string].push("x");
 			for (let note = 0; note < chordNotes.length; note++) {
-				fretPosition = SCALE.A.indexOf(chordNotes[note]) - SCALE.A.indexOf(this.tuning[string]);
+				fretPosition = NOTES.indexOf(chordNotes[note]) - NOTES.indexOf(this.tuning[string]);
 				if (fretPosition < 0) {
-					fretPosition = SCALE.A.length + fretPosition;
+					fretPosition = NOTES.length + fretPosition;
 				}
 				tabPool[string].push(fretPosition);
 				if (fretPosition + 12 < this.fretNumber) {
@@ -313,7 +313,7 @@ class Instrument {
 						let noteFret = chordPool[iChord][i];
 
 						if (!isNaN(noteFret)) {
-							let noteIndex = noteFret + SCALE.A.indexOf(this.tuning[i]);
+							let noteIndex = noteFret + NOTES.indexOf(this.tuning[i]);
 							
 							if (noteFret === 0) chordAnatomy.openString = true;
 
@@ -382,7 +382,7 @@ class Instrument {
 
 		try {
 			if (TAB.isValid(tab)) {
-				frets = PARSER.splitTab(tab);
+				frets = TAB.parse(tab);
 			} else {
 				frets = [0,0,0,0,0,0];
 			}
@@ -448,7 +448,7 @@ class Instrument {
 
 			// Generate n strings (cols) for the current fret
 			for (let gtrString = 0; gtrString < this.tuning.length; gtrString++) {
-				// TODO: the parseInt check should be done in PARSER.splitTab(), thus this var declaration would be useless
+				// TODO: the parseInt check should be done in TAB.parse(), thus this var declaration would be useless
 				let fretOnString = parseInt(frets[gtrString]);
 
 				if (gtrFret === 0) {
@@ -482,9 +482,19 @@ class Instrument {
 
 const isValidTab = TAB.isValid;
 const isValidTuning = TUNING.isValid;
+const parseTuning = TUNING.parse;
+const parseTab = TAB.parse;
+const parseChord = CHORD.parse;
+const tuning = TUNING.GET;
+const notes = NOTES;
 
 export { 
 	Instrument,
 	isValidTab, 
-	isValidTuning
+	isValidTuning,
+	parseTuning,
+	parseTab,
+	parseChord,
+	tuning,
+	notes
 };

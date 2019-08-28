@@ -1,4 +1,5 @@
-import * as SCALE from "./scales";
+import { NOTES }from "./notes";
+import { WORDING } from "./wordings";
 
 /**
 * @const {Object} | Formulas, names and suffix for each chord quality
@@ -12,6 +13,7 @@ export const FORMULAS = [
 	{ formula:"1-b3-b5", 		integer:"0-3-6",    		name:"Diminished", 						suffix:"dim"		},
 	{ formula:"1-b3-5", 		integer:"0-3-7", 			name:"Minor", 							suffix:"min"		},
 	{ formula:"1-b3-5-9", 		integer:"0-2-3-7", 			name:"Minor, added ninth", 			  	suffix:"m(add9)"	},
+	{ formula:"1-3-4-5", 		integer:"0-4-5-7", 			name:"Added fourth", 			  		suffix:"add4"		},
 	{ formula:"1-4-5", 			integer:"0-5-7", 			name:"Suspended fourth", 				suffix:"sus4"		},
 	{ formula:"1-2-5", 			integer:"0-2-7", 			name:"Suspended second", 				suffix:"sus2"		},
 	{ formula:"1-3-5-9", 		integer:"0-2-4-7", 	   		name:"Added ninth", 					suffix:"add9"		},
@@ -30,16 +32,14 @@ export const FORMULAS = [
 	{ formula:"1-3-5-7-9", 		integer:"0-2-4-7-11", 	 	name:"Major ninth", 					suffix:"Maj9"		},
 	{ formula:"1-b3-5-b7-9", 	integer:"0-2-3-7-10", 		name:"Minor ninth",                		suffix:"m9"			},
 	{ formula:"1-b3-5-7-9", 	integer:"0-2-3-7-11", 		name:"Minor ninth, major seventh", 		suffix:"m9(Maj7)"	},
-	{ formula:"1-b3-b5-b7-9", 	integer:"0-2-3-6-10", 		name:"Minor eleventh", 					suffix:"m9b5"		},
-	//{ formula:"1-3-5-7-11", 	integer:"", 				name:"Major eleventh", 					suffix:"11"			},
-	//{ formula:"1-3-5-7-9-11", 	integer:"", 				name:"Major eleventh", 					suffix:"11"			},
+	{ formula:"1-b3-b5-b7-9", 	integer:"0-2-3-6-10", 		name:"Minor ninth flat fifth", 			suffix:"m9b5"		},
+	{ formula:"1-3-5-7-9-11", 	integer:"0-4-5-11", 		name:"Major eleventh (no fifth, no ninth)", 					suffix:"Maj11"		},
+	{ formula:"1-3-5-7-9-11", 	integer:"0-4-5-7-11", 		name:"Major eleventh (no ninth)", 					suffix:"Maj11"		},
+	{ formula:"1-3-5-7-9-11", 	integer:"0-2-4-5-7-11", 	name:"Major eleventh", 					suffix:"Maj11"		},
 	{ formula:"1-b3-5-b7-9-11-13",integer:"0-2-3-4-6-7-10",	name:"Minor thirteen", 					suffix:"m13"		},
 	{ formula:"1-3-5-b7-#11", 	integer:"0-4-6-7-10", 	 	name:"Seventh, sharp eleventh",			suffix:"7#11"		},
 	{ formula:"1-3-5-7-#11", 	integer:"0-4-6-7-11", 	 	name:"Major seventh, sharp eleventh",	suffix:"Maj7#11"	},
 	{ formula:"1-3-5-7-9-13", 	integer:"0-2-4-7-9-11",		name:"Major thirteen", 					suffix:"Maj13"		},
-	//{ formula:"1-3-5-7-9-11-13", 	integer:"0-2-4-7-9-11",		name:"Major thirteen", 					suffix:"Maj13"		},
-	//{ formula:"1-3-5-7-13", 	integer:"0-2-4-7-9-11",		name:"Major thirteen", 					suffix:"Maj13"		},
-	//{ formula:"1-3-5-7-11-13", 	integer:"0-2-4-7-9-11",		name:"Major thirteen", 					suffix:"Maj13"		},
 	{ formula:"1", 				integer:"0", 			  	name:"Single note", 					suffix:""			},
 	{ formula:"1-5", 			integer:"0-7", 			    name:"Power chord", 					suffix:"5"			}
 ];
@@ -65,18 +65,18 @@ export function isValid(tab, chordNotes, tuning) {
 		if (isNaN(tab[i])) {
 			continue;
 		}
-		index = tab[i] + SCALE.A.indexOf(tuning[i]);
+		index = tab[i] + NOTES.indexOf(tuning[i]);
 
-		if (index > (SCALE.A.length - 1)) {
-			index = index - SCALE.A.length;
+		if (index > (NOTES.length - 1)) {
+			index = index - NOTES.length;
 		}
 
 		for (let j = 0; j < chordNotes.length; j++) {
 
-			if (!notesCount[SCALE.A[index]]) {
-				notesCount[SCALE.A[index]] = 1;
-			} else if (SCALE.A[index] === SCALE.A[j]) {
-				notesCount[SCALE.A[index]]++;
+			if (!notesCount[NOTES[index]]) {
+				notesCount[NOTES[index]] = 1;
+			} else if (NOTES[index] === NOTES[j]) {
+				notesCount[NOTES[index]]++;
 			}
 		}
 	}
@@ -90,6 +90,34 @@ export function isValid(tab, chordNotes, tuning) {
 		}
 	}
 	return result;
+}
+
+/** Separates the chord root from the chord nature/quality;
+* @param {String} chordName | The chord name (e.g: Amin7);
+* @return {Array} | Containing the chord root [0] and the chord quality [1];
+*/
+export function parse(chordName) {
+	let root, 
+		quality;
+
+	try {
+		if(typeof(chordName) !== "string") {
+			throw WORDING.invalidChordName;
+		} else {
+			let sharp = chordName.search("#");
+
+			if (sharp === -1) {
+				root = chordName.charAt(0);
+				quality = chordName.slice(1);
+			} else {
+				root = chordName.slice(0, 2).toUpperCase();
+				quality = chordName.slice(2);
+			}
+			return [root, quality];
+		}
+	} catch (e) {
+		return false;
+	}
 }
 
 /** Find an integer formula "0-4-7" in the formula dictionary and return all available information
