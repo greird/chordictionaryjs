@@ -5,7 +5,8 @@
 	"main": "./build/commonjs/chordictionary.min.js",
 	"scripts": {
 		"test": "./node_modules/gulp/bin/gulp.js && npm run qunit",
-		"qunit": "./node_modules/qunit/bin/qunit.js _tests/test-commonjs.js"
+		"qunit": "./node_modules/qunit/bin/qunit.js _tests/test-commonjs.js",
+		"release": "bash release.sh"
 	},
 	"repository": {
 		"type": "git",
