@@ -216,7 +216,7 @@ myInstrument.getChordLayout(results.tab.join(""), results.chords[0]);
 For the moment, the chord layout is built with table elements ("Tablature" is derived from the word "table" after all. :)).
 However, an SVG version of this would be more scalable.
 
-![](./docs/img/chord.png "")
+![](./img/chord.png "")
 
 #### <span style="color:#00458f">getChordsList</span>
 
