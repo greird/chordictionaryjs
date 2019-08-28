@@ -68,16 +68,16 @@ new Vue({
 
 ### With a \<script> tag
 
-Go to the [release page](https://github.com/greird/chordictionaryjs/releases/latest) and download the latest `IIFE` JS file and `chorditionary.min.css` file. Add them to your project via the usual HTML `<link>` and `<script>` tags.
+Go to the [release page](https://github.com/greird/chordictionaryjs/releases/latest) and download the latest Chordictionary file. Unpack it and add `iife/chordictionary.min.js` to your project via a simple `<script>` tag. Add `chordictionary.min.css` for proper chord layout styling.
 
 ```HTML
 <!DOCTYPE html>
 <html>
 <head>
-  <link type="text/css" rel="stylesheet" href="chordictionary.min.css">
+  <link type="text/css" rel="stylesheet" href="/chordictionary/chordictionary.min.css">
 </head>
 <body>
-  <script src="chordictionary_iife.min.js"></script>
+  <script src="/chordictionary/iife/chordictionary.min.js"></script>
 </body>
 </html>
 ```
@@ -86,10 +86,10 @@ The library is now loaded as `chordictionary`.
 
 ### As an ES6 module
 
-Chordictionary is written in ES6. The untranspiled version of the module is available from the [release page](https://github.com/greird/chordictionaryjs/releases/latest). Download the `es6` file, unpack it and import `main.js` to your project.
+Chordictionary is written in ES6. The untranspiled version of the module is available from the [release page](https://github.com/greird/chordictionaryjs/releases/latest). Download the latest Chordictionary file, unpack it and import the `es6/main.js` file to your project.
 
 ```JavaScript
-import * as chordictionary from './chordictionary/main.js';
+import * as chordictionary from './chordictionary/es6/chordictionary/main.js';
 ```
 <br />
 
