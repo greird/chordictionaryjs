@@ -82,7 +82,6 @@ class Instrument {
 		formulas = semitones.map(TAB.stripFormula);
 
 		// 3 - Search the formulas dictionary for a match
-
 		try {
 			for (let i = 0; i < formulas.length; i++) {
 				let match = CHORD.find(formulas[i]);
@@ -117,7 +116,7 @@ class Instrument {
 				"name": root + r.suffix,
 				"pitch": root,
 				"formula": r.formula,
-				"intervals": INTERVAL.convertToDiatonic(r.semitones),
+				"intervals": INTERVAL.toDiatonic(r.semitones),
 				"semitones": r.semitones,
 				"notes": [...notes],
 				"quality": r.name,

@@ -5,7 +5,7 @@ import { NOTES } from "./notes";
 * Helps us convert semitones into diatonic intervals
 * https://en.wikipedia.org/wiki/Interval_(music)
 */
-export const INTERVALS = ["P1", "m2", "M2", "m3", "M3", "P4", "A4/d5", "P5", "m6", "M6", "m7", "M7", "P8/d9", "m9/A8", "M9/d10", "m10/A9", "M10/d11", "P11/A10", "d12/A11", "P12/d13", "m13/A12", "M13/d14", "m14/A13", "M14/d15", "P15/A14", "A15"];
+export const DIATONIC = ["1", "b2", "2", "b3", "3", "4", "b5", "5", "6", "b7", "7"];
 
 /** Get the number of semitones between two notes a and b
 * @param {String} a | Required | a note
@@ -21,10 +21,13 @@ export function get(a, b) {
 	return interval;
 }
 
-/** Convert an integer formula into its diatonic equivalent
-* @param {Array} intervals | Required | The integer intervals as an array e.g. [0, 4, 7]
+/** 
+* Convert an integer formula into its diatonic equivalent
+* @param {Array} intFormula | Required | The list of deduplicated semitones for the chord (e.g. [0, 4, 7])
 * @return {Array} e.g. [1, 3, 5]
 */
-export function convertToDiatonic(intervals) {
-	return intervals.map(x => (isNaN(x) || x === null) ? null : INTERVALS[x]);
+export function toDiatonic(intFormula) {
+	var integers = [...intFormula];
+	var diatonics = [...integers].map(x => DIATONIC[x]);
+	return [...diatonics].map(x => (x === undefined) ? null : x);
 }
