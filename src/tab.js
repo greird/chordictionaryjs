@@ -1,6 +1,6 @@
 import { WORDING } from "./wordings";
 import { NOTES } from "./notes";
-import { removeDuplicates, arrayFind } from "./tools";
+import { arrayFind } from "./tools";
 import * as INTERVAL from "./interval";
 
 /** Return true if tab contains only digits or the letter x
@@ -130,9 +130,7 @@ export function getSemitones(notes) {
 * @return {object}
 */
 export function stripFormula(array) {
-	let strippedFormula = [...array];
+	let strippedFormula = [...new Set(array)];
 	strippedFormula = strippedFormula.filter(interval => (!isNaN(interval) && interval != null));
-	return removeDuplicates(strippedFormula.sort(function(a,b) { 
-		return a-b; 
-	}));
+	return strippedFormula.sort((a,b) => a-b);
 }

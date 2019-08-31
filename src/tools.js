@@ -1,15 +1,20 @@
-/** Remove duplicates from an array;
-* @param {Array} | A simple array;
-* @return {Array} | An array with no duplicates;
+/** Find duplicated list entries in an array based
+* @param {Array} haystack | Required | A list of lists
+* @return {Array} The indexes of the diplicated entries
 */
-export function removeDuplicates(arr) {
-	if (!Array.isArray(arr)) {
-		throw arr + " is not an array.";
-	} else {
-		return arr.filter(function(elem, index, self) {
-			return index === self.indexOf(elem);
-		});
+export function dedupListOfLists(haystack) {
+	let seen = [];
+	let duplicates = [];
+
+	for (let i = 0; i < haystack.length; i++) {
+		let needle = haystack[i].filter(n => (n != null)).join("");
+		if (seen.includes(needle)) {
+			duplicates.push(i);
+		} else {
+			seen.push(needle);
+		}
 	}
+	return duplicates;
 }
 
 /** Search for a keyword inside an object
