@@ -40,7 +40,6 @@ class Instrument {
 	getChordInfo (tab) {
 		let notes = [],	// Notes that compose the chord.
 			semitones = [],	// Formulas of the chord in integer notation.
-			formulas = "", // simplified formula (e.g "1-3-5")
 			matches = [], // entries that match the formula in the dictionary
 			results = { // Will contain every chord information to be returned
 				"error": "",
@@ -79,48 +78,54 @@ class Instrument {
 			return results;
 		}
 
-		formulas = semitones.map(TAB.stripFormula);
+		// 3 - Deduplicating formulas
+		if (semitones.length > 0) {
+			let duplicatesIndex = TOOLS.dedupListOfLists([...semitones]);
+			semitones = semitones.filter((currentValue, index) => !duplicatesIndex.includes(index));
+		} else {
+			throw WORDING.noMatch;
+		}
 
-		// 3 - Search the formulas dictionary for a match
+		// 4 - Give a name to the chord based on the semitones
 		try {
-			for (let i = 0; i < formulas.length; i++) {
-				let match = CHORD.find(formulas[i]);
-				if (match) {
+			for (let i = 0; i < semitones.length; i++) {
+				let chord = CHORD.name([...semitones][i]);
+				if (chord) {
+					// deduplicate; keep interval only; sort; convert integers to diatonic intervals
+					var strippedFormula = [...new Set(semitones[i])]
+						.filter(i => (!isNaN(i) && i !== null && i !== undefined))
+						.sort((a,b) => a-b)
+						.map(i => INTERVAL.DIATONIC[i]);
 					matches.push({ 
-						"formula":match.formula, 
-						"integer":match.integer, 
-						"semitones": [...semitones][i],
-						"name":match.name, 
-						"suffix":match.suffix });
+						"formula": strippedFormula, 
+						"semitones": chord.semitones,
+						"quality":chord.qualityL, 
+						"suffix":chord.qualityS 
+					});
 				}
-			}
-
-			if (matches.length > 0) {
-				let duplicatesIndex = CHORD.dedupMatches(matches);
-				matches = matches.filter((currentValue, index) => !duplicatesIndex.includes(index));
-			} else {
-				throw WORDING.noMatch;
 			}
 		} catch (e) {
 			results.error = e;
 			return results;
 		}
 
-		// 4 - Build the results object
+		matches.sort((a, b) => a.quality.length - b.quality.length);
+		
+		// 5 - Build the results object
 
 		for (let r of matches) {
 
 			var root = notes[r.semitones.indexOf(0)];
 
 			results.chords.push({
-				"name": root + r.suffix,
+				"name": root + r.suffix.join(""),
 				"pitch": root,
 				"formula": r.formula,
-				"intervals": INTERVAL.toDiatonic(r.semitones),
+				"intervals": r.semitones.map(i => INTERVAL.DIATONIC[i]).map(i => (i === undefined) ? null : i),
 				"semitones": r.semitones,
 				"notes": [...notes],
-				"quality": r.name,
-				"suffix": r.suffix
+				"quality": r.quality.join(" "),
+				"suffix": r.suffix.join("")
 			});
 		}
 		return results;

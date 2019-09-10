@@ -55,7 +55,11 @@ QUnit.test("guitar.getChordInfo() with " + chords.length + " chords", function(a
 	for (let i = 0; i < chords.length; i++) {
 		let raw_results = guitar.getChordInfo(chords[i][0]);
 		let results = transform(raw_results);
-		assert.deepEqual(results, chords[i], "getChordInfo(\"" + chords[i][0] + "\")");
+		assert.ok(results[0] === chords[i][0], "Testing tab " + chords[i][0]);
+		assert.ok(results[2] === chords[i][2], "Testing notes " + chords[i][2]);
+		//console.log(chords[i][1].map(x => results[1].includes(x)));
+		assert.ok(chords[i][1].map(x => results[1].includes(x)).every(x => x === true), "Testing chord name(s) " + chords[i][1].join());
+		//assert.deepEqual(results, chords[i], "getChordInfo(\"" + chords[i][0] + "\")");
 	}
 });
 
@@ -71,7 +75,7 @@ function transform(results) {
 			name.push(results.chords[i].name);
 			formula.push(results.chords[i].formula);		
 		}
-		return [tab, name, notes, formula];
+		return [tab, name, notes];
 	} 
 	catch (e) {
 		console.log(e);

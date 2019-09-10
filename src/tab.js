@@ -124,13 +124,3 @@ export function getSemitones(notes) {
 	}
 	return semitones;
 }
-
-/** Return a simplified formula such as [0, 4, 7] from [null, 0, 4, 0, 4, 7]
-* @param {array} rawFormula | Required | The raw integer formula such as [null, 0, 4, 0, 4, 7]
-* @return {object}
-*/
-export function stripFormula(array) {
-	let strippedFormula = [...new Set(array)];
-	strippedFormula = strippedFormula.filter(interval => (!isNaN(interval) && interval != null));
-	return strippedFormula.sort((a,b) => a-b);
-}
