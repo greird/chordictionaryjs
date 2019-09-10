@@ -65,7 +65,6 @@ const NAMING = {
 	add4: ["add4", "Added 4th"],
 	add9: ["add9", "Added 9th"],
 	major9: ["Maj9", "Major 9"],
-	dominant9: ["9", "Dominant 9"],
 	nine: ["9", "9th"],
 	six: ["6", "6th"],
 	sixnine: ["6/9", "Six Added Ninth"],
@@ -180,7 +179,6 @@ export function name(semitones) {
 		{ name: "add2", check: has.majorNinth && has.third && !has.seven && !formula.includes("6") },
 		{ name: "add4", check: has.third && formula.includes("4") && !has.seven },
 		{ name: "add9", check: has.majorNinth && has.third && !has.seven },
-		//{ name: "dominant9", check: has.majorNinth && ["b7", "3"].every(x => formula.includes(x))},
 		{ name: "sus2", check: formula.includes("2") && !has.third },
 		{ name: "sus4", check: formula.includes("4") && !has.third && !has.seven },
 		{ name: "sharp5", check: formula.includes("#5") && !formula.some(x => ["5", "3"].includes(x)) },
@@ -190,7 +188,7 @@ export function name(semitones) {
 		{ name: "doubleflat5", check: formula.includes("4") && has.third && !has.fifth && !has.seven},
 	];
 
-	// Incompatibility table; if key appears with value in the extension list, it should be removed
+	// Incompatibility table; if key/value pair appears in the extension list it should be removed
 	let incompatibilities = {
 		add2: "add9",
 		seven: "eleven", 

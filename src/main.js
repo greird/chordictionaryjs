@@ -110,18 +110,20 @@ class Instrument {
 		}
 
 		matches.sort((a, b) => a.quality.length - b.quality.length);
-		
-		// 5 - Build the results object
+
+		// 5 - Name root note and build the results object
 
 		for (let r of matches) {
-
+			var intervals = r.semitones.map(i => INTERVAL.DIATONIC[i]).map(i => (i === undefined) ? null : i);
+			var bass = notes.filter(x => x !== "x")[0];
 			var root = notes[r.semitones.indexOf(0)];
+			var name = root + r.suffix.join("");
 
 			results.chords.push({
-				"name": root + r.suffix.join(""),
-				"pitch": root,
+				"name": (root !== bass) ? name + "/" + bass : name,
+				"pitch": (root !== bass) ? root + "/" + bass : root,
 				"formula": r.formula,
-				"intervals": r.semitones.map(i => INTERVAL.DIATONIC[i]).map(i => (i === undefined) ? null : i),
+				"intervals": intervals,
 				"semitones": r.semitones,
 				"notes": [...notes],
 				"quality": r.quality.join(" "),
