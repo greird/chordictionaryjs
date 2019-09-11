@@ -155,24 +155,24 @@ myInstrument.getChordInfo("xx5545");
 	error: "",
 	chords: [
 		{
-			name: "Cm6",
-			pitch: "C",
-			formula: "1-b3-5-6",
-			intervals: [null, null, "P5", "P1", "m3", "M6"],
+			name: "Cmin6/G",
+			pitch: "C/G",
+			formula: ["1", "b3", "5", "6"],
+			intervals: [null, null, "5", "1", "b3", "6"],
 			semitones: [null, null, 7, 0, 3, 9],
 			notes: ["x", "x", "G", "C", "D#", "A"],
 			quality: "Minor sixth",
-			suffix: "m6"
+			suffix: "min6"
 		},
 		{
-			name: "Am7b5",
-			pitch: "A",
-			formula: "1-b3-b5-b7",
-			intervals: [null, null, "m7", "m3", "A4/d5", "P1"],
+			name: "Amin7b5",
+			pitch: "A/G",
+			formula: ["1", "b3", "b5", "b7"],
+			intervals: [null, null, "b7", "b3", "b5", "1"],
 			semitones: [null, null, 10, 3, 6, 0],
 			notes: ["x", "x", "G", "C", "D#", "A"],
-			quality: "Minor seventh, flat fifth",
-			suffix: "m7b5"
+			quality: "Minor 7th Flat 5th",
+			suffix: "min7b5"
 		}
 	],
 	notes: ["x", "x", "G", "C", "D#", "A"],
@@ -327,55 +327,75 @@ Results may vary depending on your instrument's tuning and its number of strings
 The current matching system is very strict. Your tab won't match any chord unless it has all the requested notes. For instance, an m9(maj7) chord without a fifth won't be recognized.
 
 #### The following chords have been tested
-- A
-- B
-- C
-- D
-- E
-- F
-- G
-- Amin / C6
-- Bmin / D6
-- Cmin / D#6
-- Dmin / F6
-- Emin / G6
-- Fmin / G#6
-- Gmin / A#6
-- Dadd4
-- Dadd4
-- Csus4 / Fsus2
-- Fsus2 / Csus4
-- C5
-- F7
-- C7
-- CMaj6 / Am7
-- CMaj6 / Am7
-- FMaj6 / Dm7
-- CMaj7 / Emb6
-- CMaj7 / Emb6
-- FMaj9
-- Fm9
-- Cm6 / Am7b5
-- Cm7b5 / D#m6
-- Caug / Eaug / G#aug
-- Eaug / Caug / G#aug
-- Cm(Maj7)
-- Cm(Maj7)
-- Cm(Maj7)
-- Cm(add9)
-- Cm(add9)
-- Cadd9
-- Cadd9
-- Cm9(Maj7)
-- C6/9
-- C6/9
-- C6/9
-- Cm6/9
-- Cm9b5
-- CMaj13
-- Cdim
-- Cdim
-- CMaj7#11
-- C7#11
-- AMaj11
-- CMaj11
+G5, Dsus4/G
+C5, Gsus4/C
+AMaj, E6sus4/A, C#min#5/A
+BMaj, F#6sus4/B, D#min#5/B
+CMaj, Emin#5/C, G6sus4/C
+DMaj, A6sus4/D, F#min#5/D
+EMaj, B6sus4/E, G#min#5/E
+FMaj, C6sus4/F, Amin#5/F
+GMaj, Bmin#5/G, D6sus4/G
+Amin, Esus4#5/A, C6/A
+Bmin, F#sus4#5/B, D6/B
+Cmin, Gsus4#5/C, D#6/C
+Dmin, Asus4#5/D, F6/D
+Emin, Bsus4#5/E, G6/E
+Fmin, Csus4#5/F, G#6/F
+Gmin, Dsus4#5/G, A#6/G
+F7, Cmin6add4bb5/F, D#6sus2b5/F
+C7, Gmin6add4bb5/C, A#6sus2b5/C
+CMaj7, Eminb6/C
+CMaj7, Eminb6/C
+C6, Amin7/C, G6sus2sus4/C
+C6, G6sus2sus4/C, Amin7/C
+F6, C6sus2sus4/F, Dmin7/F
+CminMaj7, D#aug6/C
+CminMaj7, D#aug6/C
+CminMaj7, D#aug6/C
+Cmin6/G, Adim7/G, Gsus2sus4#5, D#6b5/G
+Cdim7, D#min6/C, F#6b5/C, A#sus2sus4#5/C
+C6/9/A
+C6/9
+C6/9
+C6/9
+Cadd9, Emin7#5/C, G6sus4/C, D11sus2/C
+Cadd9, Emin7#5/C, G6sus4/C, D11sus2/C
+Cminadd9
+Cminadd9/D#
+D9
+D9
+FMaj9
+CMaj9
+CMaj7sus2
+CMaj7sus2
+AMaj7sus2
+Csus4, Fsus2/C
+Fsus2, Csus4/F
+Fmin9
+Cmin9
+Cmin9
+Cmin9
+Cmin9b5, Daug7b9/C
+Dadd4, GMaj7sus2/D
+Dadd4, GMaj7sus2/D
+Caug, Eaug/C, G#aug/C
+Eaug, Caug/E, G#aug/E
+Cdim
+Cdim
+Dadd4add9bb5
+A11
+C11
+CminMaj9
+CminMaj9
+D#augMaj7
+Cmin6/9
+D#Maj7b5
+A7b5, D#7b5/A
+C13/G
+C13
+C13
+A#13
+Cmin13
+CMaj7#11
+C7#11

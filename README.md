@@ -12,9 +12,6 @@ It converts common chord tab notation, such as `x32010`, into its graphical repr
 
 For a demonstration of what can be done with this library, check out [chordictionary.com](http://www.chordictionary.com).
 
-**Please note this is work in progress and it is not 100% reliable yet.**
-
-
 
 ***
 

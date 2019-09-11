@@ -1,6 +1,6 @@
 import { WORDING } from "./wordings";
 import { NOTES } from "./notes";
-import { removeDuplicates, arrayFind } from "./tools";
+import { arrayFind } from "./tools";
 import * as INTERVAL from "./interval";
 
 /** Return true if tab contains only digits or the letter x
@@ -123,16 +123,4 @@ export function getSemitones(notes) {
 		if (formula.includes(0)) semitones.push(formula);
 	}
 	return semitones;
-}
-
-/** Return a simplified formula such as [0, 4, 7] from [null, 0, 4, 0, 4, 7]
-* @param {array} rawFormula | Required | The raw integer formula such as [null, 0, 4, 0, 4, 7]
-* @return {object}
-*/
-export function stripFormula(array) {
-	let strippedFormula = [...array];
-	strippedFormula = strippedFormula.filter(interval => (!isNaN(interval) && interval != null));
-	return removeDuplicates(strippedFormula.sort(function(a,b) { 
-		return a-b; 
-	}));
 }

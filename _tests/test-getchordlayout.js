@@ -1,132 +1,109 @@
 var guitar = new chordictionary.Instrument("EADGBE", 24, 5, 4);
 
-// Add chords to be tested below. [tab, name, notes, formula]
-var formula = {
-	"min": "1-b3-5",
-	"maj": "1-3-5",
-	"power": "1-5",
-	"dim": "1-b3-b5",
-	"aug": "1-3-5#",
-	"sus4": "1-4-5",
-	"sus2": "1-2-5",
-	"add9": "1-3-5-9",
-	"madd9": "1-b3-5-9",
-	"6": "1-3-6",
-	"6/9": "1-3-5-6-9",
-	"maj6": "1-3-5-6",
-	"7": "1-3-5-b7",
-	"m7": "1-b3-5-b7",
-	"maj7": "1-3-5-7",
-	"mmaj7": "1-b3-5-7",
-	"mb6": "1-b3-5-b6",
-	"m6": "1-b3-5-6",
-	"m6/9": "1-b3-5-6-9",
-	"m7b5": "1-b3-b5-b7",
-	"maj9": "1-3-5-7-9",
-	"m9": "1-b3-5-b7-9",
-	"m9b5": "1-b3-b5-b7-9",
-	"m9maj7": "1-b3-5-7-9",
-	"maj7#11": "1-3-5-7-#11",
-	"7#11": "1-3-5-b7-#11",
-	"maj13": "1-3-5-7-9-13",
-	"m13": "1-b3-5-b7-9-11-13"
-};
 var chords = [
-	// Major
-	["x02220", ["A"], "xAEAC#E", [formula.maj]], 
-	["x24442", ["B"], "xBF#BD#F#", [formula.maj]], 
-	["x32010", ["C"], "xCEGCE", [formula.maj]], 
-	["xx0232", ["D"], "xxDADF#", [formula.maj]], 
-	["022100", ["E"], "EBEG#BE", [formula.maj]], 
-	["133211", ["F"], "FCFACF", [formula.maj]], 
-	["320033", ["G"], "GBDGDG", [formula.maj]], 
-	// Minor
-	["x02210", ["Amin", "C6"], "xAEACE", [formula.min, formula["6"]]], 
-	["x24432", ["Bmin", "D6"], "xBF#BDF#", [formula.min, formula["6"]]], 
-	["x35543", ["Cmin", "D#6"], "xCGCD#G", [formula.min, formula["6"]]], 
-	["xx0231", ["Dmin", "F6"], "xxDADF", [formula.min, formula["6"]]], 
-	["022000", ["Emin", "G6"], "EBEGBE", [formula.min, formula["6"]]], 
-	["133111", ["Fmin", "G#6"], "FCFG#CF", [formula.min, formula["6"]]], 
-	["355333", ["Gmin", "A#6"], "GDGA#DG", [formula.min, formula["6"]]],
-	// Sus4 / Sus2
-	["x33563", ["Csus4", "Fsus2"], "xCFCFG", [formula.sus4, formula.sus2]],
-	["x8101088", ["Fsus2", "Csus4"], "xFCFGC", [formula.sus2, formula.sus4]],
 	// Powerchord
-	["x355xx", ["C5"], "xCGCxx", [formula.power]],
+	["35xxxx", ["G5", "Dsus4/G"], "GDxxxx"],
+	["x355xx", ["C5", "Gsus4/C"], "xCGCxx"],
+	// Major
+	["x02220", ["AMaj", "E6sus4/A", "C#min#5/A"], "xAEAC#E"], 
+	["x24442", ["BMaj", "F#6sus4/B", "D#min#5/B"], "xBF#BD#F#"], 
+	["x32010", ["CMaj", "Emin#5/C", "G6sus4/C"], "xCEGCE"], 
+	["xx0232", ["DMaj", "A6sus4/D", "F#min#5/D"], "xxDADF#"], 
+	["022100", ["EMaj", "B6sus4/E", "G#min#5/E"], "EBEG#BE"], 
+	["133211", ["FMaj", "C6sus4/F", "Amin#5/F"], "FCFACF"], 
+	["320033", ["GMaj", "Bmin#5/G", "D6sus4/G"], "GBDGDG"], 
+	// Minor
+	["x02210", ["Amin", "Esus4#5/A", "C6/A"], "xAEACE"], 
+	["x24432", ["Bmin", "F#sus4#5/B", "D6/B"], "xBF#BDF#"], 
+	["x35543", ["Cmin", "Gsus4#5/C", "D#6/C"], "xCGCD#G"], 
+	["xx0231", ["Dmin", "Asus4#5/D", "F6/D"], "xxDADF"], 
+	["022000", ["Emin", "Bsus4#5/E", "G6/E"], "EBEGBE"], 
+	["133111", ["Fmin", "Csus4#5/F", "G#6/F"], "FCFG#CF"], 
+	["355333", ["Gmin", "Dsus4#5/G", "A#6/G"], "GDGA#DG"],
 	// 7
-	["131211", ["F7"], "FCD#ACF", [formula["7"]]],
-	["x35353", ["C7"], "xCGA#EG", [formula["7"]]],
-	// Minor 7 or Major 6
-	["8x798x", ["CMaj6", "Am7"], "CxAEGx", [formula.maj6, formula.m7]],
-	["x35555", ["CMaj6", "Am7"], "xCGCEA", [formula.maj6, formula.m7]],
-	["133231", ["FMaj6", "Dm7"], "FCFADF", [formula.maj6, formula.m7]],
+	["131211", ["F7", "Cmin6add4bb5/F", "D#6sus2b5/F"], "FCD#ACF"],
+	["x35353", ["C7", "Gmin6add4bb5/C", "A#6sus2b5/C"], "xCGA#EG"],
 	// Major 7
-	["x32000", ["CMaj7", "Emb6"], "xCEGBE", [formula.maj7, formula.mb6]], 
-	["xx10987", ["CMaj7", "Emb6"], "xxCEGB", [formula.maj7, formula.mb6]], 
-	// Major 9
-	["102011", ["FMaj9"], "FAEGCF", [formula.maj9]],
-	// Minor 9
-	["131113", ["Fm9"], "FCD#G#CG", [formula.m9]],
+	["x32000", ["CMaj7", "Eminb6/C"], "xCEGBE"], 
+	["xx10987", ["CMaj7", "Eminb6/C"], "xxCEGB"], 
+	// Minor 7 or Major 6
+	["8x798x", ["C6", "Amin7/C", "G6sus2sus4/C"], "CxAEGx"],
+	["x35555", ["C6", "G6sus2sus4/C", "Amin7/C"], "xCGCEA"],
+	["133231", ["F6", "C6sus2sus4/F", "Dmin7/F"], "FCFADF"],
+	// Minor major seventh (min(Maj7)) and Aug6
+	["x31003", ["CminMaj7", "D#aug6/C"], "xCD#GBG"],
+	["8109888", ["CminMaj7", "D#aug6/C"], "CGBD#GC"],
+	["x35443", ["CminMaj7", "D#aug6/C"], "xCGBD#G"],
 	// Minor 6 or Minor 7b5
-	["xx5545", ["Cm6", "Am7b5"], "xxGCD#A", [formula.m6, formula.m7b5]],
-	["8988xx", ["Cm7b5", "D#m6"], "CF#A#D#xx", [formula.m7b5, formula.m6]],
-	// Augmented (aug)
-	["x32110", ["Caug", "Eaug", "G#aug"], "xCEG#CE", [formula.aug, formula.aug, formula.aug]],
-	["032110", ["Eaug", "Caug", "G#aug"], "ECEG#CE", [formula.aug, formula.aug, formula.aug]],
-	// Minor, major seventh (m(maj7))
-	["x31003", ["Cm(Maj7)"], "xCD#GBG", [formula.mmaj7]],
-	["8109888", ["Cm(Maj7)"], "CGBD#GC", [formula.mmaj7]],
-	["x35443", ["Cm(Maj7)"], "xCGBD#G", [formula.mmaj7]],
-	// Minor added ninth
-	["x31033", ["Cm(add9)"], "xCD#GDG", [formula.madd9]],
-	["x6x788", ["Cm(add9)"], "xD#xDGC", [formula.madd9]],
+	["xx5545", ["Cmin6/G", "Adim7/G", "Gsus2sus4#5", "D#6b5/G"], "xxGCD#A"],
+	["8988xx", ["Cdim7", "D#min6/C", "F#6b5/C", "A#sus2sus4#5/C"], "CF#A#D#xx"],
+	// 6/9 (6 added 9)
+	["x1212121312", ["C6/9/A"], "xADGCE"],
+	["x32233", ["C6/9"], "xCEADG"],
+	["8x5755", ["C6/9"], "CxGDEA"],
+	["xx1091010", ["C6/9"], "xxCEAD"],
 	// Add9
-	["xx109810", ["Cadd9"], "xxCEGD", [formula.add9]],
-	["x32030", ["Cadd9"], "xCEGDE", [formula.add9]],
-	// Minor ninth, major seventh (m9(maj7))
-	["81098810", ["Cm9(Maj7)"], "CGBD#GD", [formula.m9maj7]],
-	// 6/9 (6 added 9)
-	["x1212121312", ["C6/9"], "xADGCE", [formula["6/9"]]],
-	["x32233", ["C6/9"], "xCEADG", [formula["6/9"]]],
-	["8x5755", ["C6/9"], "CxGDEA", [formula["6/9"]]],
-	// Minor sixth, added ninth (m6/9)
-	["867788", ["Cm6/9"], "CD#ADGC", [formula["m6/9"]]],
-	// Minor eleventh (m9b5)
-	["89881110", ["Cm9b5"], "CF#A#D#A#D", [formula.m9b5]],
-	// Major 13
-	["330200", ["CMaj13"], "GCDABE", [formula.maj13]],
-	// Diminished (dim)
-	["x3454x", ["Cdim"], "xCF#CD#x", [formula.dim]],
-	["89108xx", ["Cdim"], "CF#CD#xx", [formula.dim]],
-	// maj7#11
-	["x32002", ["CMaj7#11"], "xCEGBF#", [formula["maj7#11"]]],
-	// 7#11
-	["898988", ["C7#11"], "CF#A#EGC", [formula["7#11"]]],
-	/*		
-	** NOT SUPPORTED YET BECAUSE OF SKIPPED NOTES ********************
-	// Minor ninth, major seventh (m9(maj7))
-	["x65433", "Cm9(maj7)", "xD#GBDG", formula.m9maj7], // no root
-	["x3143x", "Cm9(maj7)", "xCD#BDx", formula.m9maj7], // no fifth
-	// 6/9 (6 added 9)
-	["xx1091010", "C6/9", "xxCEAD", formula["6/9"]], // no fifth
-	// Minor thirteen (m13) TO BE CHECKED WITH 7 STRINGS
-	["x11233", "Cm13", "xA#D#ADG", formula.m13], // no root
-	["81088108", "Cm13", "CGA#D#AC", formula.m13],
-	// Minor ninth (m9)
-	["81088810", "Cm9", "CD#A#Dxx", formula.m9],
-	// Minor ninth (m9)
-	["x3133x", "Cm9", "xCD#A#Dx", formula.m9], // no 5th
-	["8687xx", "Cm9", "CD#A#Dxx", formula.m9], // no 5th
-	// Minor sixth, added ninth (m6/9)
-	["xx1233", "Cm6/9", "xxD#ADG", formula["m6/9"]], // no root
-	["xx7889", "Cm6/9", "xxAD#GC#", formula["m6/9"]], // no root
+	["xx109810", ["Cadd9", "Emin7#5/C", "G6sus4/C", "D11sus2/C"], "xxCEGD"],
+	["x32030", ["Cadd9", "Emin7#5/C", "G6sus4/C", "D11sus2/C"], "xCEGDE"],
+	// Minor Add9
+	["x31033", ["Cminadd9"], "xCD#GDG"],
+	["x6x788", ["Cminadd9/D#"], "xD#xDGC"],
+	// Dominant 9
+	["x54555", ["D9"], "xDF#CEA"],
+	["101210111012", ["D9"], "DACF#AE"],
 	// Major 9
-	["x3243x", ["Cmaj9"], "xCEBDx", [formula.maj9]], // no 5th
-	["x35433", ["Cmaj9"], "xCGBDG", [formula.maj9]], // no 5th
-	["xx10121210", ["Cmaj9"], "xxCGBD", [formula.maj9]], // no 5th
-	["x02100", ["Amaj9"], "xAEG#BE", [formula.maj9]], // no 5th
-	*/		
-	];
+	["102011", ["FMaj9"], "FAEGCF"],
+	["x3243x", ["CMaj9"], "xCEBDx"],
+	
+	["x35433", ["CMaj7sus2"], "xCGBDG"],
+	["xx10121210", ["CMaj7sus2"], "xxCGBD"],
+	["x02100", ["AMaj7sus2"], "xAEG#BE"],
+	// Sus4 / Sus2
+	["x33563", ["Csus4", "Fsus2/C"], "xCFCFG"], 
+	["x8101088", ["Fsus2", "Csus4/F"], "xFCFGC"], 
+	// Minor ninth (min9)
+	["131113", ["Fmin9"], "FCD#G#CG"], 
+	["81088810", ["Cmin9"], "CGA#D#GD"],
+	["x3133x", ["Cmin9"], "xCD#A#Dx"],
+	["8687xx", ["Cmin9"], "CD#A#Dxx"],
+	// Minor ninth flat 5th (m9b5)
+	["89881110", ["Cmin9b5", "Daug7b9/C"], "CF#A#D#A#D"],
+	// add4
+	["x55775", ["Dadd4", "GMaj7sus2/D"], "xDGDF#A"], 
+	["101012111010", ["Dadd4", "GMaj7sus2/D"], "DGDF#AD"],
+	// Augmented (aug)
+	["x32110", ["Caug", "Eaug/C", "G#aug/C"], "xCEG#CE"],
+	["032110", ["Eaug", "Caug/E", "G#aug/E"], "ECEG#CE"],
+	// Diminished 5th (dim5)
+	["x3454x", ["Cdim"], "xCF#CD#x"],
+	["89108xx", ["Cdim"], "CF#CD#xx"],
+	// Dadd4add9
+	["x54030", ["Dadd4add9bb5"], "xDF#GDE"], 
+	// 11
+	["x1211131010", ["A11"], "xAC#G#AD"],
+	["x32001", ["C11"], "xCEGBF"],
+	// Minor 7 Major 9
+	["81098810", ["CminMaj9"], "CGBD#GD"], 
+	["x3143x", ["CminMaj9"], "xCD#BDx"], 
+	// Augmented Major 7
+	["x65433", ["D#augMaj7"], "xD#GBDG"],
+	// Minor sixth, added ninth (m6/9)
+	["867788", ["Cmin6/9"], "CD#ADGC"],
+	// Seven flat 5th
+	["xx1233", ["D#Maj7b5"], "xxD#ADG"], 
+	["xx7889", ["A7b5", "D#7b5/A"], "xxAD#GC#"], 
+	// Major 13
+	["330200", ["C13/G"], "GCDABE"],
+	["x3x455", ["C13"], "xCxBEA"],
+	["x32203", ["C13"], "xCEABG"],
+	// complex chords
+	["x11233", ["A#13"], "xA#D#ADG"], 
+	["81088108", ["Cmin13"], "CGA#D#AC"], 
+	// maj7#11
+	["x32002", ["CMaj7#11"], "xCEGBF#"],
+	// 7#11
+	["898988", ["C7#11"], "CF#A#EGC"],
+];
 
 for (var i = 0; i < chords.length; i++) {
 	var result = guitar.getChordInfo(chords[i][0]);
