@@ -156,7 +156,7 @@ myInstrument.getChordInfo("xx5545");
 	chords: [
 		{
 			name: "Cmin6/G",
-			pitch: "C",
+			pitch: "C/G",
 			formula: ["1", "b3", "5", "6"],
 			intervals: [null, null, "5", "1", "b3", "6"],
 			semitones: [null, null, 7, 0, 3, 9],
