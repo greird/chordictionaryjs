@@ -35,7 +35,7 @@ var chords = [
 	["8109888", ["CminMaj7", "D#aug6/C"], "CGBD#GC"],
 	["x35443", ["CminMaj7", "D#aug6/C"], "xCGBD#G"],
 	// Minor 6 or Minor 7b5
-	["xx5545", ["Cmin6/G", "Adim7/G", "Gsus2sus4#5", "D#6b5/G"], "xxGCD#A"], // Amin7b5 == Amin7#11
+	["xx5545", ["Cmin6/G", "Adim7/G", "Gsus2sus4#5", "D#6b5/G"], "xxGCD#A"],
 	["8988xx", ["Cdim7", "D#min6/C", "F#6b5/C", "A#sus2sus4#5/C"], "CF#A#D#xx"],
 	// 6/9 (6 added 9)
 	["x1212121312", ["C6/9/A"], "xADGCE"],
@@ -43,8 +43,8 @@ var chords = [
 	["8x5755", ["C6/9"], "CxGDEA"],
 	["xx1091010", ["C6/9"], "xxCEAD"],
 	// Add9
-	["xx109810", ["Cadd9", "Emin7#5/C", "G6sus4/C", "D11sus2/C"], "xxCEGD"], // D7sus2sus4 == D11sus2
-	["x32030", ["Cadd9", "Emin7#5/C", "G6sus4/C", "D11sus2/C"], "xCEGDE"], // also D9sus2sus4 (with 3rd and 5th skipped) or D7sus2sus4
+	["xx109810", ["Cadd9", "Emin7#5/C", "G6sus4/C", "D11sus2/C"], "xxCEGD"],
+	["x32030", ["Cadd9", "Emin7#5/C", "G6sus4/C", "D11sus2/C"], "xCEGDE"],
 	// Minor Add9
 	["x31033", ["Cminadd9"], "xCD#GDG"],
 	["x6x788", ["Cminadd9/D#"], "xD#xDGC"],
@@ -54,22 +54,22 @@ var chords = [
 	// Major 9
 	["102011", ["FMaj9"], "FAEGCF"],
 	["x3243x", ["CMaj9"], "xCEBDx"],
-	// CMaj7sus2 (Same as Maj9 but 2nd/9th is below the 7th)
+	
 	["x35433", ["CMaj7sus2"], "xCGBDG"],
 	["xx10121210", ["CMaj7sus2"], "xxCGBD"],
 	["x02100", ["AMaj7sus2"], "xAEG#BE"],
 	// Sus4 / Sus2
-	["x33563", ["Csus4", "Fsus2/C"], "xCFCFG"], // are GMaj7sus4, Gm7Maj11 valid ?
-	["x8101088", ["Fsus2", "Csus4/F"], "xFCFGC"], // are GMaj7sus4, Gm7Maj11 valid ?
+	["x33563", ["Csus4", "Fsus2/C"], "xCFCFG"], 
+	["x8101088", ["Fsus2", "Csus4/F"], "xFCFGC"], 
 	// Minor ninth (min9)
-	["131113", ["Fmin9"], "FCD#G#CG"], // G7b13b9sus4, G7b9sus4, F7#9sus2
-	["81088810", ["Cmin9"], "CGA#D#GD"], // C7#9sus2, D7b13b9sus4, D7b9sus4#5
-	["x3133x", ["Cmin9"], "xCD#A#Dx"], // no 5th
-	["8687xx", ["Cmin9"], "CD#A#Dxx"], // no 5th
+	["131113", ["Fmin9"], "FCD#G#CG"], 
+	["81088810", ["Cmin9"], "CGA#D#GD"],
+	["x3133x", ["Cmin9"], "xCD#A#Dx"],
+	["8687xx", ["Cmin9"], "CD#A#Dxx"],
 	// Minor ninth flat 5th (m9b5)
 	["89881110", ["Cmin9b5", "Daug7b9/C"], "CF#A#D#A#D"],
 	// add4
-	["x55775", ["Dadd4", "GMaj7sus2/D"], "xDGDF#A"], // A11sus4 should be A13sus4 // is F#min#5 valid ?
+	["x55775", ["Dadd4", "GMaj7sus2/D"], "xDGDF#A"], 
 	["101012111010", ["Dadd4", "GMaj7sus2/D"], "DGDF#AD"],
 	// Augmented (aug)
 	["x32110", ["Caug", "Eaug/C", "G#aug/C"], "xCEG#CE"],
@@ -78,31 +78,31 @@ var chords = [
 	["x3454x", ["Cdim"], "xCF#CD#x"],
 	["89108xx", ["Cdim"], "CF#CD#xx"],
 	// Dadd4add9
-	["x54030", ["Dadd4add9bb5"], "xDF#GDE"], // or Dadd4add9 ??
+	["x54030", ["Dadd4add9bb5"], "xDF#GDE"], 
 	// 11
 	["x1211131010", ["A11"], "xAC#G#AD"],
 	["x32001", ["C11"], "xCEGBF"],
 	// Minor 7 Major 9
-	["81098810", ["CminMaj9"], "CGBD#GD"], // or Cmin7Maj9
-	["x3143x", ["CminMaj9"], "xCD#BDx"], // no fifth
+	["81098810", ["CminMaj9"], "CGBD#GD"], 
+	["x3143x", ["CminMaj9"], "xCD#BDx"], 
 	// Augmented Major 7
 	["x65433", ["D#augMaj7"], "xD#GBDG"],
 	// Minor sixth, added ninth (m6/9)
 	["867788", ["Cmin6/9"], "CD#ADGC"],
 	// Seven flat 5th
-	["xx1233", ["D#Maj7b5"], "xxD#ADG"], // also a m6/9  with no root
-	["xx7889", ["A7b5", "D#7b5/A"], "xxAD#GC#"], // also a m6/9  with no root
+	["xx1233", ["D#Maj7b5"], "xxD#ADG"], 
+	["xx7889", ["A7b5", "D#7b5/A"], "xxAD#GC#"], 
 	// Major 13
 	["330200", ["C13/G"], "GCDABE"],
 	["x3x455", ["C13"], "xCxBEA"],
 	["x32203", ["C13"], "xCEABG"],
 	// complex chords
 	["x11233", ["A#13"], "xA#D#ADG"], 
-	["81088108", ["Cmin13"], "CGA#D#AC"], // A#13sus2sus4 (sus2 and sus4 are optional as they can counted as 9th and 11th instead)
+	["81088108", ["Cmin13"], "CGA#D#AC"], 
 	// maj7#11
 	["x32002", ["CMaj7#11"], "xCEGBF#"],
 	// 7#11
-	["898988", ["C7#11"], "CF#A#EGC"],	// Gmin13 is wrong because b3 but maj 7th.	
+	["898988", ["C7#11"], "CF#A#EGC"],
 ];
 
 for (var i = 0; i < chords.length; i++) {

@@ -91,11 +91,12 @@ class Instrument {
 			for (let i = 0; i < semitones.length; i++) {
 				let chord = CHORD.name([...semitones][i]);
 				if (chord) {
-					// deduplicate; keep interval only; sort; convert integers to diatonic intervals
+					// deduplicate, keep interval only, sort and convert integers to diatonic intervals
 					var strippedFormula = [...new Set(semitones[i])]
 						.filter(i => (!isNaN(i) && i !== null && i !== undefined))
 						.sort((a,b) => a-b)
 						.map(i => INTERVAL.DIATONIC[i]);
+						
 					matches.push({ 
 						"formula": strippedFormula, 
 						"semitones": chord.semitones,

@@ -5,7 +5,7 @@ import { NOTES } from "./notes";
 * Helps us convert semitones into diatonic intervals
 * https://en.wikipedia.org/wiki/Interval_(music)
 */
-export const DIATONIC = ["1", "b2", "2", "b3", "3", "4", "b5", "5", "#5", "6", "b7", "7"];
+export const DIATONIC = ["1", "b2", "2", "b3", "3", "4", "b5", "5", "#5", "6", "b7", "7", "8", "b9", "9", "b10", "10", "11", "#11", "12", "b13", "13", "#13", "14"];
 
 /** Get the number of semitones between two notes a and b
 * @param {String} a | Required | a note

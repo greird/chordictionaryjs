@@ -53,6 +53,7 @@ const NAMING = {
 	major: ["Maj", "Major"],
 	minor: ["min", "Minor"],
 	sharp5: ["#5", "Sharp 5th"], 
+	sharp11: ["#11", "Sharp 11th"],
 	aug5: ["aug", "Augmented"], // +5
 	dim5: ["dim", "Diminished"], // -5
 	flat5: ["b5", "Flat 5th"], 
@@ -183,6 +184,7 @@ export function name(semitones) {
 		{ name: "sus4", check: formula.includes("4") && !has.third && !has.seven },
 		{ name: "sharp5", check: formula.includes("#5") && !formula.some(x => ["5", "3"].includes(x)) },
 		{ name: "flat5", check: formula.includes("b5") && !formula.some(x => ["5"].includes(x)) },
+		{ name: "sharp11", check: ["5", "b5"].every(x => formula.includes(x)) && has.seven },
 		{ name: "flat9", check: formula.includes("b2") && has.third },
 		{ name: "b6", check: formula.includes("#5") && formula.includes("5") },
 		{ name: "doubleflat5", check: formula.includes("4") && has.third && !has.fifth && !has.seven},
@@ -201,7 +203,6 @@ export function name(semitones) {
 	let chordExt = extensions.filter(q => q.check).map(q => q.name);
 
 	if (chordExt.length > 0) {
-
 		// Remove incompatible extensions 
 		chordExt = chordExt.filter(q => !chordExt.includes(incompatibilities[q]));
 
