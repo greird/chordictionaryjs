@@ -162,7 +162,7 @@ myInstrument.getChordInfo("xx5545");
 			semitones: [null, null, 7, 0, 3, 9],
 			notes: ["x", "x", "G", "C", "D#", "A"],
 			quality: "Minor sixth",
-			suffix: "m6"
+			suffix: "min6"
 		},
 		{
 			name: "Amin7b5",
