@@ -36,8 +36,8 @@ exports.chords = [
 	["8109888", ["CminMaj7", "D#aug6/C"], "CGBD#GC"],
 	["x35443", ["CminMaj7", "D#aug6/C"], "xCGBD#G"],
 	// Minor 6 or Minor 7b5
-	["xx5545", ["Cmin6/G", "Adim7/G", "Gsus2sus4#5", "D#6b5/G"], "xxGCD#A"], // Amin7b5 == Amin7#11
-	["8988xx", ["Cdim7", "D#min6/C", "F#6b5/C", "A#sus2sus4#5/C"], "CF#A#D#xx"],
+	["xx5545", ["Cmin6/G", "Amin7b5/G", "Gsus2sus4#5", "D#6b5/G"], "xxGCD#A"], // Amin7b5 == Amin7#11
+	["8988xx", ["Cmin7b5", "D#min6/C", "F#6b5/C", "A#sus2sus4#5/C"], "CF#A#D#xx"],
 	// 6/9 (6 added 9)
 	["x1212121312", ["C6/9/A"], "xADGCE"],
 	["x32233", ["C6/9"], "xCEADG"],

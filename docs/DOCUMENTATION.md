@@ -155,24 +155,24 @@ myInstrument.getChordInfo("xx5545");
 	error: "",
 	chords: [
 		{
-			name: "Cm6",
+			name: "Cmin6/G",
 			pitch: "C",
-			formula: "1-b3-5-6",
-			intervals: [null, null, "P5", "P1", "m3", "M6"],
+			formula: ["1", "b3", "5", "6"],
+			intervals: [null, null, "5", "1", "b3", "6"],
 			semitones: [null, null, 7, 0, 3, 9],
 			notes: ["x", "x", "G", "C", "D#", "A"],
 			quality: "Minor sixth",
 			suffix: "m6"
 		},
 		{
-			name: "Am7b5",
-			pitch: "A",
-			formula: "1-b3-b5-b7",
-			intervals: [null, null, "m7", "m3", "A4/d5", "P1"],
+			name: "Amin7b5",
+			pitch: "A/G",
+			formula: ["1", "b3", "b5", "b7"],
+			intervals: [null, null, "b7", "b3", "b5", "1"],
 			semitones: [null, null, 10, 3, 6, 0],
 			notes: ["x", "x", "G", "C", "D#", "A"],
-			quality: "Minor seventh, flat fifth",
-			suffix: "m7b5"
+			quality: "Minor 7th Flat 5th",
+			suffix: "min7b5"
 		}
 	],
 	notes: ["x", "x", "G", "C", "D#", "A"],

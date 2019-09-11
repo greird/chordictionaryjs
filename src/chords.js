@@ -174,7 +174,7 @@ export function name(semitones) {
 		{ name: "major", check: formula.includes("3") && !formula.some(x => ["6", "4"].includes(x) || has.seven || has.majorNinth) },
 		{ name: "minor", check: formula.includes("b3") },
 		{ name: "aug5", check: formula.includes("#5") && formula.includes("3") && !formula.includes("5") },
-		{ name: "dim5", check: formula.includes("b5") && formula.includes("b3") && !formula.includes("5") && !has.majorNinth },
+		{ name: "dim5", check: formula.includes("b5") && formula.includes("b3") && !formula.includes("5") && !has.seven && !has.majorNinth },
 		{ name: "seven", check: formula.includes("b7") && !formula.some(x => ["6", "b9", "9"].includes(x) || has.majorNinth) },
 		{ name: "major7", check: formula.includes("7") && !formula.some(x => ["6", "4"].includes(x) || has.majorNinth) },
 		{ name: "major9", check: has.majorNinth && formula.includes("7") && !formula.includes("6")},
