@@ -152,6 +152,10 @@ export function parse(chordName) {
 	}
 }
 
+/** Return the extensions (quality) of a chord based on the number of semitones between each composing notes
+* @param {Array} semitones | Required | The number of semitones between the root and each note of the chord
+* @return {Object}
+*/
 export function name(semitones) {
 	let formula = semitones.map(i => DIATONIC[i]).filter(x => x !== undefined);
 	//let count = formula.reduce((acc, item) => (acc.includes(item) ? acc[item]++ : acc(item)));
