@@ -113,7 +113,7 @@ You do this by creating a new instance of Instrument.
 #### Exemple: Defining an electric guitar  
 
 ```Javascript
-let myInstrument = new chordicationary.Instrument('EADGBE', 24, 7, 4);
+let myInstrument = new chordictionary.Instrument('EADGBE', 24, 7, 4);
 ```
 
 Here I have defined a guitar in standard tuning (from the lowest to highest string). It has a total of **24 frets**.
@@ -131,7 +131,7 @@ The following methods are only available when called on an Instrument instance.
 We assume that the following instrument has been defined:
 
 ```Javascript
-let myInstrument = new chordicationary.Instrument('EADGBE', 24, 7, 4);
+let myInstrument = new chordictionary.Instrument('EADGBE', 24, 7, 4);
 ```
 
 #### <span style="color:#00458f">getChordInfo</span>
